@@ -60,7 +60,6 @@ const premiumVoiceTranslations: TranslationRecord = {
   minutesRemainingThisMonth: "{{minutes}} minutos restantes este mês",
   startPremiumSession: "Iniciar Sessão Premium",
   endSession: "Encerrar Sessão",
-  continueSpeaking: "Continuar Falando",
   poweredByGPT4oRealtime: "Desenvolvido por GPT-4o Realtime",
   conversation: "Conversa",
   you: "Você",

@@ -59,7 +59,6 @@ const premiumVoiceTranslations: TranslationRecord = {
   minutesRemainingThisMonth: "{{minutes}} minutes remaining this month",
   startPremiumSession: "Start Premium Session",
   endSession: "End Session",
-  continueSpeaking: "Continue Speaking",
   poweredByGPT4oRealtime: "Powered by Palavox Advanced Voice",
   conversation: "Conversation",
   you: "You",
