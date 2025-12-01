@@ -42,7 +42,7 @@ const ChatMessageBubble: React.FC<ChatMessageBubbleProps> = ({
         content={safeContent}
         isPlaying={false}
         isLoading={false}
-        onPlayAudio={undefined}
+        onPlayAudio={role === "assistant" ? () => {} : undefined}
       />
       
       {showTranslation && role === "assistant" && (

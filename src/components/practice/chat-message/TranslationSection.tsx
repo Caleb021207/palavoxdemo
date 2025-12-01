@@ -96,7 +96,8 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
     }
   }, [translation, currentLanguage, t, originalContent]);
   
-  if (!showTranslation || !shouldDisplay) {
+  // For demo mode, always show translation dropdown for assistant messages
+  if (!showTranslation) {
     return null;
   }
   
