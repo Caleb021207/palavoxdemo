@@ -13,9 +13,10 @@ interface ChatMessageProps {
   content: string;
   translation?: string | TranslationType;
   onPlayAudio?: (text: string) => void;
+  grammarCorrectionEnabled?: boolean;
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ role, content, translation, onPlayAudio }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ role, content, translation, onPlayAudio, grammarCorrectionEnabled = false }) => {
   const { currentLanguage } = useLocalization();
   
   // Enhanced logging for specific translations
@@ -136,6 +137,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ role, content, translation, o
         targetLanguage={targetLanguage}
         nativeLanguage={nativeLanguage}
         currentLanguage={currentLanguage}
+        grammarCorrectionEnabled={grammarCorrectionEnabled}
       />
     </div>
   );

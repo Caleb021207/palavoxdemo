@@ -13,6 +13,7 @@ interface ChatMessageBubbleProps {
   targetLanguage: string;
   nativeLanguage: string;
   currentLanguage: string;
+  grammarCorrectionEnabled?: boolean;
 }
 
 const ChatMessageBubble: React.FC<ChatMessageBubbleProps> = ({
@@ -24,6 +25,7 @@ const ChatMessageBubble: React.FC<ChatMessageBubbleProps> = ({
   targetLanguage,
   nativeLanguage,
   currentLanguage,
+  grammarCorrectionEnabled = false,
 }) => {
   return (
     <div
@@ -53,6 +55,7 @@ const ChatMessageBubble: React.FC<ChatMessageBubbleProps> = ({
           isTranslationLoading={false}
           originalContent={safeContent}
           onPlayTranslationAudio={undefined}
+          grammarCorrectionEnabled={grammarCorrectionEnabled}
         />
       )}
     </div>

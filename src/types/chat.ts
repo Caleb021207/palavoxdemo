@@ -3,6 +3,7 @@ export interface Message {
   role: 'user' | 'assistant' | 'system';
   content: string;
   translation?: TranslationType;
+  grammarCorrectionEnabled?: boolean;
 }
 
 export interface LanguageMetrics {

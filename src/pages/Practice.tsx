@@ -22,6 +22,12 @@ const Practice = () => {
     isLoading,
     getPlaceholderText
   } = useChatMessages(conversationLevel);
+  
+  // Add grammar correction flag to messages
+  const messagesWithGrammarFlag = messages.map(msg => ({
+    ...msg,
+    grammarCorrectionEnabled: grammarCorrection
+  }));
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -88,7 +94,7 @@ const Practice = () => {
               transition={{ delay: 0.2 }}
             >
               <ChatContainer
-                messages={messages}
+                messages={messagesWithGrammarFlag}
                 input={input}
                 setInput={setInput}
                 handleSubmit={handleSubmit}
