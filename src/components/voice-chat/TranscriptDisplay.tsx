@@ -42,6 +42,11 @@ const TranscriptDisplay: React.FC<TranscriptDisplayProps> = ({
               <p className="text-muted-foreground text-base italic">
                 {t("listening")}... (click stop when done)
               </p>
+            ) : transcript ? (
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground font-medium">Your message:</p>
+                <p className="text-base">{transcript}</p>
+              </div>
             ) : null}
           </div>
         </motion.div>

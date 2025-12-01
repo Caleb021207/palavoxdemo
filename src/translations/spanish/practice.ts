@@ -102,6 +102,8 @@ const practiceTranslations: TranslationRecord = {
   startVoiceConversation: "Iniciar conversación de voz",
   endVoiceConversation: "Terminar conversación de voz",
   voiceChatActive: "Chat de voz activo",
+  startSpeakingToSeeTranscript: "Comienza a hablar para ver tu transcripción",
+  clickMicrophoneToStartRecording: "Haz clic en el micrófono para comenzar a grabar",
   
   // Progress and analysis
   aiProgressAnalysis: "Análisis de progreso IA",
