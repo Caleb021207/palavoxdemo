@@ -8,6 +8,7 @@ import { VoiceChatContainerProps } from "@/types/voiceChat";
 import { TranslationType } from "@/types/chat";
 import { Button } from "@/components/ui/button";
 import { Volume2 } from "lucide-react";
+
 const VoiceChatContainer: React.FC<VoiceChatContainerProps> = ({
   messages,
   isLoading,
@@ -19,8 +20,18 @@ const VoiceChatContainer: React.FC<VoiceChatContainerProps> = ({
     t
   } = useLocalization();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const lastMessageCountRef = useRef(messages.length);
 
-  // Auto-scroll disabled for better UX during rapid conversations
+  // Auto-play TTS for new assistant messages
+  useEffect(() => {
+    if (messages.length > lastMessageCountRef.current) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === "assistant" && onPlayAudio) {
+        onPlayAudio(lastMessage.content);
+      }
+    }
+    lastMessageCountRef.current = messages.length;
+  }, [messages, onPlayAudio]);
 
   return <Card className="overflow-hidden mb-10">
       <ScrollArea className="h-[600px] p-8">
