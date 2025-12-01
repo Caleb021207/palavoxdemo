@@ -206,7 +206,7 @@ export class RealtimeChat {
         : 'premium-voice-realtime';
 
       const response = await fetch(
-        `https://dukpljcweixxmpkiblwo.functions.supabase.co/${endpoint}`,
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/${endpoint}`,
         {
           method: 'POST',
           headers: {
