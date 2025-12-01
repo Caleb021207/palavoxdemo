@@ -28,16 +28,13 @@ const ClassTestAverages = ({ schoolId }: ClassTestAveragesProps) => {
     const fetchClassAverages = async () => {
       setIsLoading(true);
       try {
-        // Get all classes in the school
-        const { data: classes } = await supabase
+        // Get all classes in the school (using untyped client for flexibility)
+        const { data: classes } = await (supabase as any)
           .from('classes')
           .select(`
             id,
             name,
-            teacher:profiles!classes_teacher_id_fkey (
-              display_name,
-              email
-            ),
+            teacher_id,
             student_enrollments (
               student_id
             )
@@ -62,7 +59,7 @@ const ClassTestAverages = ({ schoolId }: ClassTestAveragesProps) => {
 
           // Get latest transcript analysis for each student in the class
           const scorePromises = studentIds.map(async (studentId) => {
-            const { data: latestAnalysis } = await supabase
+            const { data: latestAnalysis } = await (supabase as any)
               .from('transcript_analyses')
               .select('overall_score')
               .eq('user_id', studentId)

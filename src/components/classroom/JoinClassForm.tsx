@@ -65,12 +65,12 @@ const JoinClassForm = () => {
       // Log attempt for rate limiting
       await supabase.from('access_code_attempts').insert({
         user_id: session.user.id,
-        attempted_code: trimmedCode,
-        success: false
+        code: trimmedCode,
       });
 
       const { data, error } = await supabase.rpc('process_access_code', {
-        p_code: trimmedCode
+        code_input: trimmedCode,
+        user_id_input: session.user.id,
       });
 
       console.log('Process access code response:', { data, error });
@@ -92,8 +92,7 @@ const JoinClassForm = () => {
         // Log successful attempt
         await supabase.from('access_code_attempts').insert({
           user_id: session.user.id,
-          attempted_code: trimmedCode,
-          success: true
+          code: trimmedCode,
         });
 
         toast({

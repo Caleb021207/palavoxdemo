@@ -9,15 +9,15 @@ import { format } from "date-fns";
 
 interface AccessLog {
   id: string;
-  accessor_user_id: string;
-  access_type: string;
-  data_category: string;
-  data_accessed: string;
-  educational_justification: string;
-  legitimate_interest_verified: boolean;
-  access_granted: boolean;
-  denial_reason: string | null;
-  accessed_at: string;
+  accessor_user_id: string | null;
+  access_type: string | null;
+  data_category: string | null;
+  data_accessed: string | null;
+  educational_justification?: string;
+  legitimate_interest_verified?: boolean;
+  access_granted?: boolean;
+  denial_reason?: string | null;
+  accessed_at?: string | null;
   accessor_profile?: {
     display_name: string;
     role: string;
@@ -42,8 +42,8 @@ const DataAccessAuditLog = () => {
       const { data: logs, error: logsError } = await supabase
         .from('educational_data_access_audit')
         .select('*')
-        .eq('accessed_user_id', user.id)
-        .order('accessed_at', { ascending: false })
+        .eq('target_user_id', user.id)
+        .order('created_at', { ascending: false })
         .limit(50);
 
       if (logsError) throw logsError;
@@ -59,8 +59,9 @@ const DataAccessAuditLog = () => {
         if (profilesError) throw profilesError;
 
         // Map profiles to logs
-        const logsWithProfiles = logs.map(log => ({
+        const logsWithProfiles = logs.map((log: any) => ({
           ...log,
+          accessed_at: log.created_at,
           accessor_profile: profiles?.find(p => p.id === log.accessor_user_id)
         }));
 

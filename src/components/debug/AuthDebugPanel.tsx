@@ -39,13 +39,13 @@ const AuthDebugPanel = () => {
         .single();
 
       // Get district associations
-      const { data: districtUsers, error: districtError } = await supabase
+      const { data: districtUsers, error: districtError } = await (supabase as any)
         .from('district_users')
         .select('*, school_districts(*)')
         .eq('user_id', user.id);
 
       // Get accessible schools
-      const { data: schools, error: schoolsError } = await supabase
+      const { data: schools, error: schoolsError } = await (supabase as any)
         .from('schools')
         .select('*');
 

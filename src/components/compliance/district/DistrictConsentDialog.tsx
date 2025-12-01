@@ -46,7 +46,7 @@ const DistrictConsentDialog: React.FC<Props> = ({
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("No user found");
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('district_users')
         .insert({
           district_id: districtId,

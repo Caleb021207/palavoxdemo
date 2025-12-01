@@ -39,7 +39,7 @@ const DirectoryInfoOptOut = () => {
       const currentYear = new Date().getFullYear();
       const academicYear = `${currentYear}-${currentYear + 1}`;
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('directory_information_preferences')
         .select('*')
         .eq('student_id', user.id)
@@ -78,7 +78,7 @@ const DirectoryInfoOptOut = () => {
       const currentYear = new Date().getFullYear();
       const academicYear = `${currentYear}-${currentYear + 1}`;
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('directory_information_preferences')
         .upsert({
           student_id: user.id,
