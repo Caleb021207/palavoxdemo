@@ -15,11 +15,11 @@ const premiumVoiceTranslations: TranslationRecord = {
   
   // Premium Voice Practice Page
   premiumVoicePractice: "Práctica de Voz Premium",
-  practiceConversationalEnglish: "Practica inglés conversacional con GPT-4o Realtime",
+  practiceConversationalEnglish: "Practica habilidades conversacionales con Palavox Advanced Voice",
   minutesRemainingThisMonth: "{{minutes}} minutos restantes este mes",
   startPremiumSession: "Iniciar Sesión Premium",
   endSession: "Finalizar Sesión",
-  poweredByGPT4oRealtime: "Impulsado por GPT-4o Realtime",
+  poweredByGPT4oRealtime: "Impulsado por Palavox Advanced Voice",
   conversation: "Conversación",
   you: "Tú",
   aiTutor: "Tutor IA",
@@ -34,7 +34,7 @@ const premiumVoiceTranslations: TranslationRecord = {
   minutesRemainingWarning: "{{minutes}} minuto{{plural}} restante{{plural}}",
   sessionEnded: "Sesión Finalizada",
   premiumSessionEndedMessage: "Tu sesión premium de 15 minutos ha terminado",
-  premiumVoiceInstructions: "Esta función está diseñada para conversaciones fluidas y dinámicas. Obtienes 15 minutos de práctica por mes. Simplemente presiona el botón y di 'Hola, ¿cómo estás?' El tutor de IA te ayudará a practicar tus habilidades de habla en inglés. Si es necesario, también puede asistirte en tu idioma nativo.",
+  premiumVoiceInstructions: "",
   
   // Usage limits
   ttsLimitWarning: "Advertencia de Límite TTS",
@@ -43,16 +43,16 @@ const premiumVoiceTranslations: TranslationRecord = {
   sttLimitReached: "Límite STT Alcanzado",
   
   // Language support messages
-  gptLanguageSupport: "GPT-4o Realtime admite más de 20 idiomas. Aunque está optimizado para inglés, proporciona conversaciones naturales en tu idioma.",
-  customLanguageSupport: "Custom Realtime AI admite más de 99 idiomas. Este sistema utiliza modelos multilingües especializados que incluyen Whisper (reconocimiento de voz), GPT-4o-mini (conversación) y Azure TTS (síntesis de voz).",
+  gptLanguageSupport: "Palavox Advanced Voice admite todos los idiomas disponibles en nuestra plataforma, proporcionando conversaciones naturales en tu idioma.",
+  customLanguageSupport: "Palavox Custom AI admite más de 99 idiomas. Este sistema utiliza modelos multilingües especializados que incluyen Whisper (reconocimiento de voz), GPT-4o-mini (conversación) y Azure TTS (síntesis de voz).",
   recommendedForYourLanguage: "Recomendado para tu idioma",
   multilingualSupport: "MULTILINGÜE",
   customRealtimeDisclaimer: "Cada grabación está limitada a 1 minuto. Después de 3 segundos de silencio, tu mensaje se enviará automáticamente.",
   
   // Voice practice page
-  openaiLatestVoiceModel: "Último modelo de voz de OpenAI",
+  openaiLatestVoiceModel: "Palavox Advanced Voice",
   connecting: "Conectando...",
-  startGptSession: "Iniciar Sesión GPT",
+  startGptSession: "Iniciar Sesión Palavox",
   startCustomSession: "Iniciar Sesión Personalizada",
   exchanges: "intercambios",
   stateListening: "escuchando",
