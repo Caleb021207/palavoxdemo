@@ -82,6 +82,8 @@ const practiceTranslations: TranslationRecord = {
   startVoiceConversation: "Start Voice Conversation",
   endVoiceConversation: "End Voice Conversation",
   voiceChatActive: "Voice Chat Active",
+  startSpeakingToSeeTranscript: "Start speaking to see your transcript",
+  clickMicrophoneToStartRecording: "Click the microphone to start recording",
   
   // Chat interface
   typeYourMessageHere: "Type your message here...",
