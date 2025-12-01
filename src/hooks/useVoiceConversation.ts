@@ -27,11 +27,15 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
 
     try {
       // Call chat-with-tutor edge function
+      // Edge function expects: message (current text) + conversationHistory (previous messages)
       const { data, error } = await supabase.functions.invoke("chat-with-tutor", {
         body: {
-          messages: [...apiConversationHistory, userMessage],
+          message: text,
+          conversationHistory: apiConversationHistory,
           conversationLevel: conversationLevel || "intermediate",
-          correctGrammar: correctGrammar || false
+          correctGrammar: correctGrammar || false,
+          targetLanguage: "english",
+          userLanguage: "english"
         }
       });
 
@@ -39,7 +43,7 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
 
       const assistantMessage: Message = {
         role: "assistant",
-        content: data.response
+        content: data.reply || data.response
       };
 
       // Add assistant response to history
@@ -47,7 +51,7 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
       setApiConversationHistory(prev => [...prev, assistantMessage]);
 
       // Auto-play TTS for the response
-      await speakResponse(data.response);
+      await speakResponse(assistantMessage.content);
 
     } catch (error) {
       console.error("Chat error:", error);
