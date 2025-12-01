@@ -1,5 +1,5 @@
 // Demo stub - not used in carousel demo
-export const useChatMessages = () => ({
+export const useChatMessages = (_conversationLevel?: string) => ({
   messages: [],
   input: "",
   setInput: () => {},

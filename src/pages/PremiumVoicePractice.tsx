@@ -98,21 +98,8 @@ const PremiumVoicePractice = () => {
     }
     
     if (chatRef.current && minutesUsed > 0 && sessionId) {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user?.id) {
-          await supabase.from('usage_tracking').insert({
-            student_id: user.id,
-            session_type: 'premium_voice_practice',
-            session_id: sessionId,
-            started_at: new Date(Date.now() - elapsedSeconds * 1000).toISOString(),
-            ended_at: new Date().toISOString(),
-            minutes_used: minutesUsed,
-          });
-        }
-      } catch (error) {
-        console.error('Error tracking usage:', error);
-      }
+      // Demo mode - no usage tracking
+      console.log('Demo: would track', minutesUsed, 'minutes');
     }
     
     chatRef.current?.disconnect();
