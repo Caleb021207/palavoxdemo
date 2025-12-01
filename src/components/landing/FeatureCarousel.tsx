@@ -28,7 +28,9 @@ const FeatureCarousel = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const CARD_WIDTH = 450; // Width + gap between cards
+  const CARD_WIDTH = 400; // Actual card width
+  const GAP = 48; // gap-12 = 3rem = 48px
+  const CARD_TOTAL_WIDTH = CARD_WIDTH + GAP; // Total space per card
 
   const features: Feature[] = [
     {
@@ -154,24 +156,31 @@ const FeatureCarousel = () => {
       <div className="relative w-full max-w-6xl h-[500px] flex items-center justify-center overflow-hidden">
         {/* Sliding Track */}
         <motion.div
-          className="flex gap-12 absolute"
+          className="flex gap-12 absolute left-1/2"
           animate={{
-            x: -currentIndex * CARD_WIDTH + (typeof window !== 'undefined' ? window.innerWidth / 2 - 200 : 600)
+            x: -currentIndex * CARD_TOTAL_WIDTH
           }}
           transition={{
             type: "spring",
-            stiffness: 90,
-            damping: 25,
-            mass: 1
+            stiffness: 100,
+            damping: 20,
+            mass: 0.8
           }}
           style={{
-            willChange: 'transform'
+            willChange: 'transform',
+            transform: 'translateX(-50%)'
           }}
         >
           {features.map((feature, index) => {
             const Icon = feature.icon;
             const distanceFromCenter = Math.abs(index - currentIndex);
             const isCenter = index === currentIndex;
+            const isAdjacent = distanceFromCenter === 1;
+            
+            // Visual hierarchy based on distance from center
+            const scale = isCenter ? 1.1 : isAdjacent ? 0.9 : 0.75;
+            const opacity = isCenter ? 1 : isAdjacent ? 0.6 : 0.3;
+            const blur = isCenter ? 0 : isAdjacent ? 1 : 2;
             
             return (
               <motion.div
@@ -179,12 +188,12 @@ const FeatureCarousel = () => {
                 className="flex-shrink-0 w-[400px] cursor-pointer"
                 onClick={() => navigate(feature.route)}
                 animate={{
-                  scale: isCenter ? 1.15 : 0.6,
-                  opacity: isCenter ? 1 : 0.15,
-                  filter: isCenter ? 'blur(0px)' : 'blur(4px)'
+                  scale,
+                  opacity,
+                  filter: `blur(${blur}px)`
                 }}
                 transition={{
-                  duration: 0.8,
+                  duration: 0.6,
                   ease: [0.25, 0.1, 0.25, 1]
                 }}
                 style={{
