@@ -3,24 +3,12 @@ import { InteractiveCard } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Upload, FileText, BarChart3, TrendingUp } from "lucide-react";
 import { useLocalization } from "@/context/LocalizationContext";
-import { useAuthGuard } from "@/hooks/useAuthGuard";
 import { GradientBlob } from "@/components/ui/decorative-elements";
 import { motion } from "framer-motion";
 
 const Progress = () => {
-  const { isLoading } = useAuthGuard();
   const { t } = useLocalization();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  if (isLoading) {
-    return (
-      <div className="relative min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10 flex items-center justify-center">
-        <GradientBlob className="top-20 left-10" />
-        <GradientBlob className="bottom-20 right-10" colors="from-palavox-teal to-palavox-accent" />
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

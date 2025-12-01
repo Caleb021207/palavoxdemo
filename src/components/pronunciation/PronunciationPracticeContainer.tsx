@@ -12,14 +12,11 @@ import { RefreshCw, ChevronLeft, Volume2, Target, BookOpen, Headphones, Mic, Tro
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { usePronunciationExercise } from "./hooks/usePronunciationExercise";
-import { useAuthGuard } from "@/hooks/useAuthGuard";
-import AuthRequiredPrompt from "@/components/auth/AuthRequiredPrompt";
 import { GradientBlob } from "@/components/ui/decorative-elements";
 import { motion } from "framer-motion";
 
 
 const PronunciationPracticeContainer = () => {
-  const { isLoading: authLoading, isAuthenticated } = useAuthGuard();
   const { t } = useLocalization();
   const [speechRate, setSpeechRate] = React.useState(1.0);
   const {
@@ -68,16 +65,6 @@ const PronunciationPracticeContainer = () => {
       }
     }
   }, [urlLevel, setComplexity]);
-
-  if (authLoading) {
-    return <div className="flex items-center justify-center min-h-screen">
-      <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
-    </div>;
-  }
-
-  if (!isAuthenticated) {
-    return <AuthRequiredPrompt />;
-  }
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10 overflow-hidden">
