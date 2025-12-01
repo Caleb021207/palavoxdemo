@@ -74,7 +74,7 @@ const premiumVoiceTranslations: TranslationRecord = {
   minutesRemainingWarning: "{{minutes}} minute{{plural}} remaining",
   sessionEnded: "Session Ended",
   premiumSessionEndedMessage: "Your 15-minute premium session has ended",
-  premiumVoiceInstructions: "This feature is designed for fluid, dynamic conversations using the latest conversational AI models. You get 15 minutes of practice per month. Simply hit the button and start speaking. The AI tutor will help you practice your speaking skills.",
+  premiumVoiceInstructions: "",
   
   // Language support messages
   gptLanguageSupport: "Palavox Advanced Voice supports every language available in our platform, providing natural conversations in your language.",
