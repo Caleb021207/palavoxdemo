@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { 
   MessageSquare, 
   Mic, 
-  TrendingUp, 
-  Award, 
-  Users, 
-  BarChart3,
+  Volume2,
+  Sparkles,
+  Brain,
+  User,
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
@@ -34,51 +34,51 @@ const FeatureCarousel = () => {
 
   const features: Feature[] = [
     {
-      id: 'text-practice',
-      title: 'Text Practice',
-      description: 'Practice reading and writing with AI-powered conversations',
+      id: 'practice',
+      title: 'Practice',
+      description: 'Practice reading and writing with AI-powered text conversations',
       icon: MessageSquare,
       route: '/practice',
       gradient: 'from-primary to-palavox-teal'
     },
     {
-      id: 'voice-practice',
-      title: 'Advanced Voice',
-      description: 'Natural voice conversations with Palavox Advanced Voice',
+      id: 'unlimited-voice',
+      title: 'Unlimited Voice Practice',
+      description: 'Natural voice conversations for immersive language learning',
       icon: Mic,
-      route: '/premium-voice',
+      route: '/voice-chat',
       gradient: 'from-palavox-teal to-accent'
     },
     {
-      id: 'teacher-dashboard',
-      title: 'Teacher Dashboard',
-      description: 'Monitor student progress and classroom metrics',
-      icon: Users,
-      route: '/teacher-classes',
+      id: 'pronunciation',
+      title: 'Pronunciation Practice',
+      description: 'Perfect your pronunciation with AI-powered speech analysis',
+      icon: Volume2,
+      route: '/pronunciation-practice',
       gradient: 'from-accent to-primary'
     },
     {
-      id: 'progress',
-      title: 'Progress Tracking',
-      description: 'Track your language learning journey with detailed analytics',
-      icon: TrendingUp,
-      route: '/progress',
+      id: 'advanced-conversation',
+      title: 'Advanced Conversation',
+      description: 'Premium voice features with Palavox Advanced AI technology',
+      icon: Sparkles,
+      route: '/premium-voice-practice',
       gradient: 'from-primary to-accent'
     },
     {
-      id: 'certificates',
-      title: 'Certificates',
-      description: 'Earn certificates to validate your language proficiency',
-      icon: Award,
-      route: '/certificates',
+      id: 'testing-progress',
+      title: 'Testing & Progress',
+      description: 'Track your learning journey with AI-powered analysis and testing',
+      icon: Brain,
+      route: '/analysis',
       gradient: 'from-palavox-teal to-primary'
     },
     {
-      id: 'analytics',
-      title: 'Transcript Analysis',
-      description: 'AI-powered analysis of your speaking and writing',
-      icon: BarChart3,
-      route: '/transcript-analysis',
+      id: 'profile',
+      title: 'Profile',
+      description: 'View your achievements, certificates, and learning statistics',
+      icon: User,
+      route: '/profile',
       gradient: 'from-accent to-palavox-teal'
     }
   ];
