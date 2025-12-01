@@ -13,19 +13,11 @@ interface DemoContextType {
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
 
 export const DemoProvider = ({ children }: { children: ReactNode }) => {
-  const [isDemoMode, setIsDemoMode] = useState(false);
+  // Always enable demo mode by default
+  const [isDemoMode, setIsDemoMode] = useState(true);
   const [demoTeacherProfile] = useState(generateDemoTeacherProfile());
   const [demoStudents] = useState(generateDemoStudents());
   const [demoMetrics] = useState(generateDemoMetrics());
-
-  useEffect(() => {
-    // Check URL parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const demoParam = urlParams.get('demo');
-    if (demoParam === 'true') {
-      setIsDemoMode(true);
-    }
-  }, []);
 
   const setDemoMode = (enabled: boolean) => {
     setIsDemoMode(enabled);

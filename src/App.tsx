@@ -18,7 +18,6 @@ import CertificationCodeTester from "@/pages/CertificationCodeTester";
 import PremiumVoicePractice from "@/pages/PremiumVoicePractice";
 import ClassMetrics from "@/pages/ClassMetrics";
 import Certificate from "@/pages/Certificate";
-import Demo from "@/pages/Demo";
 
 function App() {
   return (
@@ -29,7 +28,6 @@ function App() {
           <NewLayout>
             <Routes>
               <Route path="/" element={<NewLandingPage />} />
-              <Route path="/demo" element={<Demo />} />
               <Route path="/practice" element={<Practice />} />
               <Route path="/voice-chat" element={<VoiceChat />} />
               <Route path="/pronunciation-practice" element={<PronunciationPracticeContainer />} />
