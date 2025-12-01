@@ -9,6 +9,7 @@ import { getCEFRColor } from "@/components/transcript-analysis/utils/cefrUtils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { RemoveStudentDialog } from "@/components/classroom/components/RemoveStudentDialog";
+import { useDemoMode } from "@/context/DemoContext";
 
 interface StudentMetrics {
   student_id: string;
@@ -40,6 +41,7 @@ interface StudentTestScoresProps {
 }
 
 const StudentTestScores = ({ teacherId, onDataUpdate }: StudentTestScoresProps) => {
+  const { isDemoMode, demoStudents } = useDemoMode();
   const [studentMetrics, setStudentMetrics] = useState<StudentMetrics[]>([]);
   const [classAverages, setClassAverages] = useState<ClassAverages | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -50,6 +52,44 @@ const StudentTestScores = ({ teacherId, onDataUpdate }: StudentTestScoresProps) 
   useEffect(() => {
     const fetchStudentData = async () => {
       setIsLoading(true);
+      
+      // Return demo student data if in demo mode
+      if (isDemoMode && demoStudents) {
+        setStudentMetrics(demoStudents);
+        
+        // Calculate demo class averages
+        const studentsWithScores = demoStudents.filter(s => s.overall_score !== null);
+        const studentsWithGrammar = demoStudents.filter(s => s.avg_grammar_accuracy !== null);
+        const studentsWithComplexity = demoStudents.filter(s => s.avg_conversation_complexity !== null);
+
+        const averages: ClassAverages = {
+          overall_score: studentsWithScores.length > 0
+            ? studentsWithScores.reduce((sum, s) => sum + (s.overall_score || 0), 0) / studentsWithScores.length
+            : null,
+          grammar_accuracy: studentsWithGrammar.length > 0
+            ? studentsWithGrammar.reduce((sum, s) => sum + (s.avg_grammar_accuracy || 0), 0) / studentsWithGrammar.length
+            : null,
+          conversation_complexity: studentsWithComplexity.length > 0
+            ? studentsWithComplexity.reduce((sum, s) => sum + (s.avg_conversation_complexity || 0), 0) / studentsWithComplexity.length
+            : null,
+          total_students: demoStudents.length,
+          students_with_scores: studentsWithScores.length
+        };
+
+        setClassAverages(averages);
+        setDebugInfo({ demoMode: true, teacherClasses: 1, totalEnrollments: demoStudents.length });
+        
+        if (onDataUpdate) {
+          onDataUpdate(
+            averages.overall_score ? Math.round(averages.overall_score) : null,
+            demoStudents.length
+          );
+        }
+        
+        setIsLoading(false);
+        return;
+      }
+      
       try {
         console.log('Fetching comprehensive student data for teacher:', teacherId);
 

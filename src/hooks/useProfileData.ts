@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { ExtendedUserProfile } from "@/types/school";
+import { useDemoMode } from "@/context/DemoContext";
 
 interface ProfileDataState {
   user: SupabaseUser | null;
@@ -13,6 +14,7 @@ interface ProfileDataState {
 }
 
 export const useProfileData = () => {
+  const { isDemoMode, demoTeacherProfile } = useDemoMode();
   const [state, setState] = useState<ProfileDataState>({
     user: null,
     profile: null,
@@ -24,6 +26,21 @@ export const useProfileData = () => {
   const fetchUserData = async (showLoadingState = true) => {
     if (showLoadingState) {
       setState(prev => ({ ...prev, isLoading: true }));
+    }
+    
+    // Return demo data if in demo mode
+    if (isDemoMode && demoTeacherProfile) {
+      setState({
+        user: {
+          id: demoTeacherProfile.id,
+          email: demoTeacherProfile.email,
+        } as SupabaseUser,
+        profile: demoTeacherProfile,
+        isLoading: false,
+        authError: false,
+        debugInfo: { demoMode: true }
+      });
+      return;
     }
     
     try {

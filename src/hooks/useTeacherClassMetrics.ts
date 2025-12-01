@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useDemoMode } from "@/context/DemoContext";
 
 interface ClassMetricsData {
   scoreProgression: Array<{ date: string; avgScore: number; count: number }>;
@@ -11,9 +12,16 @@ interface ClassMetricsData {
 }
 
 export const useTeacherClassMetrics = (teacherId: string | undefined) => {
+  const { isDemoMode, demoMetrics } = useDemoMode();
+  
   return useQuery({
-    queryKey: ['teacher-class-metrics', teacherId],
+    queryKey: ['teacher-class-metrics', teacherId, isDemoMode],
     queryFn: async (): Promise<ClassMetricsData> => {
+      // Return demo metrics if in demo mode
+      if (isDemoMode && demoMetrics) {
+        return demoMetrics;
+      }
+      
       if (!teacherId) {
         throw new Error('Teacher ID is required');
       }
