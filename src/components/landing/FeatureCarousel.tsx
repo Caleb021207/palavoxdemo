@@ -100,9 +100,9 @@ const FeatureCarousel = () => {
 
   const variants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 600 : -600,
+      x: direction > 0 ? 800 : -800,
       opacity: 0,
-      scale: 0.85
+      scale: 0.9
     }),
     center: {
       zIndex: 1,
@@ -112,9 +112,9 @@ const FeatureCarousel = () => {
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? 600 : -600,
+      x: direction < 0 ? 800 : -800,
       opacity: 0,
-      scale: 0.85
+      scale: 0.9
     })
   };
 
@@ -151,14 +151,19 @@ const FeatureCarousel = () => {
 
       {/* Floating orbs */}
       <motion.div
-        animate={{ y: [0, -20, 0], opacity: [0.3, 0.5, 0.3] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ y: [0, -30, 0], x: [0, 20, 0], opacity: [0.2, 0.4, 0.2] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-20 left-10 w-96 h-96 bg-primary/20 rounded-full blur-3xl"
       />
       <motion.div
-        animate={{ y: [0, 20, 0], opacity: [0.3, 0.5, 0.3] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        animate={{ y: [0, 30, 0], x: [0, -20, 0], opacity: [0.2, 0.4, 0.2] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         className="absolute bottom-20 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl"
+      />
+      <motion.div
+        animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.3, 0.15] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+        className="absolute top-1/2 left-1/3 w-[500px] h-[500px] bg-palavox-teal/15 rounded-full blur-3xl"
       />
 
       {/* Title */}
@@ -192,22 +197,30 @@ const FeatureCarousel = () => {
                 animate="center"
                 exit={isCenter ? "exit" : undefined}
                 transition={{
-                  x: { type: "spring", stiffness: 120, damping: 25 },
-                  opacity: { duration: 0.8, ease: "easeInOut" },
-                  scale: { duration: 0.8, ease: "easeInOut" }
+                  x: { duration: 1.2, ease: [0.25, 0.1, 0.25, 1] },
+                  opacity: { duration: 1, ease: "easeInOut" },
+                  scale: { duration: 1, ease: "easeOut" }
                 }}
                 style={{
                   position: 'absolute',
-                  x: offset * 400,
-                  scale: isCenter ? 1 : 0.7,
-                  opacity: isCenter ? 1 : 0.3,
+                  x: offset * 450,
+                  scale: isCenter ? 1 : 0.75,
+                  opacity: isCenter ? 1 : 0.25,
                   zIndex: isCenter ? 10 : 5 - Math.abs(offset),
-                  filter: isCenter ? 'none' : 'blur(2px)'
+                  filter: isCenter ? 'none' : 'blur(3px)'
                 }}
                 className={`w-[400px] cursor-pointer ${isCenter ? '' : 'pointer-events-none'}`}
                 onClick={() => isCenter && navigate(feature.route)}
               >
-                <div className={`bg-card border border-border rounded-3xl p-8 shadow-2xl hover:shadow-3xl transition-all ${isCenter ? 'hover:scale-105' : ''}`}>
+                <motion.div 
+                  className={`bg-card border border-border rounded-3xl p-8 shadow-2xl transition-shadow duration-500 ${isCenter ? '' : 'pointer-events-none'}`}
+                  animate={{
+                    boxShadow: isCenter 
+                      ? '0 25px 50px -12px rgba(0, 0, 0, 0.25)' 
+                      : '0 10px 25px -5px rgba(0, 0, 0, 0.1)'
+                  }}
+                  transition={{ duration: 0.6 }}
+                >
                   <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 mx-auto`}>
                     <Icon className="w-10 h-10 text-white" />
                   </div>
@@ -224,11 +237,11 @@ const FeatureCarousel = () => {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+                      transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
                       className="flex justify-center"
                     >
                       <Button
-                        className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white"
+                        className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white transition-all duration-300"
                         onClick={(e) => {
                           e.stopPropagation();
                           navigate(feature.route);
@@ -238,7 +251,7 @@ const FeatureCarousel = () => {
                       </Button>
                     </motion.div>
                   )}
-                </div>
+                </motion.div>
               </motion.div>
             );
           })}
@@ -273,10 +286,10 @@ const FeatureCarousel = () => {
               setDirection(index > currentIndex ? 1 : -1);
               setCurrentIndex(index);
             }}
-            className={`w-3 h-3 rounded-full transition-all ${
+            className={`h-3 rounded-full transition-all duration-500 ${
               index === currentIndex 
-                ? 'bg-primary w-8' 
-                : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                ? 'bg-primary w-12' 
+                : 'bg-muted-foreground/30 hover:bg-muted-foreground/50 w-3'
             }`}
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
