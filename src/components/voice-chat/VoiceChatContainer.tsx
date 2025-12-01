@@ -21,18 +21,6 @@ const VoiceChatContainer: React.FC<VoiceChatContainerProps> = ({
     t
   } = useLocalization();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const lastMessageCountRef = useRef(messages.length);
-
-  // Auto-play TTS for new assistant messages
-  useEffect(() => {
-    if (messages.length > lastMessageCountRef.current) {
-      const lastMessage = messages[messages.length - 1];
-      if (lastMessage.role === "assistant" && onPlayAudio) {
-        onPlayAudio(lastMessage.content);
-      }
-    }
-    lastMessageCountRef.current = messages.length;
-  }, [messages, onPlayAudio]);
 
   return <Card className="overflow-hidden mb-10">
       <ScrollArea className="h-[600px] p-8">
@@ -47,49 +35,26 @@ const VoiceChatContainer: React.FC<VoiceChatContainerProps> = ({
             {messages.map((message, index) => {
           // Filter out system messages or convert them to assistant messages
           if (message.role === "system") {
-            // Skip system messages or convert them to assistant messages
             return (
-              <div key={index} className="relative group">
-                <ChatMessage 
-                  role="assistant" 
-                  content={message.content} 
-                  translation={message.translation as TranslationType} 
-                  onPlayAudio={onPlayAudio}
-                  grammarCorrectionEnabled={message.grammarCorrectionEnabled}
-                />
-                {onPlayAudio && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={() => onPlayAudio(message.content)}
-                  >
-                    <Volume2 className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-            );
-          }
-          return (
-            <div key={index} className="relative group">
               <ChatMessage 
-                role={message.role as "user" | "assistant"} 
+                key={index}
+                role="assistant" 
                 content={message.content} 
                 translation={message.translation as TranslationType} 
                 onPlayAudio={onPlayAudio}
                 grammarCorrectionEnabled={message.grammarCorrectionEnabled}
               />
-              {message.role === "assistant" && onPlayAudio && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={() => onPlayAudio(message.content)}
-                >
-                  <Volume2 className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
+            );
+          }
+          return (
+            <ChatMessage 
+              key={index}
+              role={message.role as "user" | "assistant"} 
+              content={message.content} 
+              translation={message.translation as TranslationType} 
+              onPlayAudio={onPlayAudio}
+              grammarCorrectionEnabled={message.grammarCorrectionEnabled}
+            />
           );
         })}
             
