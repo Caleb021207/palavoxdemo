@@ -113,8 +113,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ role, content, translation, o
   const isContentSafe = isSafeContent(content);
   const isTranslationSafe = safeTranslation ? isSafeContent(safeTranslation) : true;
   
-  // Determine if translation should be shown
-  const showTranslation = 
+  // Determine if translation should be shown (always show for assistant in demo)
+  const showTranslation = role === "assistant" || 
     TRANSLATION_REQUIRED_LANGUAGES.includes(currentLanguage.toLowerCase()) || 
     (safeTranslation && safeTranslation.trim() !== "" && safeTranslation.trim() !== safeContent.trim()) ||
     !isContentSafe || !isTranslationSafe;

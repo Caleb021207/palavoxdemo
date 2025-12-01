@@ -23,6 +23,8 @@ export interface TranscriptDisplayProps {
   transcript: string;
   isListening: boolean;
   isTranscribing?: boolean;
+  onSend?: (text: string) => void;
+  onTranscriptChange?: (text: string) => void;
 }
 
 export interface ListeningIndicatorProps {

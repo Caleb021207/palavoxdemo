@@ -25,12 +25,21 @@ const VoiceChat = () => {
   
   const { speakWithAzureTTS, isSpeaking } = useVoiceTTS({ practiceLanguage: "english" });
   
-  const { isListening, isTranscribing, transcript, toggleListening, handleSendTranscript } = useVoiceSpeechRecognition({
+  const { isListening, isTranscribing, transcript, toggleListening, handleSendTranscript, clearTranscript, updateTranscript } = useVoiceSpeechRecognition({
     targetLanguage: "english",
-    onSendTranscript: (text) => sendMessage(text, speakWithAzureTTS),
+    onTranscriptChange: (text) => {
+      // Just update local state, don't auto-send
+    },
     useWhisper: true,
     multilingualMode: true
   });
+
+  const handleManualSend = (text: string) => {
+    if (text.trim()) {
+      sendMessage(text, speakWithAzureTTS);
+      clearTranscript();
+    }
+  };
   
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -115,6 +124,8 @@ const VoiceChat = () => {
                     transcript={transcript} 
                     isListening={isListening}
                     isTranscribing={isTranscribing}
+                    onSend={handleManualSend}
+                    onTranscriptChange={updateTranscript}
                   />
 
                   {(conversationHistory.length > 0 || isLoading) && (

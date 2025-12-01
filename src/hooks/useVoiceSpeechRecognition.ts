@@ -66,9 +66,7 @@ export const useVoiceSpeechRecognition = ({
             setTranscript(transcribedText);
             onTranscriptChange?.(transcribedText);
             
-            if (transcribedText.trim()) {
-              onSendTranscript?.(transcribedText);
-            }
+            // Don't auto-send - let user review and manually send
           } catch (error) {
             console.error("Transcription error:", error);
             toast.error("Failed to transcribe audio");
@@ -95,6 +93,10 @@ export const useVoiceSpeechRecognition = ({
     setTranscript("");
   }, []);
 
+  const updateTranscript = useCallback((text: string) => {
+    setTranscript(text);
+  }, []);
+
   return {
     isListening,
     isInitializing: false,
@@ -102,7 +104,8 @@ export const useVoiceSpeechRecognition = ({
     transcript,
     toggleListening,
     handleSendTranscript,
-    clearTranscript
+    clearTranscript,
+    updateTranscript
   };
 };
 
