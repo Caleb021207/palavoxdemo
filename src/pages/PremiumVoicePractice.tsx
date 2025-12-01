@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { InteractiveCard } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mic, MicOff, Sparkles } from "lucide-react";
+import { Mic, Volume2, Sparkles, Headphones, Trophy, RefreshCw, Target, Clock, Zap, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { RealtimeChat } from "@/utils/RealtimeAudioManager";
 import { useUsageLimits } from "@/hooks/useUsageLimits";
@@ -11,8 +11,8 @@ import { getLanguagePair } from "@/utils/languageUtils";
 import { useGamification } from "@/hooks/useGamification";
 import LevelUpModal from "@/components/gamification/LevelUpModal";
 import { motion } from "framer-motion";
-import { GradientBlob } from "@/components/ui/decorative-elements";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const PremiumVoicePractice = () => {
   const { t, currentLanguage } = useLocalization();
@@ -22,7 +22,6 @@ const PremiumVoicePractice = () => {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [isStarting, setIsStarting] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [provider, setProvider] = useState<'gpt' | 'gemini'>('gpt');
   const [selectedMode, setSelectedMode] = useState<'gpt' | 'custom'>('gpt');
   const chatRef = useRef<RealtimeChat | null>(null);
   const timerRef = useRef<number | null>(null);
@@ -37,24 +36,17 @@ const PremiumVoicePractice = () => {
   
   const { premiumVoiceMinutesRemaining, checkCanStartPremiumVoiceSession, trackPremiumVoiceSession } = useUsageLimits();
   const { awardXP, showLevelUpModal, setShowLevelUpModal, levelUpData, progression } = useGamification();
-  const sessionStartTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
     return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-      if (customTimerRef.current) {
-        clearInterval(customTimerRef.current);
-      }
+      if (timerRef.current) clearInterval(timerRef.current);
+      if (customTimerRef.current) clearInterval(customTimerRef.current);
       chatRef.current?.disconnect();
       customChatRef.current?.disconnect();
     };
   }, []);
 
   const handleMessage = (event: any) => {
-    console.log('Received message:', event);
-    
     if (event.type === 'time_warning') {
       toast({
         title: t('timeWarning'),
@@ -75,14 +67,9 @@ const PremiumVoicePractice = () => {
   };
 
   const startConversation = async (selectedProvider: 'gpt' | 'gemini') => {
-    // Prevent concurrent calls - check both session states
-    if (isStarting || isConnected || customSessionId) {
-      console.log('Already starting or another session is active, ignoring request');
-      return;
-    }
+    if (isStarting || isConnected || customSessionId) return;
 
     setIsStarting(true);
-    setProvider(selectedProvider);
     try {
       const canStart = await checkCanStartPremiumVoiceSession() as any;
       if (!canStart?.allowed) {
@@ -98,7 +85,6 @@ const PremiumVoicePractice = () => {
       chatRef.current = new RealtimeChat(handleMessage, setIsSpeaking, selectedProvider);
       await chatRef.current.init();
       
-      // Generate and store session ID
       const newSessionId = crypto.randomUUID();
       setSessionId(newSessionId);
       
@@ -127,11 +113,7 @@ const PremiumVoicePractice = () => {
   };
 
   const startCustomSession = async () => {
-    // Prevent concurrent calls - check both session states
-    if (isStarting || customSessionId || isConnected) {
-      console.log('Custom session already starting or another session is active');
-      return;
-    }
+    if (isStarting || customSessionId || isConnected) return;
 
     setIsStarting(true);
     try {
@@ -142,7 +124,7 @@ const PremiumVoicePractice = () => {
         'english',
         native.toLowerCase(),
         currentLanguage,
-        'intermediate', // Default to intermediate level
+        'intermediate',
         (state) => setCustomState(state),
         (message) => {
           setCustomMessages(prev => [...prev, message]);
@@ -158,8 +140,6 @@ const PremiumVoicePractice = () => {
 
       await manager.initialize();
       customChatRef.current = manager;
-
-      // Clear conversation history for fresh session
       manager.clearHistory();
 
       const newSessionId = crypto.randomUUID();
@@ -170,7 +150,6 @@ const PremiumVoicePractice = () => {
         setCustomElapsedSeconds(prev => prev + 1);
       }, 1000);
 
-      // Start first listening session
       await manager.startListening();
 
       toast({
@@ -197,9 +176,7 @@ const PremiumVoicePractice = () => {
     }
 
     const minutesUsed = Math.ceil(customElapsedSeconds / 60);
-    console.log('Ending custom realtime session:', { customElapsedSeconds, minutesUsed, customSessionId });
 
-    // Award XP for custom realtime session
     if (minutesUsed > 0 && customMessages.length > 0) {
       await awardXP('realtime_ai');
     }
@@ -242,20 +219,15 @@ const PremiumVoicePractice = () => {
     }
 
     const minutesUsed = Math.ceil(elapsedSeconds / 60);
-    console.log('Ending premium voice conversation:', { elapsedSeconds, minutesUsed, sessionId });
     
-    // Award XP for completing voice session
     if (minutesUsed > 0) {
       await awardXP('premium_voice');
     }
     
-    // Track usage with fallback mechanisms
     if (chatRef.current && minutesUsed > 0 && sessionId) {
-      // Primary: Client-side tracking
       trackPremiumVoiceSession(sessionId, minutesUsed).catch(async (error) => {
         console.error('❌ Client-side tracking failed:', error);
         
-        // Fallback 1: Server-side tracking via edge function
         try {
           const { data: { session } } = await supabase.auth.getSession();
           if (!session) throw new Error('No session');
@@ -273,11 +245,9 @@ const PremiumVoicePractice = () => {
           );
           
           if (!response.ok) throw new Error('Server tracking failed');
-          console.log('✅ Session tracked via server fallback');
         } catch (serverError) {
           console.error('❌ Server fallback failed:', serverError);
           
-          // Fallback 2: sendBeacon for best-effort tracking
           try {
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
@@ -290,7 +260,6 @@ const PremiumVoicePractice = () => {
                 `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/track-premium-voice-session`,
                 beaconData
               );
-              console.log('📡 Beacon sent as last resort');
             }
           } catch (beaconError) {
             console.error('❌ Beacon also failed:', beaconError);
@@ -327,306 +296,306 @@ const PremiumVoicePractice = () => {
 
   const minutesRemaining = premiumVoiceMinutesRemaining - Math.ceil(elapsedSeconds / 60);
 
-  // Auto-end session when time runs out
   useEffect(() => {
     if (isConnected && minutesRemaining <= 0) {
-      console.log('Time limit reached, auto-ending session');
       endConversation();
     }
   }, [minutesRemaining, isConnected]);
 
-  // Helper function to determine language support
-  const getLanguageSupport = (lang: string) => {
-    const gptOptimalLanguages = ['en', 'es', 'fr', 'de', 'it', 'ja', 'ko', 'zh', 'yue', 'ru', 'ar', 'hi', 'tr', 'pl', 'pt', 'nl'];
-    
-    return {
-      gptSupported: gptOptimalLanguages.includes(lang),
-      customSupported: true, // Custom AI supports all platform languages
-      recommendGpt: gptOptimalLanguages.includes(lang),
-      recommendCustom: !gptOptimalLanguages.includes(lang)
-    };
-  };
-
-  const languageSupport = getLanguageSupport(currentLanguage);
+  const isSessionActive = isConnected || customSessionId !== null;
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10">
-      <GradientBlob className="top-20 left-10" />
-      <GradientBlob className="bottom-20 right-10" colors="from-palavox-teal to-palavox-accent" />
+    <>
+      {levelUpData && (
+        <LevelUpModal
+          open={showLevelUpModal}
+          onClose={() => setShowLevelUpModal(false)}
+          oldLevel={levelUpData.oldLevel}
+          newLevel={levelUpData.newLevel}
+          totalXP={progression?.total_xp || 0}
+        />
+      )}
       
-      <div className="max-w-4xl mx-auto p-4 relative">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-10 text-center"
-        >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-primary" />
-            <h1 className="text-4xl md:text-5xl font-bold gradient-text">{t('premiumVoicePractice')}</h1>
-          </div>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-6">
-            {t('practiceConversationalEnglish')}
-          </p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full shadow-lg">
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">
-              {t('minutesRemainingThisMonth', { minutes: String(premiumVoiceMinutesRemaining) })}
-            </span>
-          </div>
-          <div className="mt-4 text-sm text-muted-foreground max-w-2xl mx-auto">
-            {t('premiumVoiceInstructions')}
-          </div>
-        </motion.div>
-
-        {/* Mode selector */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-          className="mb-8 max-w-md mx-auto"
-        >
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-muted-foreground">
-              Select Practice Mode
-            </label>
-            <Select 
-              value={selectedMode} 
-              onValueChange={(value: 'gpt' | 'custom') => {
-                if (!isConnected && !customSessionId) {
-                  setSelectedMode(value);
-                }
-              }}
-              disabled={isConnected || customSessionId !== null}
-            >
-              <SelectTrigger className="w-full h-14 text-lg border-2 hover:border-primary/50 transition-colors">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="z-50 bg-popover">
-                <SelectItem value="gpt" className="text-lg py-3">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-primary" />
-                    Palavox Advanced Voice
-                  </div>
-                </SelectItem>
-                <SelectItem value="custom" className="text-lg py-3">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-accent" />
-                    Palavox Custom AI
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </motion.div>
-
-        {/* Language support information */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.15 }}
-          className="mb-8"
-        >
-          <InteractiveCard className="overflow-hidden border-primary/30 shadow-2xl bg-gradient-to-br from-card/50 via-card to-card/50">
-            <div className={`p-6 space-y-3 ${selectedMode === 'gpt' ? 'bg-gradient-to-br from-primary/10 via-primary/5 to-transparent' : 'bg-gradient-to-br from-accent/10 via-accent/5 to-transparent'}`}>
-              <h4 className="font-semibold text-lg flex items-center gap-2">
-                <Sparkles className={`w-5 h-5 ${selectedMode === 'gpt' ? 'text-primary' : 'text-accent'}`} />
-                {selectedMode === 'gpt' ? 'Palavox Advanced Voice' : 'Palavox Custom AI'}
-              </h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {selectedMode === 'gpt' ? t('gptLanguageSupport') : t('customLanguageSupport')}
-              </p>
-              {selectedMode === 'custom' && (
-                <p className="text-sm text-muted-foreground max-w-md">
-                  {t('customRealtimeDisclaimer')}
-                </p>
-              )}
+      <div className="relative min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10 overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 opacity-30 pointer-events-none">
+          <div className="absolute top-20 left-10 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-palavox-teal/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        </div>
+        
+        <div className="max-w-4xl mx-auto p-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            <div className="mb-8 text-center">
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5, ease: "backOut" }}
+                className="inline-flex items-center justify-center gap-3 mb-4"
+              >
+                <div className="p-3 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl backdrop-blur-sm border border-primary/20">
+                  <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-primary" />
+                </div>
+              </motion.div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">
+                {t('premiumVoicePractice')}
+              </h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-xl md:text-2xl text-muted-foreground"
+              >
+                {t('practiceConversationalEnglish')}
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full border border-primary/20"
+              >
+                <Clock className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium">
+                  {t('minutesRemainingThisMonth', { minutes: String(premiumVoiceMinutesRemaining) })}
+                </span>
+              </motion.div>
             </div>
-          </InteractiveCard>
-        </motion.div>
+          </motion.div>
 
-        {/* Single session interface based on selected mode */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="max-w-2xl mx-auto"
-        >
-          <motion.div whileHover={{ scale: 1.02, y: -5 }} transition={{ duration: 0.3 }}>
-            {selectedMode === 'gpt' ? (
-              <InteractiveCard className="p-8 glass border-primary/30 hover:border-primary/50 transition-all shadow-xl overflow-hidden bg-gradient-to-br from-card/50 via-card to-card/50">
-                <div className="flex flex-col items-center gap-6">
-                  <div className="text-center space-y-1">
-                    <h3 className="text-2xl font-bold gradient-text">Palavox Advanced Voice</h3>
-                    <p className="text-sm text-muted-foreground">{t('openaiLatestVoiceModel')}</p>
-                  </div>
+          {!isSessionActive ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, staggerChildren: 0.1 }}
+              className="grid gap-6 md:grid-cols-2"
+            >
+              {/* Mode Selector Card */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+                whileHover={{ scale: 1.02 }}
+                className="h-full"
+              >
+                <Card className="glass border-primary/20 h-full bg-gradient-to-br from-primary/5 via-transparent to-accent/5 hover:border-primary/40 transition-all">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none opacity-0 hover:opacity-100 transition-opacity" />
+                  <CardHeader className="relative z-10">
+                    <CardTitle className="flex items-center gap-2">
+                      <Target className="h-5 w-5 text-primary" />
+                      {t("selectComplexityLevel")}
+                    </CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                      Choose your practice mode
+                    </p>
+                  </CardHeader>
+                  <CardContent className="space-y-6 relative z-10">
+                    <RadioGroup value={selectedMode} onValueChange={(value: 'gpt' | 'custom') => setSelectedMode(value)}>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        className="flex items-center space-x-3 p-4 rounded-lg border-2 border-primary/20 hover:border-primary/40 transition-all cursor-pointer bg-gradient-to-r from-primary/5 to-transparent"
+                        onClick={() => setSelectedMode('gpt')}
+                      >
+                        <RadioGroupItem value="gpt" id="gpt" />
+                        <Label htmlFor="gpt" className="flex-1 cursor-pointer">
+                          <div className="flex items-center gap-2">
+                            <Sparkles className="w-5 h-5 text-primary" />
+                            <span className="font-semibold">Palavox Advanced Voice</span>
+                          </div>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {t('openaiLatestVoiceModel')}
+                          </p>
+                        </Label>
+                      </motion.div>
 
-                  {isConnected && provider === 'gpt' && (
-                    <motion.div 
-                      className="text-center"
-                      initial={{ scale: 0.9, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                    >
-                      <div className="text-4xl font-bold text-primary mb-2">
-                        {formatTime(elapsedSeconds)}
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {t('minutesLeft', { minutes: String(minutesRemaining) })}
-                      </div>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        className="flex items-center space-x-3 p-4 rounded-lg border-2 border-accent/20 hover:border-accent/40 transition-all cursor-pointer bg-gradient-to-r from-accent/5 to-transparent"
+                        onClick={() => setSelectedMode('custom')}
+                      >
+                        <RadioGroupItem value="custom" id="custom" />
+                        <Label htmlFor="custom" className="flex-1 cursor-pointer">
+                          <div className="flex items-center gap-2">
+                            <Zap className="w-5 h-5 text-accent" />
+                            <span className="font-semibold">Palavox Custom AI</span>
+                          </div>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            Multilingual support
+                          </p>
+                        </Label>
+                      </motion.div>
+                    </RadioGroup>
+
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <Button 
+                        onClick={() => selectedMode === 'gpt' ? startConversation('gpt') : startCustomSession()}
+                        disabled={isStarting}
+                        className="w-full py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
+                      >
+                        {isStarting ? (
+                          <span className="flex items-center gap-2">
+                            <RefreshCw className="h-5 w-5 animate-spin" />
+                            {t("connecting")}
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-2">
+                            {selectedMode === 'gpt' ? t('startGptSession') : t('startCustomSession')}
+                            <ChevronRight className="h-5 w-5" />
+                          </span>
+                        )}
+                      </Button>
                     </motion.div>
-                  )}
 
-                  <motion.div 
-                    className={`relative ${isSpeaking && provider === 'gpt' ? 'animate-pulse' : ''}`}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <div className="w-28 h-28 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center shadow-lg">
-                      {isConnected && provider === 'gpt' ? (
-                        <MicOff className="w-14 h-14 text-primary" />
-                      ) : (
-                        <Mic className="w-14 h-14 text-primary" />
+                    {/* Language Support Info */}
+                    <div className="p-4 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl border border-blue-500/20">
+                      <p className="text-sm text-muted-foreground">
+                        {selectedMode === 'gpt' ? t('gptLanguageSupport') : t('customLanguageSupport')}
+                      </p>
+                      {selectedMode === 'custom' && (
+                        <p className="text-xs text-muted-foreground mt-2">
+                          {t('customRealtimeDisclaimer')}
+                        </p>
                       )}
                     </div>
-                    {isSpeaking && provider === 'gpt' && (
-                      <div className="absolute inset-0 rounded-full bg-primary/30 animate-ping" />
-                    )}
-                  </motion.div>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-                  {!isConnected || provider !== 'gpt' ? (
-                    <Button 
-                      onClick={() => startConversation('gpt')}
-                      size="lg"
-                      className="px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all"
-                      disabled={isStarting || (isConnected && provider !== 'gpt') || premiumVoiceMinutesRemaining <= 0}
+              {/* Tips Card */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+                whileHover={{ scale: 1.02 }}
+                className="h-full"
+              >
+                <Card className="glass border-primary/20 h-full bg-gradient-to-br from-green-500/5 via-transparent to-emerald-500/5 hover:border-green-500/40 transition-all">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent pointer-events-none opacity-0 hover:opacity-100 transition-opacity" />
+                  <CardHeader className="relative z-10">
+                    <CardTitle className="flex items-center gap-2">
+                      <Headphones className="h-5 w-5 text-green-600" />
+                      Practice Tips
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="relative z-10">
+                    <ul className="space-y-4">
+                      {[
+                        { icon: Mic, text: "Speak clearly and naturally" },
+                        { icon: Volume2, text: "Practice in a quiet environment" },
+                        { icon: RefreshCw, text: "Don't be afraid to make mistakes" },
+                        { icon: Trophy, text: "Consistent practice improves fluency" },
+                        { icon: Sparkles, text: "The AI adapts to your level" }
+                      ].map((tip, idx) => (
+                        <motion.li
+                          key={idx}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.6 + idx * 0.1 }}
+                          className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-green-500/10 to-transparent hover:from-green-500/20 transition-all group"
+                        >
+                          <tip.icon className="h-5 w-5 text-green-600 group-hover:scale-110 transition-transform flex-shrink-0 mt-0.5" />
+                          <span className="text-sm flex-1">{tip.text}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <Card className="glass border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-50 pointer-events-none" />
+                
+                <CardHeader className="relative z-10">
+                  <CardTitle className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="h-5 w-5 text-primary" />
+                      <span className="text-lg">
+                        {isConnected ? 'Palavox Advanced Voice' : 'Palavox Custom AI'}
+                      </span>
+                    </div>
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="text-sm font-medium px-4 py-2 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 backdrop-blur-sm flex items-center gap-2"
                     >
-                      {isStarting && provider === 'gpt' ? t('connecting') : t('startGptSession')}
-                    </Button>
-                  ) : (
+                      <Clock className="h-4 w-4" />
+                      {formatTime(isConnected ? elapsedSeconds : customElapsedSeconds)}
+                    </motion.span>
+                  </CardTitle>
+                </CardHeader>
+                
+                <CardContent className="space-y-6 relative z-10">
+                  {/* Status Indicator */}
+                  <div className="flex items-center justify-center gap-3 p-6 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl border border-primary/20">
+                    <motion.div
+                      animate={{
+                        scale: (isConnected && isSpeaking) || (customSessionId && customState === 'speaking') ? [1, 1.2, 1] : 1,
+                      }}
+                      transition={{ repeat: (isConnected && isSpeaking) || (customSessionId && customState === 'speaking') ? Infinity : 0, duration: 1 }}
+                      className={`w-3 h-3 rounded-full ${
+                        (isConnected && isSpeaking) || (customSessionId && customState === 'speaking')
+                          ? 'bg-green-500'
+                          : 'bg-blue-500'
+                      }`}
+                    />
+                    <span className="text-lg font-medium">
+                      {isConnected && (isSpeaking ? t('stateSpeaking') : t('stateListening'))}
+                      {customSessionId && (
+                        customState === 'listening' ? t('stateListening') :
+                        customState === 'processing' ? t('stateProcessing') :
+                        customState === 'speaking' ? t('stateSpeaking') :
+                        t('stateIdle')
+                      )}
+                    </span>
+                  </div>
+
+                  {/* Conversation Display */}
+                  {customMessages.length > 0 && (
+                    <div className="max-h-60 overflow-y-auto space-y-3 p-4 bg-gradient-to-br from-card/50 to-transparent rounded-xl border border-primary/10">
+                      {customMessages.map((msg, idx) => (
+                        <div
+                          key={idx}
+                          className={`p-3 rounded-lg ${
+                            msg.role === 'user'
+                              ? 'bg-primary/10 ml-8'
+                              : 'bg-accent/10 mr-8'
+                          }`}
+                        >
+                          <p className="text-sm font-medium mb-1">
+                            {msg.role === 'user' ? t('you') : t('aiTutor')}
+                          </p>
+                          <p className="text-sm">{msg.content}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* End Session Button */}
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <Button 
-                      onClick={endConversation}
-                      size="lg"
-                      variant="secondary"
-                      className="px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all"
-                      disabled={minutesRemaining <= 0}
+                      onClick={isConnected ? endConversation : endCustomSession}
+                      variant="destructive"
+                      className="w-full py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
                     >
                       {t('endSession')}
                     </Button>
-                  )}
-                </div>
-              </InteractiveCard>
-            ) : (
-              <InteractiveCard className="p-8 glass border-accent/30 hover:border-accent/50 transition-all shadow-xl overflow-hidden bg-gradient-to-br from-card/50 via-card to-card/50">
-                <div className="flex flex-col items-center gap-6">
-                  <div className="text-center space-y-2">
-                    <h3 className="text-2xl font-bold gradient-text">Palavox Custom AI</h3>
-                    <motion.div
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-accent/10 to-primary/10 border border-accent/30"
-                      whileHover={{ scale: 1.05 }}
-                    >
-                      <Sparkles className="w-4 h-4 text-accent" />
-                      <span className="text-sm font-semibold text-foreground">
-                        {t('multilingualSupport')}
-                      </span>
-                    </motion.div>
-                  </div>
-
-                  {customSessionId && (
-                    <motion.div 
-                      className="text-center"
-                      initial={{ scale: 0.9, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                    >
-                      <div className="text-4xl font-bold text-accent mb-2">
-                        {formatTime(customElapsedSeconds)}
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {customMessages.length / 2} {t('exchanges')}
-                      </div>
-                      <div className="text-xs text-accent mt-2 font-medium">
-                        {t(`state${customState.charAt(0).toUpperCase() + customState.slice(1)}` as any)}
-                      </div>
-                    </motion.div>
-                  )}
-
-                  <motion.div 
-                    className={`relative ${customState === 'listening' ? 'animate-pulse' : ''}`}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <div className={`w-28 h-28 rounded-full flex items-center justify-center shadow-lg ${
-                      customState === 'listening' ? 'bg-gradient-to-br from-accent/30 to-accent/10' :
-                      customState === 'processing' ? 'bg-gradient-to-br from-primary/30 to-primary/10' :
-                      customState === 'speaking' ? 'bg-gradient-to-br from-green-500/30 to-green-500/10' :
-                      'bg-gradient-to-br from-primary/30 to-primary/10'
-                    }`}>
-                      {customSessionId ? (
-                        <MicOff className={`w-14 h-14 ${
-                          customState === 'listening' ? 'text-accent' :
-                          customState === 'processing' ? 'text-primary' :
-                          customState === 'speaking' ? 'text-green-500' :
-                          'text-primary'
-                        }`} />
-                      ) : (
-                        <Mic className="w-14 h-14 text-accent" />
-                      )}
-                    </div>
-                    {customState === 'listening' && (
-                      <div className="absolute inset-0 rounded-full bg-accent/30 animate-ping" />
-                    )}
                   </motion.div>
-
-                  {!customSessionId ? (
-                    <Button 
-                      onClick={startCustomSession}
-                      size="lg"
-                      className="px-10 py-6 text-lg bg-gradient-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 shadow-lg hover:shadow-xl transition-all"
-                      disabled={isStarting}
-                    >
-                      {isStarting ? t('connecting') : t('startCustomSession')}
-                    </Button>
-                  ) : (
-                    <div className="flex flex-col gap-3 w-full">
-                      <Button 
-                        onClick={endCustomSession}
-                        size="lg"
-                        variant="secondary"
-                        className="px-10 py-6 text-lg shadow-lg hover:shadow-xl transition-all"
-                      >
-                        End Session
-                      </Button>
-                      {customState === 'idle' && (
-                        <Button 
-                          onClick={async () => {
-                            if (customChatRef.current) {
-                              await customChatRef.current.startListening();
-                            }
-                          }}
-                          size="sm"
-                          variant="outline"
-                          className="px-6 hover:bg-accent/10 transition-all"
-                        >
-                          Continue Speaking
-                        </Button>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </InteractiveCard>
-            )}
-          </motion.div>
-        </motion.div>
-
-        {showLevelUpModal && levelUpData && (
-          <LevelUpModal
-            open={showLevelUpModal}
-            onClose={() => setShowLevelUpModal(false)}
-            oldLevel={levelUpData.oldLevel}
-            newLevel={levelUpData.newLevel}
-            totalXP={progression?.total_xp || 0}
-          />
-        )}
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
