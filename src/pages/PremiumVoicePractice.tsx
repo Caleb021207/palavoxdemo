@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Mic, Volume2, Sparkles, Headphones, Trophy, RefreshCw, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { RealtimeChat } from "@/utils/RealtimeAudioManager";
-import { useUsageLimits } from "@/hooks/useUsageLimits";
 import { useLocalization } from "@/context/LocalizationContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useGamification } from "@/hooks/useGamification";
@@ -22,7 +21,6 @@ const PremiumVoicePractice = () => {
   const chatRef = useRef<RealtimeChat | null>(null);
   const timerRef = useRef<number | null>(null);
   
-  const { premiumVoiceMinutesRemaining, checkCanStartPremiumVoiceSession, trackPremiumVoiceSession } = useUsageLimits();
   const { awardXP, showLevelUpModal, setShowLevelUpModal, levelUpData, progression } = useGamification();
 
   useEffect(() => {
@@ -57,17 +55,6 @@ const PremiumVoicePractice = () => {
 
     setIsStarting(true);
     try {
-      const canStart = await checkCanStartPremiumVoiceSession() as any;
-      if (!canStart?.allowed) {
-        toast({
-          title: t('limitReached'),
-          description: t('monthlyLimitMessage', { minutes: String(canStart?.minutes_limit || 15) }),
-          variant: "destructive",
-        });
-        setIsStarting(false);
-        return;
-      }
-
       chatRef.current = new RealtimeChat(handleMessage, setIsSpeaking, 'gpt');
       await chatRef.current.init();
       
@@ -111,53 +98,21 @@ const PremiumVoicePractice = () => {
     }
     
     if (chatRef.current && minutesUsed > 0 && sessionId) {
-      trackPremiumVoiceSession(sessionId, minutesUsed).catch(async (error) => {
-        console.error('❌ Client-side tracking failed:', error);
-        
-        try {
-          const { data: { session } } = await supabase.auth.getSession();
-          if (!session) throw new Error('No session');
-          
-          const response = await fetch(
-            `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/track-premium-voice-session`,
-            {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${session.access_token}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ session_id: sessionId, minutes_used: minutesUsed })
-            }
-          );
-          
-          if (!response.ok) throw new Error('Server tracking failed');
-        } catch (serverError) {
-          console.error('❌ Server fallback failed:', serverError);
-          
-          try {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-              const beaconData = new Blob(
-                [JSON.stringify({ session_id: sessionId, minutes_used: minutesUsed })],
-                { type: 'application/json' }
-              );
-              
-              navigator.sendBeacon(
-                `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/track-premium-voice-session`,
-                beaconData
-              );
-            }
-          } catch (beaconError) {
-            console.error('❌ Beacon also failed:', beaconError);
-          }
-          
-          toast({
-            title: t('error'),
-            description: 'Failed to save session. Will retry automatically.',
-            variant: "destructive",
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user?.id) {
+          await supabase.from('usage_tracking').insert({
+            student_id: user.id,
+            session_type: 'premium_voice_practice',
+            session_id: sessionId,
+            started_at: new Date(Date.now() - elapsedSeconds * 1000).toISOString(),
+            ended_at: new Date().toISOString(),
+            minutes_used: minutesUsed,
           });
         }
-      });
+      } catch (error) {
+        console.error('Error tracking usage:', error);
+      }
     }
     
     chatRef.current?.disconnect();
@@ -179,14 +134,6 @@ const PremiumVoicePractice = () => {
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
-
-  const minutesRemaining = premiumVoiceMinutesRemaining - Math.ceil(elapsedSeconds / 60);
-
-  useEffect(() => {
-    if (isConnected && minutesRemaining <= 0) {
-      endConversation();
-    }
-  }, [minutesRemaining, isConnected]);
 
   return (
     <>
@@ -236,17 +183,6 @@ const PremiumVoicePractice = () => {
               >
                 {t('practiceConversationalEnglish')}
               </motion.p>
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full border border-primary/20"
-              >
-                <Clock className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium">
-                  {t('minutesRemainingThisMonth', { minutes: String(premiumVoiceMinutesRemaining) })}
-                </span>
-              </motion.div>
             </div>
           </motion.div>
 
@@ -283,21 +219,39 @@ const PremiumVoicePractice = () => {
                       </p>
                     </div>
 
-                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                    <motion.div 
+                      whileHover={{ scale: 1.02 }} 
+                      whileTap={{ scale: 0.98 }}
+                      className="relative"
+                    >
                       <Button 
                         onClick={startConversation}
                         disabled={isStarting}
-                        className="w-full py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
+                        className="w-full py-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-all relative overflow-hidden group"
                       >
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                         {isStarting ? (
-                          <span className="flex items-center gap-2">
+                          <span className="flex items-center gap-3 relative z-10">
                             <RefreshCw className="h-5 w-5 animate-spin" />
                             {t("connecting")}
                           </span>
                         ) : (
-                          <span className="flex items-center gap-2">
-                            <Mic className="h-5 w-5" />
-                            {t('startExercise')}
+                          <span className="flex items-center gap-3 relative z-10">
+                            <motion.div
+                              animate={{
+                                scale: [1, 1.2, 1],
+                              }}
+                              transition={{
+                                duration: 2,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                              }}
+                              className="relative"
+                            >
+                              <div className="absolute inset-0 bg-primary/30 rounded-full blur-md animate-pulse" />
+                              <Mic className="h-6 w-6 relative z-10" />
+                            </motion.div>
+                            <span>{t('startExercise')}</span>
                           </span>
                         )}
                       </Button>
@@ -374,20 +328,42 @@ const PremiumVoicePractice = () => {
                 </CardHeader>
                 
                 <CardContent className="space-y-6 relative z-10">
-                  {/* Status Indicator */}
-                  <div className="flex items-center justify-center gap-3 p-6 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl border border-primary/20">
+                  {/* Status Indicator with Mic Animation */}
+                  <div className="flex flex-col items-center justify-center gap-6 p-8 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl border border-primary/20">
                     <motion.div
                       animate={{
-                        scale: isSpeaking ? [1, 1.2, 1] : 1,
+                        scale: isSpeaking ? [1, 1.1, 1] : 1,
                       }}
-                      transition={{ repeat: isSpeaking ? Infinity : 0, duration: 1 }}
-                      className={`w-3 h-3 rounded-full ${
-                        isSpeaking ? 'bg-green-500' : 'bg-blue-500'
-                      }`}
-                    />
-                    <span className="text-lg font-medium">
-                      {isSpeaking ? t('stateSpeaking') : t('stateListening')}
-                    </span>
+                      transition={{ repeat: isSpeaking ? Infinity : 0, duration: 1.5 }}
+                      className="relative"
+                    >
+                      <motion.div
+                        animate={{
+                          scale: isSpeaking ? [1, 1.5, 1] : 1,
+                          opacity: isSpeaking ? [0.5, 0, 0.5] : 0.3,
+                        }}
+                        transition={{ repeat: isSpeaking ? Infinity : 0, duration: 1.5 }}
+                        className={`absolute inset-0 rounded-full ${
+                          isSpeaking ? 'bg-green-500' : 'bg-blue-500'
+                        } blur-xl -z-10`}
+                        style={{ transform: 'scale(2)' }}
+                      />
+                      <div className={`p-6 rounded-full ${
+                        isSpeaking ? 'bg-green-500/20 border-green-500/40' : 'bg-blue-500/20 border-blue-500/40'
+                      } border-2`}>
+                        <Mic className={`h-12 w-12 ${
+                          isSpeaking ? 'text-green-500' : 'text-blue-500'
+                        }`} />
+                      </div>
+                    </motion.div>
+                    <div className="text-center">
+                      <span className="text-xl font-medium block mb-1">
+                        {isSpeaking ? t('stateSpeaking') : t('stateListening')}
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        {isSpeaking ? 'AI is responding...' : 'Speak naturally'}
+                      </span>
+                    </div>
                   </div>
 
                   {/* End Session Button */}
