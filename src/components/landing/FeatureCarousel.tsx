@@ -156,9 +156,9 @@ const FeatureCarousel = () => {
       <div className="relative w-full max-w-6xl h-[500px] flex items-center justify-center overflow-hidden">
         {/* Sliding Track */}
         <motion.div
-          className="flex gap-12 absolute left-1/2"
+          className="flex gap-12 absolute"
           animate={{
-            x: -currentIndex * CARD_TOTAL_WIDTH
+            x: `calc(50% - ${CARD_WIDTH / 2}px - ${currentIndex * CARD_TOTAL_WIDTH}px)`
           }}
           transition={{
             type: "spring",
@@ -167,8 +167,7 @@ const FeatureCarousel = () => {
             mass: 0.8
           }}
           style={{
-            willChange: 'transform',
-            transform: 'translateX(-50%)'
+            willChange: 'transform'
           }}
         >
           {features.map((feature, index) => {
