@@ -90,34 +90,31 @@ const FeatureCarousel = () => {
     });
   };
 
-  // Auto-advance every 5 seconds
+  // Auto-advance every 8 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       paginate(1);
-    }, 5000);
+    }, 8000);
     return () => clearInterval(timer);
   }, [currentIndex]);
 
   const variants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
+      x: direction > 0 ? 600 : -600,
       opacity: 0,
-      scale: 0.8,
-      rotateY: direction > 0 ? 45 : -45
+      scale: 0.85
     }),
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1,
-      scale: 1,
-      rotateY: 0
+      scale: 1
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
+      x: direction < 0 ? 600 : -600,
       opacity: 0,
-      scale: 0.8,
-      rotateY: direction < 0 ? 45 : -45
+      scale: 0.85
     })
   };
 
@@ -168,6 +165,7 @@ const FeatureCarousel = () => {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-center mb-12 relative z-10"
       >
         <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-palavox-teal to-accent bg-clip-text text-transparent mb-4">
@@ -194,10 +192,9 @@ const FeatureCarousel = () => {
                 animate="center"
                 exit={isCenter ? "exit" : undefined}
                 transition={{
-                  x: { type: "spring", stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.4 },
-                  scale: { duration: 0.4 },
-                  rotateY: { duration: 0.6 }
+                  x: { type: "spring", stiffness: 120, damping: 25 },
+                  opacity: { duration: 0.8, ease: "easeInOut" },
+                  scale: { duration: 0.8, ease: "easeInOut" }
                 }}
                 style={{
                   position: 'absolute',
@@ -227,12 +224,15 @@ const FeatureCarousel = () => {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
+                      transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
                       className="flex justify-center"
                     >
                       <Button
                         className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white"
-                        onClick={() => navigate(feature.route)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(feature.route);
+                        }}
                       >
                         Explore Feature
                       </Button>
