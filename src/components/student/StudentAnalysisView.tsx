@@ -7,12 +7,12 @@ import AnalysisResults from "@/components/transcript-analysis/AnalysisResults";
 import ProgressTimeline from "@/components/transcript-analysis/ProgressTimeline";
 import { Analysis } from "@/components/transcript-analysis/types";
 
-// Demo data: 5 exams with realistic progression showing improvement
+// Demo data: 4 exams matching the example
 const demoAnalyses: Analysis[] = [
   {
     id: "exam-1",
     upload_date: "2024-10-08T10:00:00Z",
-    file_name: "palavox-score-report-exam-1.png",
+    file_name: "palavox-score-report-806f620d-d3fb-42d1-a89c-d9c91ff45814 (4).png",
     overall_score: 26,
     cefr_level: "A1",
     reading_listening_score: 25,
@@ -21,43 +21,21 @@ const demoAnalyses: Analysis[] = [
     strengths: ["Able to form simple sentences in spoken language", "Demonstrates some ability to connect words verbally"],
     weaknesses: ["Limited vocabulary in written tasks", "Errors in grammar, word order, and word choice", "Inability to connect words in written communication"],
     recommendations: [
-      "Use Text Practice at A1 level to improve grammar and vocabulary. Focus on exercises that enhance word order and word choice accuracy.",
-      "Use Voice Practice at A1 level to strengthen spoken fluency and sentence formation.",
-      "Use Pronunciation Practice at A1 level to work on phonetic accuracy."
+      "Use Text Practice at A1 level to improve grammar and vocabulary. Focus on exercises that enhance word order and word choice accuracy. This will help build a foundation for better written communication.",
+      "Use Voice Practice at A1 level to strengthen spoken fluency and sentence formation. Engage in short conversations to practice connecting words and forming simple sentences naturally.",
+      "Use Pronunciation Practice at A1 level to work on phonetic accuracy. Focus on repeating high-frequency words to improve clarity and reduce pronunciation errors."
     ],
-    detailed_feedback: "The test taker shows a basic ability to form simple sentences verbally but struggles significantly with written communication. Vocabulary is limited to everyday topics, and prevalent errors in grammar and word order hinder effective communication.",
-    detailed_analysis: {
-      grammarAnalysis: {
-        strengths: ["Correct use of present tense", "Basic sentence formation"],
-        weaknesses: ["Inconsistent past tense usage", "Limited use of conditionals"],
-        examples: ["Uses 'I go' correctly but struggles with 'I went'"],
-        recommendations: ["Practice irregular verbs", "Study conditional sentence patterns"]
-      },
-      vocabularyAnalysis: {
-        level: "Intermediate",
-        range: ["Everyday topics", "Common expressions"],
-        sophisticatedTerms: ["However", "Therefore"],
-        collocations: ["Make a decision", "Take a break"],
-        recommendations: ["Read news articles daily", "Learn collocations systematically"]
-      }
-    },
-    cefr_comparison: {
-      currentLevel: "B1",
-      descriptorMatch: "Can understand main points of clear standard input. Can deal with most situations likely to arise while travelling.",
-      strengthsVsLevel: ["Adequate comprehension of familiar topics", "Basic conversational ability"],
-      gapsToNextLevel: ["Need more complex grammar structures", "Expand vocabulary to 3000+ words"],
-      estimatedTimeToNextLevel: "4-6 months with consistent practice"
-    }
+    detailed_feedback: "The test taker shows a basic ability to form simple sentences verbally but struggles significantly with written communication. Vocabulary is limited to everyday topics, and prevalent errors in grammar and word order hinder effective communication."
   },
   {
     id: "exam-2",
     upload_date: "2024-10-27T10:00:00Z",
-    file_name: "score-report-exam-2.png",
+    file_name: "score-report-Test-Student-2025-10-07 (1).png",
     overall_score: 78,
     cefr_level: "B2",
     reading_listening_score: 76,
-    written_production_score: 80,
-    spoken_fluency_score: 78,
+    written_production_score: 79,
+    spoken_fluency_score: 79,
     strengths: ["Strong reading comprehension", "Good written expression", "Fluent conversational ability"],
     weaknesses: ["Minor grammatical inconsistencies", "Occasional word choice errors"],
     recommendations: [
@@ -65,199 +43,47 @@ const demoAnalyses: Analysis[] = [
       "Practice complex sentence structures",
       "Work on reducing filler words"
     ],
-    detailed_feedback: "Notable improvement in confidence and range. Keep up the consistent practice.",
-    detailed_analysis: {
-      grammarAnalysis: {
-        strengths: ["Better past tense accuracy", "Improved use of conjunctions"],
-        weaknesses: ["Still struggles with perfect tenses", "Article usage inconsistent"],
-        examples: ["Now uses 'I went' correctly", "Still confuses 'a' and 'the'"],
-        recommendations: ["Focus on present perfect tense", "Study article rules systematically"]
-      },
-      vocabularyAnalysis: {
-        level: "Upper-Intermediate",
-        range: ["Academic topics", "Professional contexts"],
-        sophisticatedTerms: ["Nevertheless", "Consequently", "Furthermore"],
-        collocations: ["Conduct research", "Draw conclusions"],
-        recommendations: ["Study academic word lists", "Practice using transition words"]
-      }
-    },
-    cefr_comparison: {
-      currentLevel: "B1+",
-      descriptorMatch: "Progressing towards B2. Can produce simple connected text on familiar topics. Can describe experiences and events.",
-      strengthsVsLevel: ["Strong foundation in conversational skills", "Growing vocabulary"],
-      gapsToNextLevel: ["Need more fluent speech", "Master complex grammar"],
-      estimatedTimeToNextLevel: "3-4 months"
-    }
+    detailed_feedback: "Excellent progress! Reached B2 level with strong performance across all skills."
   },
   {
     id: "exam-3",
     upload_date: "2024-11-02T10:00:00Z",
-    file_name: "palavox-score-report-exam-3.png",
+    file_name: "palavox-score-report-d95102ec-f071-41b7-a690-202f1555b04c.png",
     overall_score: 69,
     cefr_level: "B1",
-    reading_listening_score: 67,
-    written_production_score: 70,
-    spoken_fluency_score: 71,
-    strengths: ["Solid grammar foundation", "Good vocabulary range", "Fluent conversational skills"],
-    weaknesses: ["Complex argument development", "Occasional word choice errors", "Accent affects clarity at times"],
+    reading_listening_score: 68,
+    written_production_score: 69,
+    spoken_fluency_score: 70,
+    strengths: ["Solid grammar foundation", "Good vocabulary range"],
+    weaknesses: ["Some inconsistencies under pressure", "Occasional word choice errors"],
     recommendations: [
-      "Practice debating and arguing positions",
-      "Study synonyms and word families",
-      "Work on stress and intonation patterns"
+      "Practice under timed conditions",
+      "Review grammar fundamentals",
+      "Build confidence through regular practice"
     ],
-    detailed_feedback: "Reached B2 level! Strong performance across all areas with room for refinement.",
-    detailed_analysis: {
-      grammarAnalysis: {
-        strengths: ["Confident with all tenses", "Good use of conditional forms"],
-        weaknesses: ["Occasional errors in passive voice", "Some modal verb confusion"],
-        examples: ["Uses 'If I had known' correctly", "Sometimes mixes 'should' and 'would'"],
-        recommendations: ["Review passive voice structures", "Practice modal verb contexts"]
-      },
-      vocabularyAnalysis: {
-        level: "Advanced",
-        range: ["Technical discussions", "Abstract concepts"],
-        sophisticatedTerms: ["Notwithstanding", "Albeit", "Whereby"],
-        collocations: ["Pose a question", "Raise awareness", "Shed light on"],
-        recommendations: ["Read academic journals", "Practice paraphrasing"]
-      }
-    },
-    cefr_comparison: {
-      currentLevel: "B2",
-      descriptorMatch: "Can interact with fluency and spontaneity. Can produce clear, detailed text on subjects. Can explain viewpoint.",
-      strengthsVsLevel: ["Meets fluency expectations", "Good range of expression"],
-      gapsToNextLevel: ["Need more sophisticated language", "Reduce minor errors"],
-      estimatedTimeToNextLevel: "4-5 months"
-    }
+    detailed_feedback: "Slight dip in performance but core skills remain strong. Focus on consistency."
   },
   {
     id: "exam-4",
     upload_date: "2024-11-02T14:00:00Z",
-    file_name: "score-report-exam-4.png",
+    file_name: "score-report-Test-Student-2025-10-07 (1).png",
     overall_score: 78,
     cefr_level: "B2",
     reading_listening_score: 77,
-    written_production_score: 79,
-    spoken_fluency_score: 78,
-    strengths: ["Excellent fluency", "Sophisticated vocabulary", "Strong critical thinking"],
-    weaknesses: ["Rare grammar slips", "Minor pronunciation issues", "Occasional awkward phrasing"],
+    written_production_score: 78,
+    spoken_fluency_score: 79,
+    strengths: ["Excellent fluency", "Strong vocabulary", "Confident communication"],
+    weaknesses: ["Minor grammatical errors", "Occasional pronunciation issues"],
     recommendations: [
-      "Focus on native-like idioms and expressions",
-      "Practice presentations and formal speaking",
-      "Fine-tune pronunciation of difficult sounds"
+      "Continue regular practice",
+      "Focus on advanced grammar structures",
+      "Practice formal speaking"
     ],
-    detailed_feedback: "Approaching C1 level. Demonstrates advanced proficiency with minor areas for polish.",
-    detailed_analysis: {
-      grammarAnalysis: {
-        strengths: ["Nearly flawless grammar", "Complex structures used naturally"],
-        weaknesses: ["Rare errors in subjunctive mood", "Occasional preposition confusion"],
-        examples: ["Uses 'I wish I were' correctly", "Sometimes confuses 'at/in/on' for time"],
-        recommendations: ["Study subjunctive patterns", "Review prepositional phrases"]
-      },
-      vocabularyAnalysis: {
-        level: "Proficient",
-        range: ["Specialized fields", "Nuanced discussions"],
-        sophisticatedTerms: ["Notwithstanding", "Inasmuch as", "To that end"],
-        collocations: ["Vested interest", "Pressing concern", "Bear fruit"],
-        recommendations: ["Study idioms and fixed expressions", "Read literary works"]
-      }
-    },
-    cefr_comparison: {
-      currentLevel: "B2+",
-      descriptorMatch: "Strong B2, approaching C1. Can express ideas fluently. Can use language flexibly for social and professional purposes.",
-      strengthsVsLevel: ["Exceeds B2 expectations in fluency", "Near-native comprehension"],
-      gapsToNextLevel: ["Need more precise expression", "Master subtle language nuances"],
-      estimatedTimeToNextLevel: "2-3 months"
-    }
-  },
-  {
-    id: "exam-5",
-    upload_date: "2024-12-15T10:00:00Z",
-    file_name: "palavox-score-report-exam-5.png",
-    overall_score: 82,
-    cefr_level: "B2",
-    reading_listening_score: 81,
-    written_production_score: 83,
-    spoken_fluency_score: 82,
-    strengths: ["Near-native fluency", "Extensive vocabulary", "Natural idiomatic usage", "Excellent accuracy"],
-    weaknesses: ["Very minor pronunciation variations", "Occasional non-native phrasing"],
-    recommendations: [
-      "Continue exposure to native content",
-      "Practice specialized vocabulary for professional fields",
-      "Maintain skills through regular use"
-    ],
-    detailed_feedback: "Achieved C1 level! Demonstrates advanced proficiency. Minor refinements remain but overall excellent command of English.",
-    detailed_analysis: {
-      grammarAnalysis: {
-        strengths: ["Consistently accurate grammar", "Effortless use of complex structures"],
-        weaknesses: ["Extremely rare errors, mostly stylistic"],
-        examples: ["Uses all structures correctly and naturally"],
-        recommendations: ["Focus on stylistic variation", "Study register differences"]
-      },
-      vocabularyAnalysis: {
-        level: "Advanced Proficient",
-        range: ["All domains", "Technical and creative language"],
-        sophisticatedTerms: ["Predicated upon", "Ostensibly", "Quintessential"],
-        collocations: ["Tacit understanding", "Unequivocal support", "Burgeoning interest"],
-        recommendations: ["Explore specialized terminology", "Study literary devices"]
-      }
-    },
-    cefr_comparison: {
-      currentLevel: "C1",
-      descriptorMatch: "Can express ideas fluently and spontaneously. Can use language flexibly for social, academic and professional purposes.",
-      strengthsVsLevel: ["Meets all C1 descriptors", "Approaching C2 in some areas"],
-      gapsToNextLevel: ["Subtle native-like nuances", "Complete mastery of all registers"],
-      estimatedTimeToNextLevel: "6-8 months for C2"
-    },
-    learning_pathway: {
-      immediateGoals: [
-        "Maintain current proficiency level",
-        "Expand specialized vocabulary",
-        "Perfect pronunciation nuances"
-      ],
-      mediumTermGoals: [
-        "Achieve C2 level within 6 months",
-        "Develop native-like fluency",
-        "Master all registers and contexts"
-      ],
-      practiceActivities: [
-        { activity: "Read academic papers", focus: "Advanced vocabulary", frequency: "Daily" },
-        { activity: "Watch documentaries without subtitles", focus: "Listening comprehension", frequency: "3x per week" },
-        { activity: "Write essays on complex topics", focus: "Written expression", frequency: "Weekly" },
-        { activity: "Participate in debates", focus: "Fluency and argumentation", frequency: "Bi-weekly" }
-      ],
-      resourceRecommendations: [
-        "Academic journals in your field",
-        "TED Talks and podcasts",
-        "Advanced grammar resources",
-        "Native speaker conversation partners"
-      ]
-    },
-    progress_indicators: {
-      recentImprovements: [
-        "Significant jump in overall score (+8 points)",
-        "Achieved C1 level",
-        "Near-perfect grammar accuracy"
-      ],
-      consistentStrengths: [
-        "Speaking fluency",
-        "Vocabulary range",
-        "Comprehension"
-      ],
-      emergingSkills: [
-        "Idiomatic expressions",
-        "Nuanced communication",
-        "Register awareness"
-      ],
-      priorityAreas: [
-        "Maintain current level",
-        "Fine-tune pronunciation",
-        "Expand specialized vocabulary"
-      ]
-    }
+    detailed_feedback: "Returned to B2 level! Consistent strong performance across all skills."
   }
 ];
 
-// Demo milestones based on the 5 exams
+// Demo milestones based on the 4 exams
 const demoMilestones = [
   {
     id: "milestone-1",
@@ -272,10 +98,10 @@ const demoMilestones = [
     id: "milestone-2",
     milestone_type: "consistent_improvement",
     previous_value: 26,
-    current_value: 82,
-    improvement_percentage: 215,
-    achievement_date: "2024-12-15T10:00:00Z",
-    description: "Overall improvement of 56 points across 5 exams"
+    current_value: 78,
+    improvement_percentage: 200,
+    achievement_date: "2024-11-02T14:00:00Z",
+    description: "Overall improvement of 52 points across 4 exams"
   },
   {
     id: "milestone-3",
@@ -284,7 +110,7 @@ const demoMilestones = [
     current_value: 78,
     improvement_percentage: 13,
     achievement_date: "2024-11-02T14:00:00Z",
-    description: "Recovered from setback and reached new high"
+    description: "Recovered from setback and reached B2 again"
   }
 ];
 
