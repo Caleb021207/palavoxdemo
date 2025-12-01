@@ -18,12 +18,12 @@ const demoAnalyses: Analysis[] = [
     reading_listening_score: 25,
     written_production_score: 10,
     spoken_fluency_score: 43,
-    strengths: ["Able to form simple sentences in spoken language", "Demonstrates some ability to connect words verbally"],
-    weaknesses: ["Limited vocabulary in written tasks", "Errors in grammar, word order, and word choice", "Inability to connect words in written communication"],
+    strengths: ["Can understand familiar everyday words and basic phrases", "Shows potential for verbal communication in simple contexts"],
+    weaknesses: ["Very limited vocabulary range", "Significant grammar and word order errors", "Struggles with written expression"],
     recommendations: [
-      "Use Text Practice at A1 level to improve grammar and vocabulary. Focus on exercises that enhance word order and word choice accuracy. This will help build a foundation for better written communication.",
-      "Use Voice Practice at A1 level to strengthen spoken fluency and sentence formation. Engage in short conversations to practice connecting words and forming simple sentences naturally.",
-      "Use Pronunciation Practice at A1 level to work on phonetic accuracy. Focus on repeating high-frequency words to improve clarity and reduce pronunciation errors."
+      "Use Text Practice at A1 level to build foundational grammar and expand basic vocabulary. Focus on simple sentence structures and common everyday phrases.",
+      "Use Voice Practice at A1 level to develop confidence in spoken communication. Start with basic greetings and simple exchanges.",
+      "Use Pronunciation Practice at A1 level to establish correct sound production. Focus on high-frequency words and essential phonemes."
     ],
     detailed_feedback: "The test taker shows a basic ability to form simple sentences verbally but struggles significantly with written communication. Vocabulary is limited to everyday topics, and prevalent errors in grammar and word order hinder effective communication."
   },
@@ -36,12 +36,12 @@ const demoAnalyses: Analysis[] = [
     reading_listening_score: 76,
     written_production_score: 79,
     spoken_fluency_score: 79,
-    strengths: ["Strong reading comprehension", "Good written expression", "Fluent conversational ability"],
-    weaknesses: ["Minor grammatical inconsistencies", "Occasional word choice errors"],
+    strengths: ["Strong comprehension of complex topics and abstract concepts", "Effective use of varied vocabulary in different contexts", "Good fluency and coherence in extended discourse"],
+    weaknesses: ["Minor errors in advanced grammatical structures", "Could refine formal register and stylistic choices"],
     recommendations: [
-      "Continue expanding academic vocabulary",
-      "Practice complex sentence structures",
-      "Work on reducing filler words"
+      "Use Text Practice at B2 level to master complex grammatical structures. Focus on formal writing, reports, and essays to enhance professional communication skills.",
+      "Use Voice Practice at B2 level to develop fluency in spontaneous conversations. Practice discussing abstract topics and expressing nuanced opinions confidently.",
+      "Use Pronunciation Practice at B2 level to perfect intonation patterns and stress. Work on natural rhythm and connected speech for more native-like pronunciation."
     ],
     detailed_feedback: "Excellent progress! Reached B2 level with strong performance across all skills."
   },
@@ -54,12 +54,12 @@ const demoAnalyses: Analysis[] = [
     reading_listening_score: 68,
     written_production_score: 69,
     spoken_fluency_score: 70,
-    strengths: ["Solid grammar foundation", "Good vocabulary range"],
-    weaknesses: ["Some inconsistencies under pressure", "Occasional word choice errors"],
+    strengths: ["Can understand main points of clear standard input on familiar matters", "Developing vocabulary for everyday topics", "Able to produce simple connected text on familiar subjects"],
+    weaknesses: ["Inconsistent grammatical accuracy in complex structures", "Limited vocabulary beyond familiar topics", "Struggles with expressing abstract ideas"],
     recommendations: [
-      "Practice under timed conditions",
-      "Review grammar fundamentals",
-      "Build confidence through regular practice"
+      "Use Text Practice at B1 level to solidify intermediate grammar. Focus on past tenses, conditionals, and expanding vocabulary across different topics.",
+      "Use Voice Practice at B1 level to increase spontaneity in conversations. Practice describing experiences, plans, and opinions to develop fluency.",
+      "Use Pronunciation Practice at B1 level to improve clarity and confidence. Work on word stress, sentence rhythm, and reducing first-language interference."
     ],
     detailed_feedback: "Slight dip in performance but core skills remain strong. Focus on consistency."
   },
@@ -72,12 +72,12 @@ const demoAnalyses: Analysis[] = [
     reading_listening_score: 77,
     written_production_score: 78,
     spoken_fluency_score: 79,
-    strengths: ["Excellent fluency", "Strong vocabulary", "Confident communication"],
-    weaknesses: ["Minor grammatical errors", "Occasional pronunciation issues"],
+    strengths: ["Strong comprehension of complex topics and abstract concepts", "Effective use of varied vocabulary in different contexts", "Good fluency and coherence in extended discourse"],
+    weaknesses: ["Minor errors in advanced grammatical structures", "Could refine formal register and stylistic choices"],
     recommendations: [
-      "Continue regular practice",
-      "Focus on advanced grammar structures",
-      "Practice formal speaking"
+      "Use Text Practice at B2 level to master complex grammatical structures. Focus on formal writing, reports, and essays to enhance professional communication skills.",
+      "Use Voice Practice at B2 level to develop fluency in spontaneous conversations. Practice discussing abstract topics and expressing nuanced opinions confidently.",
+      "Use Pronunciation Practice at B2 level to perfect intonation patterns and stress. Work on natural rhythm and connected speech for more native-like pronunciation."
     ],
     detailed_feedback: "Returned to B2 level! Consistent strong performance across all skills."
   }
