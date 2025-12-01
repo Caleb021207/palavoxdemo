@@ -2,3 +2,6 @@ project_id = "ewmdtnqhmvoqveaqeyxw"
 
 [functions.premium-voice-realtime]
 verify_jwt = false
+
+[functions.chat-with-tutor]
+verify_jwt = false
