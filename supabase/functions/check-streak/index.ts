@@ -53,7 +53,7 @@ serve(async (req) => {
       console.log('Processing streak check for user:', userId);
     } catch (jwtError) {
       console.error('JWT decode error:', jwtError);
-      throw new Error(`Unable to extract user ID from JWT: ${jwtError.message}`);
+      throw new Error(`Unable to extract user ID from JWT: ${jwtError instanceof Error ? jwtError.message : 'Unknown error'}`);
     }
 
     // Get user progression
@@ -172,7 +172,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in check-streak:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
