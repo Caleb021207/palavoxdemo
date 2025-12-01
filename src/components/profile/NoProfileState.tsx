@@ -6,7 +6,7 @@ import { useLocalization } from "@/context/LocalizationContext";
 import AccessCodeInput from "./AccessCodeInput";
 
 interface NoProfileStateProps {
-  user: User;
+  user: User | null;
   onProfileUpdate: () => void;
 }
 
@@ -22,7 +22,7 @@ const NoProfileState = ({ user, onProfileUpdate }: NoProfileStateProps) => {
             {t("setUpProfile")}
           </h1>
           <p className="text-muted-foreground">
-            {user.email}
+            {user?.email || 'Demo User'}
           </p>
         </div>
       </div>
