@@ -9,18 +9,8 @@ import { useLocalization } from "@/context/LocalizationContext";
 import CodeGenerationForm from "./code-management/CodeGenerationForm";
 import CodeListDisplay from "./code-management/CodeListDisplay";
 import { supabase } from "@/integrations/supabase/client";
+import type { AccessCode } from "@/utils/accessCodeUtils";
 
-interface AccessCode {
-  id: string;
-  code: string;
-  code_type: string;
-  target_name: string;
-  expires_at: string | null;
-  max_uses: number | null;
-  current_uses: number;
-  active: boolean;
-  created_at: string;
-}
 
 interface CodeManagementProps {
   userRole: string;

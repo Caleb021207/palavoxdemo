@@ -45,7 +45,7 @@ const AgeVerificationDialog = ({ isOpen, onOpenChange }: AgeVerificationDialogPr
           .eq('district_id', (await supabase
             .from('school_districts')
             .select('id')
-            .eq('code', 'SCBOE')
+          .eq('name', 'SCBOE')
             .single()).data?.id)
           .single();
 

@@ -94,7 +94,7 @@ const StudentTestScores = ({ teacherId, onDataUpdate }: StudentTestScoresProps) 
         console.log('Fetching comprehensive student data for teacher:', teacherId);
 
         // Get teacher's classes
-        const { data: rawClasses, error: classError } = await supabase
+        const { data: rawClasses, error: classError } = await (supabase as any)
           .from('classes')
           .select('id, name, class_code, academic_year')
           .eq('teacher_id', teacherId);
@@ -112,7 +112,7 @@ const StudentTestScores = ({ teacherId, onDataUpdate }: StudentTestScoresProps) 
 
         // Get all student enrollments for these classes
         const classIds = rawClasses.map(c => c.id);
-        const { data: enrollments, error: enrollError } = await supabase
+        const { data: enrollments, error: enrollError } = await (supabase as any)
           .from('student_enrollments')
           .select('student_id, class_id, status')
           .in('class_id', classIds)
@@ -131,7 +131,7 @@ const StudentTestScores = ({ teacherId, onDataUpdate }: StudentTestScoresProps) 
 
         // Get student profiles
         const studentIds = [...new Set(enrollments.map(e => e.student_id))];
-        const { data: profiles, error: profileError } = await supabase
+        const { data: profiles, error: profileError } = await (supabase as any)
           .from('profiles')
           .select('id, display_name, email')
           .in('id', studentIds);
@@ -177,7 +177,7 @@ const StudentTestScores = ({ teacherId, onDataUpdate }: StudentTestScoresProps) 
             const studentId = enrollment.student_id;
 
             // Get test scores from transcript_analyses
-            const { data: latestAnalysis } = await supabase
+            const { data: latestAnalysis } = await (supabase as any)
               .from('transcript_analyses')
               .select('overall_score, cefr_level, upload_date')
               .eq('user_id', studentId)
@@ -186,14 +186,14 @@ const StudentTestScores = ({ teacherId, onDataUpdate }: StudentTestScoresProps) 
               .maybeSingle();
 
             // Get language metrics
-            const { data: languageMetrics } = await supabase
+            const { data: languageMetrics } = await (supabase as any)
               .from('student_metrics')
               .select('avg_grammar_accuracy, avg_conversation_complexity')
               .eq('student_id', studentId)
               .maybeSingle();
 
             // Get last login time from auth.users
-            const { data: lastSignIn } = await supabase
+            const { data: lastSignIn } = await (supabase as any)
               .rpc('get_user_last_sign_in', { user_id: studentId });
 
             allStudentMetrics.push({
@@ -270,7 +270,7 @@ const StudentTestScores = ({ teacherId, onDataUpdate }: StudentTestScoresProps) 
       const { data: session } = await supabase.auth.getSession();
       if (session.session) {
         // Force a fresh fetch by calling the same logic
-        const { data: teacherClasses } = await supabase
+        const { data: teacherClasses } = await (supabase as any)
           .from('classes')
           .select(`
             id,
@@ -300,7 +300,7 @@ const StudentTestScores = ({ teacherId, onDataUpdate }: StudentTestScoresProps) 
             for (const enrollment of classData.student_enrollments) {
               const studentId = enrollment.student_id;
 
-              const { data: latestAnalysis } = await supabase
+              const { data: latestAnalysis } = await (supabase as any)
                 .from('transcript_analyses')
                 .select('overall_score, cefr_level, upload_date')
                 .eq('user_id', studentId)
@@ -308,13 +308,13 @@ const StudentTestScores = ({ teacherId, onDataUpdate }: StudentTestScoresProps) 
                 .limit(1)
                 .maybeSingle();
 
-              const { data: languageMetrics } = await supabase
+              const { data: languageMetrics } = await (supabase as any)
                 .from('student_metrics')
                 .select('avg_grammar_accuracy, avg_conversation_complexity')
                 .eq('student_id', studentId)
                 .maybeSingle();
 
-              const { data: lastSignIn } = await supabase
+              const { data: lastSignIn } = await (supabase as any)
                 .rpc('get_user_last_sign_in', { user_id: studentId });
 
               allStudentMetrics.push({

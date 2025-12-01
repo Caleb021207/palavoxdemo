@@ -85,7 +85,7 @@ export const AdminOverrideControls = ({
       }
 
       // Update student limits
-      const { error: updateError } = await supabase
+      const { error: updateError } = await (supabase as any)
         .from('student_usage_limits')
         .update({
           ...updateData,
@@ -102,11 +102,8 @@ export const AdminOverrideControls = ({
         .from('admin_override_logs')
         .insert({
           admin_id: user.id,
-          student_id: studentId,
-          override_type: overrideType,
-          previous_value: previousValue,
-          new_value: newValue,
-          reason
+          target_user_id: studentId,
+          action: `${overrideType}:${previousValue}->${newValue} - ${reason}`
         });
 
       if (logError) {

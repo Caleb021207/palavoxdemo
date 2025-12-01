@@ -29,7 +29,7 @@ export const RefreshMetricsButton = ({ classId, studentId, onSuccess }: RefreshM
       // Call the recalculate_student_metrics function
       const { data, error } = await supabase.rpc(
         'recalculate_student_metrics',
-        { target_student_id: studentId || user.id }
+        { student_id_input: studentId || user.id }
       );
       
       if (error) {

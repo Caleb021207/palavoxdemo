@@ -11,7 +11,7 @@ export const useSessionManagement = () => {
       const { data: { user } } = await supabase.auth.getUser();
       
       if (user) {
-        await supabase
+        await (supabase as any)
           .from('api_calls_tracking')
           .insert({
             service: 'session',

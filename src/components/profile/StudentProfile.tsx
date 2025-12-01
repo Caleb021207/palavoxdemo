@@ -46,7 +46,7 @@ const StudentProfile = ({ profile }: StudentProfileProps) => {
 
         // Fetch grade level if grade_level_id exists
         if (profile.grade_level_id) {
-          const { data: gradeLevelData } = await supabase
+          const { data: gradeLevelData } = await (supabase as any)
             .from('grade_levels')
             .select('*')
             .eq('id', profile.grade_level_id)
@@ -56,7 +56,7 @@ const StudentProfile = ({ profile }: StudentProfileProps) => {
         }
 
         // Fetch all transcript analyses for certification status
-        const { data: allAnalysesData } = await supabase
+        const { data: allAnalysesData } = await (supabase as any)
           .from('transcript_analyses')
           .select('cefr_level, overall_score')
           .eq('user_id', profile.id)

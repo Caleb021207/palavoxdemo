@@ -29,7 +29,7 @@ const StudentClassView = () => {
       
       const { error: recalcError } = await supabase.rpc(
         'recalculate_student_metrics',
-        { target_student_id: user.id }
+        { student_id_input: user.id }
       );
       
       if (recalcError) {

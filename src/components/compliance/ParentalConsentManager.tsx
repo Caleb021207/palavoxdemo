@@ -27,7 +27,7 @@ export default function ParentalConsentManager() {
   const { data: consents, isLoading } = useQuery({
     queryKey: ["parental-consents"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("parental_consent_records")
         .select("*, profiles!parental_consent_records_student_id_fkey(display_name, email)")
         .order("created_at", { ascending: false });
@@ -42,7 +42,7 @@ export default function ParentalConsentManager() {
       const academicYear = `${new Date().getFullYear()}-${new Date().getFullYear() + 1}`;
       const { data: { user } } = await supabase.auth.getUser();
       
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("parental_consent_records")
         .insert({
           student_id: consentData.studentId,

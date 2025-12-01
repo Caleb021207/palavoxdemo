@@ -91,9 +91,25 @@ export const generateAccessCode = async (
 };
 
 /**
+ * Basic AccessCode type aligned with access_codes table
+ */
+export interface AccessCode {
+  id: string;
+  code: string;
+  class_id: string | null;
+  created_at: string | null;
+  expires_at: string | null;
+  code_type?: string;
+  target_name?: string;
+  max_uses?: number | null;
+  current_uses?: number;
+  active?: boolean;
+}
+
+/**
  * Get access codes created by the current user
  */
-export const getUserAccessCodes = async () => {
+export const getUserAccessCodes = async (): Promise<AccessCode[]> => {
   try {
     const { data, error } = await supabase
       .from('access_codes')
@@ -105,7 +121,7 @@ export const getUserAccessCodes = async () => {
       return [];
     }
 
-    return data || [];
+    return (data as unknown as AccessCode[]) || [];
   } catch (error) {
     console.error('Error in getUserAccessCodes:', error);
     return [];

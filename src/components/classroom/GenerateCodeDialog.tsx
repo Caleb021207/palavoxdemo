@@ -65,9 +65,7 @@ const GenerateCodeDialog = ({ open, onOpenChange }: GenerateCodeDialogProps) => 
 
       // Generate access code for the class
       const { data: codeData, error: codeError } = await supabase.rpc('generate_access_code', {
-        p_code_type: 'class',
-        p_target_id: classData.id,
-        p_target_name: className
+        class_id: classData.id,
       });
 
       if (codeError) throw codeError;
