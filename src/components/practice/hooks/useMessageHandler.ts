@@ -35,7 +35,7 @@ export const useMessageHandler = (setMessageCount: (count: MessageCount) => void
       setIsLoading(true);
       
       // Process the message with required arguments
-      const assistantMessage = await sendChatMessage(nextMessage, 'spanish', 'english');
+      const assistantMessage = await sendChatMessage(nextMessage, 'english', 'english');
       
       if (assistantMessage) {
         addAssistantMessage(assistantMessage);
@@ -79,7 +79,7 @@ export const useMessageHandler = (setMessageCount: (count: MessageCount) => void
       setIsLoading(true);
       
       // Send message to API with required arguments
-      const assistantMessage = await sendChatMessage(input, 'spanish', 'english');
+      const assistantMessage = await sendChatMessage(input, 'english', 'english');
       
       if (assistantMessage) {
         addAssistantMessage(assistantMessage);
