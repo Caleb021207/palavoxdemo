@@ -5,5 +5,6 @@ export const useProfileData = () => ({
   isLoading: false,
   authError: false,
   debugInfo: null,
-  fetchUserData: async () => {}
+  fetchUserData: async () => {},
+  refetchProfile: async () => {}
 });

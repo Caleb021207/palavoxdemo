@@ -2,9 +2,9 @@
 export const useGamification = () => ({
   progression: null,
   loading: false,
-  awardXP: async () => null,
+  awardXP: async (_activity?: string, _metadata?: any) => null,
   fetchProgression: async () => {},
   showLevelUpModal: false,
-  setShowLevelUpModal: () => {},
+  setShowLevelUpModal: (_show: boolean) => {},
   levelUpData: null
 });

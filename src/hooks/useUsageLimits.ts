@@ -11,6 +11,7 @@ export const useUsageLimits = () => ({
   trackVoiceUsage: async () => {},
   trackTextUsage: async () => {},
   trackTextMessage: async () => {},
-  checkCanSendTextMessage: async () => true,
+  checkCanSendTextMessage: async () => ({ allowed: true }),
+  checkCanStartVoiceSession: async () => ({ allowed: true, reason: '' }),
   refreshLimits: async () => {}
 });

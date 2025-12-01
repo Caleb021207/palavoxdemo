@@ -1,53 +1,10 @@
-import { supabase } from "@/integrations/supabase/client";
-
-interface ConversationMessage {
-  role: 'user' | 'assistant';
-  content: string;
-}
-
-interface AudioSegment {
-  lang: string;
-  text: string;
-  audio: string;
-}
-
-interface CustomRealtimeResponse {
-  userTranscript: string;
-  aiResponse: string;
-  audioSegments?: AudioSegment[];
-  audioBase64?: string;
-  audioFormat: string;
-}
-
-type ConversationState = 'idle' | 'listening' | 'processing' | 'speaking';
-
+// Demo stub - not used in carousel demo
 export class CustomRealtimeManager {
-  private state: ConversationState = 'idle';
-  private audioContext: AudioContext | null = null;
-  private mediaRecorder: MediaRecorder | null = null;
-  private audioChunks: Blob[] = [];
-  private silenceTimeout: NodeJS.Timeout | null = null;
-  private conversationHistory: ConversationMessage[] = [];
-  private onStateChange: (state: ConversationState) => void;
-  private onMessage: (message: { role: string; content: string }) => void;
-  private onError: (error: string) => void;
-  private targetLanguage: string;
-  private userLanguage: string;
-  private userInterfaceLanguage: string;
-  private proficiencyLevel: string;
-  private stream: MediaStream | null = null;
-  private isSessionActive: boolean = false;
-  private isDisconnecting: boolean = false;
-  private currentAudio: HTMLAudioElement | null = null;
-  
-  // Word-based VAD settings
-  private readonly SILENCE_AFTER_LAST_WORD_MS = 3000;
-  private readonly MAX_RECORDING_DURATION_MS = 60000; // 1 minute
-  private recordingStartTime: number = 0;
-  private lastWordTimestamp: number = 0;
-  private vadRecognition: any = null; // SpeechRecognition for VAD only
-
-  constructor(
+  constructor(_config: any) {}
+  connect() {}
+  disconnect() {}
+  sendMessage(_text: string) {}
+}
     targetLanguage: string,
     userLanguage: string,
     userInterfaceLanguage: string,
