@@ -13,37 +13,8 @@ serve(async (req) => {
   }
 
   try {
-    // Get authorization token
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
-      return new Response('Unauthorized', { status: 401 });
-    }
-
-    // Verify user and check usage limits
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-
-    if (authError || !user) {
-      console.error('Auth error:', authError);
-      return new Response('Unauthorized', { status: 401 });
-    }
-
-    // Check if user can start premium voice session
-    const { data: canStart, error: checkError } = await supabase.rpc(
-      'can_start_premium_voice_session',
-      { target_student_id: user.id }
-    );
-
-    if (checkError || !canStart?.allowed) {
-      return new Response(
-        JSON.stringify({ error: 'Monthly limit reached', details: canStart }),
-        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
+    // Demo mode - skip authentication and usage limits
+    console.log("🎭 Demo mode: Skipping auth and usage limits");
 
     // Get ephemeral token from OpenAI
     const openaiApiKey = Deno.env.get('OPENAI_API_KEY');
@@ -71,7 +42,7 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    console.log("✅ Ephemeral token created for user:", user.id);
+    console.log("✅ Ephemeral token created (demo mode)");
 
     // Generate session ID for tracking
     const sessionId = crypto.randomUUID();
@@ -80,7 +51,7 @@ serve(async (req) => {
     // Return token to client with session tracking info
     return new Response(JSON.stringify({
       ...data,
-      user_id: user.id,
+      user_id: 'demo-user',
       session_id: sessionId,
       session_start: sessionStart
     }), {

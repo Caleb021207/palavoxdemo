@@ -1,17 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mic, Volume2, Sparkles, Headphones, Trophy, RefreshCw, Clock } from "lucide-react";
+import { Mic, Sparkles, RefreshCw, Clock, BookOpen, MessageCircle, Volume2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { RealtimeChat } from "@/utils/RealtimeAudioManager";
-import { useLocalization } from "@/context/LocalizationContext";
-import { supabase } from "@/integrations/supabase/client";
 import { useGamification } from "@/hooks/useGamification";
 import LevelUpModal from "@/components/gamification/LevelUpModal";
 import { motion } from "framer-motion";
+import { DecorativeOrbs } from "@/components/ui/decorative-elements";
 
 const PremiumVoicePractice = () => {
-  const { t } = useLocalization();
   const { toast } = useToast();
   const [isConnected, setIsConnected] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -31,23 +29,7 @@ const PremiumVoicePractice = () => {
   }, []);
 
   const handleMessage = (event: any) => {
-    if (event.type === 'time_warning') {
-      toast({
-        title: t('timeWarning'),
-        description: t('minutesRemainingWarning', { 
-          minutes: String(event.minutes_remaining),
-          plural: event.minutes_remaining > 1 ? 's' : ''
-        }),
-        variant: "default",
-      });
-    } else if (event.type === 'time_limit_reached') {
-      toast({
-        title: t('sessionEnded'),
-        description: t('premiumSessionEndedMessage'),
-        variant: "default",
-      });
-      endConversation();
-    }
+    console.log("Event received:", event);
   };
 
   const startConversation = async () => {
@@ -69,8 +51,8 @@ const PremiumVoicePractice = () => {
       }, 1000);
       
       toast({
-        title: t('connected'),
-        description: t('premiumVoiceReady'),
+        title: "Connected",
+        description: "Advanced voice practice is ready. Start speaking!",
       });
     } catch (error) {
       console.error('Error starting conversation:', error);
@@ -97,22 +79,14 @@ const PremiumVoicePractice = () => {
       await awardXP('premium_voice');
     }
     
-    if (chatRef.current && minutesUsed > 0 && sessionId) {
-      // Demo mode - no usage tracking
-      console.log('Demo: would track', minutesUsed, 'minutes');
-    }
-    
     chatRef.current?.disconnect();
     setIsConnected(false);
     setIsSpeaking(false);
     setSessionId(null);
     
     toast({
-      title: t('sessionSaved'),
-      description: t('usedMinutesMessage', { 
-        minutes: String(minutesUsed),
-        plural: minutesUsed !== 1 ? 's' : ''
-      }),
+      title: "Session Saved",
+      description: `Used ${minutesUsed} minute${minutesUsed !== 1 ? 's' : ''} in this session`,
     });
   };
 
@@ -135,12 +109,7 @@ const PremiumVoicePractice = () => {
       )}
       
       <div className="relative min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10 overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 opacity-30 pointer-events-none">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-palavox-teal/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-        </div>
+        <DecorativeOrbs />
         
         <div className="max-w-4xl mx-auto p-4 relative z-10">
           <motion.div
@@ -159,8 +128,8 @@ const PremiumVoicePractice = () => {
                   <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-primary" />
                 </div>
               </motion.div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">
-                {t('premiumVoicePractice')}
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-palavox-teal to-accent bg-clip-text text-transparent">
+                Advanced English Conversation
               </h1>
               <motion.p
                 initial={{ opacity: 0 }}
@@ -168,7 +137,7 @@ const PremiumVoicePractice = () => {
                 transition={{ delay: 0.2 }}
                 className="text-xl md:text-2xl text-muted-foreground"
               >
-                {t('practiceConversationalEnglish')}
+                Have natural voice conversations with AI to improve your fluency
               </motion.p>
             </div>
           </motion.div>
@@ -177,39 +146,122 @@ const PremiumVoicePractice = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, staggerChildren: 0.1 }}
-              className="grid gap-6 md:grid-cols-2"
+              transition={{ delay: 0.3 }}
+              className="space-y-6"
             >
-              {/* Start Practice Card */}
+              {/* How It Works Card - AT THE TOP */}
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
                 whileHover={{ scale: 1.02 }}
-                className="h-full"
               >
-                <Card className="glass border-primary/20 h-full bg-gradient-to-br from-primary/5 via-transparent to-accent/5 hover:border-primary/40 transition-all">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none opacity-0 hover:opacity-100 transition-opacity" />
-                  <CardHeader className="relative z-10">
-                    <CardTitle className="flex items-center gap-2">
-                      <Sparkles className="h-5 w-5 text-primary" />
-                      Palavox Advanced Voice
+                <Card className="glass border-primary/20 bg-gradient-to-br from-blue-500/5 via-transparent to-cyan-500/5 hover:border-blue-500/40 transition-all">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-2xl">
+                      <BookOpen className="h-6 w-6 text-blue-500" />
+                      How It Works
                     </CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                      {t('openaiLatestVoiceModel')}
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-4">
+                      <motion.li
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5 }}
+                        className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-blue-500/10 to-transparent hover:from-blue-500/20 transition-all"
+                      >
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
+                          1
+                        </div>
+                        <span className="flex-1 text-base">Click "Start Practicing" below to begin your session</span>
+                      </motion.li>
+                      <motion.li
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.6 }}
+                        className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-blue-500/10 to-transparent hover:from-blue-500/20 transition-all"
+                      >
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
+                          2
+                        </div>
+                        <span className="flex-1 text-base">Speak naturally in English - the AI will listen and understand you</span>
+                      </motion.li>
+                      <motion.li
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.7 }}
+                        className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-blue-500/10 to-transparent hover:from-blue-500/20 transition-all"
+                      >
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
+                          3
+                        </div>
+                        <span className="flex-1 text-base">Have a real conversation - the AI responds in real-time like a native speaker</span>
+                      </motion.li>
+                      <motion.li
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.8 }}
+                        className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-blue-500/10 to-transparent hover:from-blue-500/20 transition-all"
+                      >
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
+                          4
+                        </div>
+                        <span className="flex-1 text-base">Practice fluency, grammar, and vocabulary through natural dialogue</span>
+                      </motion.li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Start Practice Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <Card className="glass border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 hover:border-primary/40 transition-all">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-center justify-center">
+                      <Sparkles className="h-5 w-5 text-primary" />
+                      Powered by Palavox Advanced Voice
+                    </CardTitle>
+                    <p className="text-sm text-muted-foreground text-center">
+                      Real-time AI conversation with natural voice responses
                     </p>
                   </CardHeader>
-                  <CardContent className="space-y-6 relative z-10">
-                    <div className="p-4 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl border border-blue-500/20">
-                      <p className="text-sm text-muted-foreground">
-                        {t('gptLanguageSupport')}
-                      </p>
+                  <CardContent className="space-y-6">
+                    {/* Conversation Starters */}
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
+                        <MessageCircle className="h-4 w-4" />
+                        Try starting with:
+                      </h3>
+                      <div className="grid gap-2">
+                        {[
+                          "Tell me about your day",
+                          "What's your favorite hobby?",
+                          "Describe your hometown",
+                          "What are you learning right now?"
+                        ].map((starter, idx) => (
+                          <motion.div
+                            key={idx}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.6 + idx * 0.1 }}
+                            className="p-3 rounded-lg bg-gradient-to-r from-primary/10 to-transparent border border-primary/20 flex items-center gap-2 hover:from-primary/20 transition-all"
+                          >
+                            <Volume2 className="h-4 w-4 text-primary flex-shrink-0" />
+                            <span className="text-sm">{starter}</span>
+                          </motion.div>
+                        ))}
+                      </div>
                     </div>
 
                     <motion.div 
                       whileHover={{ scale: 1.02 }} 
                       whileTap={{ scale: 0.98 }}
-                      className="relative"
                     >
                       <Button 
                         onClick={startConversation}
@@ -220,7 +272,7 @@ const PremiumVoicePractice = () => {
                         {isStarting ? (
                           <span className="flex items-center gap-3 relative z-10">
                             <RefreshCw className="h-5 w-5 animate-spin" />
-                            {t("connecting")}
+                            Connecting...
                           </span>
                         ) : (
                           <span className="flex items-center gap-3 relative z-10">
@@ -238,52 +290,11 @@ const PremiumVoicePractice = () => {
                               <div className="absolute inset-0 bg-primary/30 rounded-full blur-md animate-pulse" />
                               <Mic className="h-6 w-6 relative z-10" />
                             </motion.div>
-                            <span>{t('startExercise')}</span>
+                            <span>Start Practicing</span>
                           </span>
                         )}
                       </Button>
                     </motion.div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Tips Card */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 }}
-                whileHover={{ scale: 1.02 }}
-                className="h-full"
-              >
-                <Card className="glass border-primary/20 h-full bg-gradient-to-br from-green-500/5 via-transparent to-emerald-500/5 hover:border-green-500/40 transition-all">
-                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent pointer-events-none opacity-0 hover:opacity-100 transition-opacity" />
-                  <CardHeader className="relative z-10">
-                    <CardTitle className="flex items-center gap-2">
-                      <Headphones className="h-5 w-5 text-green-600" />
-                      {t('pronunciationPracticeTips')}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="relative z-10">
-                    <ul className="space-y-4">
-                      {[
-                        { icon: Mic, text: t('listenCarefullyTip') },
-                        { icon: Volume2, text: t('payAttentionToStressTip') },
-                        { icon: RefreshCw, text: t('practiceDifficultSoundsTip') },
-                        { icon: Mic, text: t('recordYourselfTip') },
-                        { icon: Trophy, text: t('bePatientTip') }
-                      ].map((tip, idx) => (
-                        <motion.li
-                          key={idx}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.6 + idx * 0.1 }}
-                          className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-green-500/10 to-transparent hover:from-green-500/20 transition-all group"
-                        >
-                          <tip.icon className="h-5 w-5 text-green-600 group-hover:scale-110 transition-transform flex-shrink-0 mt-0.5" />
-                          <span className="text-sm flex-1">{tip.text}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -294,10 +305,8 @@ const PremiumVoicePractice = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              <Card className="glass border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-50 pointer-events-none" />
-                
-                <CardHeader className="relative z-10">
+              <Card className="glass border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-accent/5">
+                <CardHeader>
                   <CardTitle className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
                       <Sparkles className="h-5 w-5 text-primary" />
@@ -314,8 +323,8 @@ const PremiumVoicePractice = () => {
                   </CardTitle>
                 </CardHeader>
                 
-                <CardContent className="space-y-6 relative z-10">
-                  {/* Status Indicator with Mic Animation */}
+                <CardContent className="space-y-6">
+                  {/* Status Indicator */}
                   <div className="flex flex-col items-center justify-center gap-6 p-8 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl border border-primary/20">
                     <motion.div
                       animate={{
@@ -345,10 +354,10 @@ const PremiumVoicePractice = () => {
                     </motion.div>
                     <div className="text-center">
                       <span className="text-xl font-medium block mb-1">
-                        {isSpeaking ? t('stateSpeaking') : t('stateListening')}
+                        {isSpeaking ? 'AI is speaking...' : 'Listening...'}
                       </span>
                       <span className="text-sm text-muted-foreground">
-                        {isSpeaking ? 'AI is responding...' : 'Speak naturally'}
+                        {isSpeaking ? 'AI is responding to you' : 'Speak naturally in English'}
                       </span>
                     </div>
                   </div>
@@ -360,7 +369,7 @@ const PremiumVoicePractice = () => {
                       variant="destructive"
                       className="w-full py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
                     >
-                      {t('endSession')}
+                      End Conversation
                     </Button>
                   </motion.div>
                 </CardContent>
