@@ -179,9 +179,9 @@ const FeatureCarousel = () => {
                 className="flex-shrink-0 w-[400px] cursor-pointer"
                 onClick={() => navigate(feature.route)}
                 animate={{
-                  scale: isCenter ? 1 : 0.8,
-                  opacity: isCenter ? 1 : 0.3,
-                  filter: isCenter ? 'blur(0px)' : 'blur(2px)'
+                  scale: isCenter ? 1.15 : 0.6,
+                  opacity: isCenter ? 1 : 0.15,
+                  filter: isCenter ? 'blur(0px)' : 'blur(4px)'
                 }}
                 transition={{
                   duration: 0.8,
