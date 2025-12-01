@@ -55,11 +55,11 @@ const premiumVoiceTranslations: TranslationRecord = {
   
   // Premium Voice Practice Page
   premiumVoicePractice: "Premium Voice Practice",
-  practiceConversationalEnglish: "Practice conversational English with GPT-4o Realtime",
+  practiceConversationalEnglish: "Practice conversational skills with Palavox Advanced Voice",
   minutesRemainingThisMonth: "{{minutes}} minutes remaining this month",
   startPremiumSession: "Start Premium Session",
   endSession: "End Session",
-  poweredByGPT4oRealtime: "Powered by GPT-4o Realtime",
+  poweredByGPT4oRealtime: "Powered by Palavox Advanced Voice",
   conversation: "Conversation",
   you: "You",
   aiTutor: "AI Tutor",
@@ -74,19 +74,19 @@ const premiumVoiceTranslations: TranslationRecord = {
   minutesRemainingWarning: "{{minutes}} minute{{plural}} remaining",
   sessionEnded: "Session Ended",
   premiumSessionEndedMessage: "Your 15-minute premium session has ended",
-  premiumVoiceInstructions: "This feature is designed for fluid, dynamic conversations. You get 15 minutes of practice per month. Simply hit the button and say 'Hello, how are you?' The AI tutor will help you practice your English speaking skills.",
+  premiumVoiceInstructions: "This feature is designed for fluid, dynamic conversations using the latest conversational AI models. You get 15 minutes of practice per month. Simply hit the button and start speaking. The AI tutor will help you practice your speaking skills.",
   
   // Language support messages
-  gptLanguageSupport: "GPT-4o Realtime supports 20+ languages. While optimized for English, it provides natural conversations in your language.",
+  gptLanguageSupport: "Palavox Advanced Voice supports every language available in our platform, providing natural conversations in your language.",
   customLanguageSupport: "Custom Realtime AI supports 99+ languages. This system uses specialized multilingual models including Whisper (speech recognition), GPT-4o-mini (conversation), and Azure TTS (voice synthesis).",
   recommendedForYourLanguage: "Recommended for your language",
   multilingualSupport: "MULTILINGUAL",
   customRealtimeDisclaimer: "Each recording is limited to 1 minute. After 3 seconds of silence, your message will be automatically sent.",
   
   // Voice practice page
-  openaiLatestVoiceModel: "OpenAI's latest voice model",
+  openaiLatestVoiceModel: "Palavox Advanced Voice",
   connecting: "Connecting...",
-  startGptSession: "Start GPT Session",
+  startGptSession: "Start Palavox Session",
   startCustomSession: "Start Custom Session",
   exchanges: "exchanges",
   stateListening: "listening",
