@@ -7,25 +7,25 @@ import AnalysisResults from "@/components/transcript-analysis/AnalysisResults";
 import ProgressTimeline from "@/components/transcript-analysis/ProgressTimeline";
 import { Analysis } from "@/components/transcript-analysis/types";
 
-// Demo data: 5 exams with linear progression from 55 to 85
+// Demo data: 5 exams with realistic progression showing improvement
 const demoAnalyses: Analysis[] = [
   {
     id: "exam-1",
-    upload_date: "2024-09-01T10:00:00Z",
-    file_name: "TOEFL_Exam_1.pdf",
-    overall_score: 55,
-    cefr_level: "B1",
-    reading_listening_score: 52,
-    written_production_score: 56,
-    spoken_fluency_score: 57,
-    strengths: ["Basic comprehension", "Simple sentence structure", "Clear pronunciation of familiar words"],
-    weaknesses: ["Limited vocabulary range", "Struggles with complex grammar", "Hesitant speech patterns"],
+    upload_date: "2024-10-08T10:00:00Z",
+    file_name: "palavox-score-report-exam-1.png",
+    overall_score: 26,
+    cefr_level: "A1",
+    reading_listening_score: 25,
+    written_production_score: 10,
+    spoken_fluency_score: 43,
+    strengths: ["Able to form simple sentences in spoken language", "Demonstrates some ability to connect words verbally"],
+    weaknesses: ["Limited vocabulary in written tasks", "Errors in grammar, word order, and word choice", "Inability to connect words in written communication"],
     recommendations: [
-      "Focus on expanding vocabulary through reading",
-      "Practice using subordinate clauses",
-      "Record yourself speaking to identify hesitations"
+      "Use Text Practice at A1 level to improve grammar and vocabulary. Focus on exercises that enhance word order and word choice accuracy.",
+      "Use Voice Practice at A1 level to strengthen spoken fluency and sentence formation.",
+      "Use Pronunciation Practice at A1 level to work on phonetic accuracy."
     ],
-    detailed_feedback: "Shows foundational skills but needs consistent practice to improve fluency and accuracy.",
+    detailed_feedback: "The test taker shows a basic ability to form simple sentences verbally but struggles significantly with written communication. Vocabulary is limited to everyday topics, and prevalent errors in grammar and word order hinder effective communication.",
     detailed_analysis: {
       grammarAnalysis: {
         strengths: ["Correct use of present tense", "Basic sentence formation"],
@@ -51,15 +51,15 @@ const demoAnalyses: Analysis[] = [
   },
   {
     id: "exam-2",
-    upload_date: "2024-10-15T10:00:00Z",
-    file_name: "TOEFL_Exam_2.pdf",
-    overall_score: 62,
-    cefr_level: "B1",
-    reading_listening_score: 60,
-    written_production_score: 63,
-    spoken_fluency_score: 64,
-    strengths: ["Improved vocabulary usage", "Better sentence variety", "More confident speaking"],
-    weaknesses: ["Occasional grammar errors", "Limited use of idioms", "Some pronunciation challenges"],
+    upload_date: "2024-10-27T10:00:00Z",
+    file_name: "score-report-exam-2.png",
+    overall_score: 78,
+    cefr_level: "B2",
+    reading_listening_score: 76,
+    written_production_score: 80,
+    spoken_fluency_score: 78,
+    strengths: ["Strong reading comprehension", "Good written expression", "Fluent conversational ability"],
+    weaknesses: ["Minor grammatical inconsistencies", "Occasional word choice errors"],
     recommendations: [
       "Continue expanding academic vocabulary",
       "Practice complex sentence structures",
@@ -91,13 +91,13 @@ const demoAnalyses: Analysis[] = [
   },
   {
     id: "exam-3",
-    upload_date: "2024-11-20T10:00:00Z",
-    file_name: "TOEFL_Exam_3.pdf",
-    overall_score: 70,
-    cefr_level: "B2",
-    reading_listening_score: 68,
-    written_production_score: 71,
-    spoken_fluency_score: 72,
+    upload_date: "2024-11-02T10:00:00Z",
+    file_name: "palavox-score-report-exam-3.png",
+    overall_score: 69,
+    cefr_level: "B1",
+    reading_listening_score: 67,
+    written_production_score: 70,
+    spoken_fluency_score: 71,
     strengths: ["Solid grammar foundation", "Good vocabulary range", "Fluent conversational skills"],
     weaknesses: ["Complex argument development", "Occasional word choice errors", "Accent affects clarity at times"],
     recommendations: [
@@ -131,12 +131,12 @@ const demoAnalyses: Analysis[] = [
   },
   {
     id: "exam-4",
-    upload_date: "2024-12-28T10:00:00Z",
-    file_name: "TOEFL_Exam_4.pdf",
-    overall_score: 77,
+    upload_date: "2024-11-02T14:00:00Z",
+    file_name: "score-report-exam-4.png",
+    overall_score: 78,
     cefr_level: "B2",
-    reading_listening_score: 76,
-    written_production_score: 78,
+    reading_listening_score: 77,
+    written_production_score: 79,
     spoken_fluency_score: 78,
     strengths: ["Excellent fluency", "Sophisticated vocabulary", "Strong critical thinking"],
     weaknesses: ["Rare grammar slips", "Minor pronunciation issues", "Occasional awkward phrasing"],
@@ -171,13 +171,13 @@ const demoAnalyses: Analysis[] = [
   },
   {
     id: "exam-5",
-    upload_date: "2025-01-30T10:00:00Z",
-    file_name: "TOEFL_Exam_5.pdf",
-    overall_score: 85,
-    cefr_level: "C1",
-    reading_listening_score: 84,
-    written_production_score: 86,
-    spoken_fluency_score: 85,
+    upload_date: "2024-12-15T10:00:00Z",
+    file_name: "palavox-score-report-exam-5.png",
+    overall_score: 82,
+    cefr_level: "B2",
+    reading_listening_score: 81,
+    written_production_score: 83,
+    spoken_fluency_score: 82,
     strengths: ["Near-native fluency", "Extensive vocabulary", "Natural idiomatic usage", "Excellent accuracy"],
     weaknesses: ["Very minor pronunciation variations", "Occasional non-native phrasing"],
     recommendations: [
@@ -262,29 +262,29 @@ const demoMilestones = [
   {
     id: "milestone-1",
     milestone_type: "level_up",
-    previous_value: 55,
-    current_value: 70,
-    improvement_percentage: 27,
-    achievement_date: "2024-11-20T10:00:00Z",
-    description: "Reached B2 Level! Significant improvement in all areas"
+    previous_value: 26,
+    current_value: 78,
+    improvement_percentage: 200,
+    achievement_date: "2024-10-27T10:00:00Z",
+    description: "Massive improvement! Jumped from A1 to B2 level"
   },
   {
     id: "milestone-2",
-    milestone_type: "score_milestone",
-    previous_value: 70,
-    current_value: 85,
-    improvement_percentage: 21,
-    achievement_date: "2025-01-30T10:00:00Z",
-    description: "Achieved C1 Level! Near-native proficiency"
+    milestone_type: "consistent_improvement",
+    previous_value: 26,
+    current_value: 82,
+    improvement_percentage: 215,
+    achievement_date: "2024-12-15T10:00:00Z",
+    description: "Overall improvement of 56 points across 5 exams"
   },
   {
     id: "milestone-3",
-    milestone_type: "consistent_improvement",
-    previous_value: 55,
-    current_value: 85,
-    improvement_percentage: 55,
-    achievement_date: "2025-01-30T10:00:00Z",
-    description: "Overall improvement of 30 points across 5 exams"
+    milestone_type: "score_milestone",
+    previous_value: 69,
+    current_value: 78,
+    improvement_percentage: 13,
+    achievement_date: "2024-11-02T14:00:00Z",
+    description: "Recovered from setback and reached new high"
   }
 ];
 
