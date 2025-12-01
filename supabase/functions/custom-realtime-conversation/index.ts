@@ -362,8 +362,8 @@ TECHNICAL: Use the speak_bilingual function with segments alternating between "e
       
       if (hasSpanish) {
         // Try to split by periods or newlines
-        const parts = textResponse.split(/[.\n]+/).filter(s => s.trim());
-        segments = parts.map(part => {
+        const parts = textResponse.split(/[.\n]+/).filter((s: string) => s.trim());
+        segments = parts.map((part: string) => {
           const isSpanish = spanishPatterns.test(part);
           return {
             lang: isSpanish ? 'es' : 'en',

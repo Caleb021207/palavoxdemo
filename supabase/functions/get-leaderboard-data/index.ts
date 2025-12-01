@@ -229,14 +229,14 @@ serve(async (req) => {
   } catch (error) {
     console.error('❌ Error in get-leaderboard-data:', error);
     console.error('Error details:', {
-      message: error.message,
-      stack: error.stack,
-      name: error.name
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      name: error instanceof Error ? error.name : 'Unknown'
     });
     return new Response(
       JSON.stringify({ 
         success: false,
-        error: error.message || 'An unexpected error occurred',
+        error: error instanceof Error ? error.message : 'An unexpected error occurred',
         message: 'Failed to fetch leaderboard data'
       }),
       {
