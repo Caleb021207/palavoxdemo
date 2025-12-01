@@ -6,7 +6,6 @@ import { useVoiceChat } from "@/components/practice/hooks/useVoiceChat";
 import { useLocalization } from "@/context/LocalizationContext";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
 import VoiceChatControls from "@/components/premium-voice/VoiceChatControls";
-import AuthRequiredPrompt from "@/components/auth/AuthRequiredPrompt";
 import PageHeader from "@/components/premium-voice/PageHeader";
 import BenefitsList from "@/components/premium-voice/BenefitsList";
 
@@ -70,10 +69,6 @@ const PortugueseAdvancedVoiceChat = () => {
 
   if (authLoading || sessionLoading) {
     return <div className="flex justify-center py-8">Loading...</div>;
-  }
-
-  if (!isAuthenticated || !isLoggedIn) {
-    return <AuthRequiredPrompt />;
   }
 
   // Ensure we only show this page for Portuguese language users
