@@ -1,38 +1,26 @@
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mic, Volume2, Sparkles, Headphones, Trophy, RefreshCw, Target, Clock, Zap, ChevronRight } from "lucide-react";
+import { Mic, Volume2, Sparkles, Headphones, Trophy, RefreshCw, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { RealtimeChat } from "@/utils/RealtimeAudioManager";
 import { useUsageLimits } from "@/hooks/useUsageLimits";
 import { useLocalization } from "@/context/LocalizationContext";
 import { supabase } from "@/integrations/supabase/client";
-import { getLanguagePair } from "@/utils/languageUtils";
 import { useGamification } from "@/hooks/useGamification";
 import LevelUpModal from "@/components/gamification/LevelUpModal";
 import { motion } from "framer-motion";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const PremiumVoicePractice = () => {
-  const { t, currentLanguage } = useLocalization();
+  const { t } = useLocalization();
   const { toast } = useToast();
   const [isConnected, setIsConnected] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [isStarting, setIsStarting] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [selectedMode, setSelectedMode] = useState<'gpt' | 'custom'>('gpt');
   const chatRef = useRef<RealtimeChat | null>(null);
   const timerRef = useRef<number | null>(null);
-  
-  // Custom realtime state
-  const [customSessionId, setCustomSessionId] = useState<string | null>(null);
-  const [customElapsedSeconds, setCustomElapsedSeconds] = useState(0);
-  const [customState, setCustomState] = useState<'idle' | 'listening' | 'processing' | 'speaking'>('idle');
-  const [customMessages, setCustomMessages] = useState<Array<{ role: string; content: string }>>([]);
-  const customChatRef = useRef<any | null>(null);
-  const customTimerRef = useRef<number | null>(null);
   
   const { premiumVoiceMinutesRemaining, checkCanStartPremiumVoiceSession, trackPremiumVoiceSession } = useUsageLimits();
   const { awardXP, showLevelUpModal, setShowLevelUpModal, levelUpData, progression } = useGamification();
@@ -40,9 +28,7 @@ const PremiumVoicePractice = () => {
   useEffect(() => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
-      if (customTimerRef.current) clearInterval(customTimerRef.current);
       chatRef.current?.disconnect();
-      customChatRef.current?.disconnect();
     };
   }, []);
 
@@ -66,8 +52,8 @@ const PremiumVoicePractice = () => {
     }
   };
 
-  const startConversation = async (selectedProvider: 'gpt' | 'gemini') => {
-    if (isStarting || isConnected || customSessionId) return;
+  const startConversation = async () => {
+    if (isStarting || isConnected) return;
 
     setIsStarting(true);
     try {
@@ -82,7 +68,7 @@ const PremiumVoicePractice = () => {
         return;
       }
 
-      chatRef.current = new RealtimeChat(handleMessage, setIsSpeaking, selectedProvider);
+      chatRef.current = new RealtimeChat(handleMessage, setIsSpeaking, 'gpt');
       await chatRef.current.init();
       
       const newSessionId = crypto.randomUUID();
@@ -110,106 +96,6 @@ const PremiumVoicePractice = () => {
     } finally {
       setIsStarting(false);
     }
-  };
-
-  const startCustomSession = async () => {
-    if (isStarting || customSessionId || isConnected) return;
-
-    setIsStarting(true);
-    try {
-      const { CustomRealtimeManager } = await import("@/utils/CustomRealtimeManager");
-      const { native } = getLanguagePair(currentLanguage);
-      
-      const manager = new CustomRealtimeManager(
-        'english',
-        native.toLowerCase(),
-        currentLanguage,
-        'intermediate',
-        (state) => setCustomState(state),
-        (message) => {
-          setCustomMessages(prev => [...prev, message]);
-        },
-        (error) => {
-          toast({
-            title: t("error"),
-            description: error,
-            variant: "destructive",
-          });
-        }
-      );
-
-      await manager.initialize();
-      customChatRef.current = manager;
-      manager.clearHistory();
-
-      const newSessionId = crypto.randomUUID();
-      setCustomSessionId(newSessionId);
-      setCustomElapsedSeconds(0);
-
-      customTimerRef.current = window.setInterval(() => {
-        setCustomElapsedSeconds(prev => prev + 1);
-      }, 1000);
-
-      await manager.startListening();
-
-      toast({
-        title: "Connected",
-        description: "Custom realtime session started",
-      });
-    } catch (error) {
-      console.error('Error starting custom session:', error);
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to start custom session",
-        variant: "destructive",
-      });
-      setCustomSessionId(null);
-    } finally {
-      setIsStarting(false);
-    }
-  };
-
-  const endCustomSession = async () => {
-    if (customTimerRef.current) {
-      clearInterval(customTimerRef.current);
-      customTimerRef.current = null;
-    }
-
-    const minutesUsed = Math.ceil(customElapsedSeconds / 60);
-
-    if (minutesUsed > 0 && customMessages.length > 0) {
-      await awardXP('realtime_ai');
-    }
-
-    if (customChatRef.current && minutesUsed > 0 && customSessionId) {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user?.id) {
-          await supabase.from('usage_tracking').insert({
-            student_id: user.id,
-            session_type: 'custom_realtime_practice',
-            session_id: customSessionId,
-            started_at: new Date(Date.now() - customElapsedSeconds * 1000).toISOString(),
-            ended_at: new Date().toISOString(),
-            minutes_used: minutesUsed,
-            messages_count: customMessages.length,
-          });
-        }
-      } catch (error) {
-        console.error('Error tracking custom usage:', error);
-      }
-    }
-
-    customChatRef.current?.disconnect();
-    setCustomSessionId(null);
-    setCustomElapsedSeconds(0);
-    setCustomState('idle');
-    setCustomMessages([]);
-
-    toast({
-      title: "Session Saved",
-      description: `Used ${minutesUsed} minute${minutesUsed !== 1 ? 's' : ''} of custom realtime`,
-    });
   };
 
   const endConversation = async () => {
@@ -302,8 +188,6 @@ const PremiumVoicePractice = () => {
     }
   }, [minutesRemaining, isConnected]);
 
-  const isSessionActive = isConnected || customSessionId !== null;
-
   return (
     <>
       {levelUpData && (
@@ -366,14 +250,14 @@ const PremiumVoicePractice = () => {
             </div>
           </motion.div>
 
-          {!isSessionActive ? (
+          {!isConnected ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, staggerChildren: 0.1 }}
               className="grid gap-6 md:grid-cols-2"
             >
-              {/* Mode Selector Card */}
+              {/* Start Practice Card */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -385,53 +269,23 @@ const PremiumVoicePractice = () => {
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none opacity-0 hover:opacity-100 transition-opacity" />
                   <CardHeader className="relative z-10">
                     <CardTitle className="flex items-center gap-2">
-                      <Target className="h-5 w-5 text-primary" />
-                      {t("selectComplexityLevel")}
+                      <Sparkles className="h-5 w-5 text-primary" />
+                      Palavox Advanced Voice
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Choose your practice mode
+                      {t('openaiLatestVoiceModel')}
                     </p>
                   </CardHeader>
                   <CardContent className="space-y-6 relative z-10">
-                    <RadioGroup value={selectedMode} onValueChange={(value: 'gpt' | 'custom') => setSelectedMode(value)}>
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        className="flex items-center space-x-3 p-4 rounded-lg border-2 border-primary/20 hover:border-primary/40 transition-all cursor-pointer bg-gradient-to-r from-primary/5 to-transparent"
-                        onClick={() => setSelectedMode('gpt')}
-                      >
-                        <RadioGroupItem value="gpt" id="gpt" />
-                        <Label htmlFor="gpt" className="flex-1 cursor-pointer">
-                          <div className="flex items-center gap-2">
-                            <Sparkles className="w-5 h-5 text-primary" />
-                            <span className="font-semibold">Palavox Advanced Voice</span>
-                          </div>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {t('openaiLatestVoiceModel')}
-                          </p>
-                        </Label>
-                      </motion.div>
-
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        className="flex items-center space-x-3 p-4 rounded-lg border-2 border-accent/20 hover:border-accent/40 transition-all cursor-pointer bg-gradient-to-r from-accent/5 to-transparent"
-                        onClick={() => setSelectedMode('custom')}
-                      >
-                        <RadioGroupItem value="custom" id="custom" />
-                        <Label htmlFor="custom" className="flex-1 cursor-pointer">
-                          <div className="flex items-center gap-2">
-                            <Zap className="w-5 h-5 text-accent" />
-                            <span className="font-semibold">Palavox Custom AI</span>
-                          </div>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            Multilingual support
-                          </p>
-                        </Label>
-                      </motion.div>
-                    </RadioGroup>
+                    <div className="p-4 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl border border-blue-500/20">
+                      <p className="text-sm text-muted-foreground">
+                        {t('gptLanguageSupport')}
+                      </p>
+                    </div>
 
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                       <Button 
-                        onClick={() => selectedMode === 'gpt' ? startConversation('gpt') : startCustomSession()}
+                        onClick={startConversation}
                         disabled={isStarting}
                         className="w-full py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
                       >
@@ -442,24 +296,12 @@ const PremiumVoicePractice = () => {
                           </span>
                         ) : (
                           <span className="flex items-center gap-2">
-                            {selectedMode === 'gpt' ? t('startGptSession') : t('startCustomSession')}
-                            <ChevronRight className="h-5 w-5" />
+                            <Mic className="h-5 w-5" />
+                            {t('startExercise')}
                           </span>
                         )}
                       </Button>
                     </motion.div>
-
-                    {/* Language Support Info */}
-                    <div className="p-4 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl border border-blue-500/20">
-                      <p className="text-sm text-muted-foreground">
-                        {selectedMode === 'gpt' ? t('gptLanguageSupport') : t('customLanguageSupport')}
-                      </p>
-                      {selectedMode === 'custom' && (
-                        <p className="text-xs text-muted-foreground mt-2">
-                          {t('customRealtimeDisclaimer')}
-                        </p>
-                      )}
-                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -477,17 +319,17 @@ const PremiumVoicePractice = () => {
                   <CardHeader className="relative z-10">
                     <CardTitle className="flex items-center gap-2">
                       <Headphones className="h-5 w-5 text-green-600" />
-                      Practice Tips
+                      {t('pronunciationPracticeTips')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="relative z-10">
                     <ul className="space-y-4">
                       {[
-                        { icon: Mic, text: "Speak clearly and naturally" },
-                        { icon: Volume2, text: "Practice in a quiet environment" },
-                        { icon: RefreshCw, text: "Don't be afraid to make mistakes" },
-                        { icon: Trophy, text: "Consistent practice improves fluency" },
-                        { icon: Sparkles, text: "The AI adapts to your level" }
+                        { icon: Mic, text: t('listenCarefullyTip') },
+                        { icon: Volume2, text: t('payAttentionToStressTip') },
+                        { icon: RefreshCw, text: t('practiceDifficultSoundsTip') },
+                        { icon: Mic, text: t('recordYourselfTip') },
+                        { icon: Trophy, text: t('bePatientTip') }
                       ].map((tip, idx) => (
                         <motion.li
                           key={idx}
@@ -518,9 +360,7 @@ const PremiumVoicePractice = () => {
                   <CardTitle className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
                       <Sparkles className="h-5 w-5 text-primary" />
-                      <span className="text-lg">
-                        {isConnected ? 'Palavox Advanced Voice' : 'Palavox Custom AI'}
-                      </span>
+                      <span className="text-lg">Palavox Advanced Voice</span>
                     </div>
                     <motion.span
                       initial={{ scale: 0 }}
@@ -528,7 +368,7 @@ const PremiumVoicePractice = () => {
                       className="text-sm font-medium px-4 py-2 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 backdrop-blur-sm flex items-center gap-2"
                     >
                       <Clock className="h-4 w-4" />
-                      {formatTime(isConnected ? elapsedSeconds : customElapsedSeconds)}
+                      {formatTime(elapsedSeconds)}
                     </motion.span>
                   </CardTitle>
                 </CardHeader>
@@ -538,51 +378,22 @@ const PremiumVoicePractice = () => {
                   <div className="flex items-center justify-center gap-3 p-6 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl border border-primary/20">
                     <motion.div
                       animate={{
-                        scale: (isConnected && isSpeaking) || (customSessionId && customState === 'speaking') ? [1, 1.2, 1] : 1,
+                        scale: isSpeaking ? [1, 1.2, 1] : 1,
                       }}
-                      transition={{ repeat: (isConnected && isSpeaking) || (customSessionId && customState === 'speaking') ? Infinity : 0, duration: 1 }}
+                      transition={{ repeat: isSpeaking ? Infinity : 0, duration: 1 }}
                       className={`w-3 h-3 rounded-full ${
-                        (isConnected && isSpeaking) || (customSessionId && customState === 'speaking')
-                          ? 'bg-green-500'
-                          : 'bg-blue-500'
+                        isSpeaking ? 'bg-green-500' : 'bg-blue-500'
                       }`}
                     />
                     <span className="text-lg font-medium">
-                      {isConnected && (isSpeaking ? t('stateSpeaking') : t('stateListening'))}
-                      {customSessionId && (
-                        customState === 'listening' ? t('stateListening') :
-                        customState === 'processing' ? t('stateProcessing') :
-                        customState === 'speaking' ? t('stateSpeaking') :
-                        t('stateIdle')
-                      )}
+                      {isSpeaking ? t('stateSpeaking') : t('stateListening')}
                     </span>
                   </div>
-
-                  {/* Conversation Display */}
-                  {customMessages.length > 0 && (
-                    <div className="max-h-60 overflow-y-auto space-y-3 p-4 bg-gradient-to-br from-card/50 to-transparent rounded-xl border border-primary/10">
-                      {customMessages.map((msg, idx) => (
-                        <div
-                          key={idx}
-                          className={`p-3 rounded-lg ${
-                            msg.role === 'user'
-                              ? 'bg-primary/10 ml-8'
-                              : 'bg-accent/10 mr-8'
-                          }`}
-                        >
-                          <p className="text-sm font-medium mb-1">
-                            {msg.role === 'user' ? t('you') : t('aiTutor')}
-                          </p>
-                          <p className="text-sm">{msg.content}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
 
                   {/* End Session Button */}
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <Button 
-                      onClick={isConnected ? endConversation : endCustomSession}
+                      onClick={endConversation}
                       variant="destructive"
                       className="w-full py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
                     >
