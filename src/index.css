@@ -48,25 +48,25 @@
 
   .dark {
     --background: 217 67% 13%;  /* #0B1C36 - Primary navy */
-    --foreground: 0 0% 100%;  /* WHITE instead of muted - for better contrast */
+    --foreground: 0 0% 98%;  /* Near-WHITE for maximum contrast */
 
     --card: 217 37% 18%;  /* #1D2B40 - Darker navy */
-    --card-foreground: 0 0% 100%;  /* WHITE - for better contrast */
+    --card-foreground: 0 0% 98%;  /* Near-WHITE for maximum contrast */
 
     --popover: 217 37% 18%;  /* #1D2B40 - Darker navy */
-    --popover-foreground: 0 0% 100%;  /* WHITE - for better contrast */
+    --popover-foreground: 0 0% 98%;  /* Near-WHITE for maximum contrast */
 
-    --primary: 209 100% 82%;  /* #A3D5FF - Sky blue */
+    --primary: 209 100% 75%;  /* Brighter blue for better visibility */
     --primary-foreground: 217 67% 13%;  /* #0B1C36 - Primary navy */
 
     --secondary: 217 30% 32%;  /* #3A4E68 - Slate blue */
-    --secondary-foreground: 0 0% 100%;  /* WHITE - for better contrast */
+    --secondary-foreground: 0 0% 98%;  /* Near-WHITE for maximum contrast */
 
     --muted: 217 30% 22%;  /* Darker muted background */
-    --muted-foreground: 0 0% 95%;  /* LIGHTER gray for muted text - better contrast */
+    --muted-foreground: 210 40% 85%;  /* Much lighter and more saturated for visibility */
 
-    --accent: 158 58% 59%;  /* #57D8A1 - Teal variant */
-    --accent-foreground: 0 0% 100%;  /* WHITE - for better contrast */
+    --accent: 158 70% 65%;  /* Brighter, more saturated teal */
+    --accent-foreground: 217 67% 13%;  /* Dark navy for contrast */
 
     --destructive: 0 62.8% 30.6%;  /* Keep existing */
     --destructive-foreground: 0 0% 98%;  /* Keep existing */
@@ -149,7 +149,12 @@
 
   /* Gradient utilities */
   .gradient-text {
-    @apply bg-gradient-to-r from-[#A3D5FF] to-[#57D8A1] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#B8E0FF] to-[#6FFFB0] bg-clip-text text-transparent;
+  }
+  
+  /* Dark mode gradient override for better visibility */
+  .dark .gradient-text {
+    @apply bg-gradient-to-r from-[#D0EAFF] to-[#85FFB8] bg-clip-text text-transparent;
   }
   
   /* Glassmorphism effects */
