@@ -1,3 +1,7 @@
 // Demo stub - not used in carousel demo
-const StudentProfile = (_props: any) => null;
+interface StudentProfileProps {
+  profile: any;
+}
+
+const StudentProfile = (_props: StudentProfileProps) => null;
 export default StudentProfile;

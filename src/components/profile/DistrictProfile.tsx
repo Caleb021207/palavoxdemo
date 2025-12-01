@@ -1,3 +1,7 @@
 // Demo stub - not used in carousel demo
-const DistrictProfile = () => null;
+interface DistrictProfileProps {
+  profile: any;
+}
+
+const DistrictProfile = (_props: DistrictProfileProps) => null;
 export default DistrictProfile;

@@ -1,3 +1,7 @@
 // Demo stub - not used in carousel demo
-const AdminProfile = () => null;
+interface AdminProfileProps {
+  profile: any;
+}
+
+const AdminProfile = (_props: AdminProfileProps) => null;
 export default AdminProfile;
