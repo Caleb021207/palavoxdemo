@@ -70,7 +70,7 @@ export const TopNavigationDropdown = ({
               animate={{ opacity: 1, y: 0, scaleY: 1 }}
               exit={{ opacity: 0, y: -10, scaleY: 0.95 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="fixed left-0 right-0 top-[120px] bg-background border-b shadow-lg z-50 overflow-hidden"
+              className="fixed left-0 right-0 top-[120px] bg-background/95 backdrop-blur-md border-b shadow-lg z-50 overflow-hidden"
               style={{ transformOrigin: 'top' }}
             >
               {/* Full Width Navigation Grid */}
