@@ -14,7 +14,261 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      access_code_attempts: {
+        Row: {
+          attempted_at: string | null
+          code: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          attempted_at?: string | null
+          code: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          attempted_at?: string | null
+          code?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      access_codes: {
+        Row: {
+          class_id: string | null
+          code: string
+          created_at: string | null
+          expires_at: string | null
+          id: string
+        }
+        Insert: {
+          class_id?: string | null
+          code: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+        }
+        Update: {
+          class_id?: string | null
+          code?: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_codes_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_override_logs: {
+        Row: {
+          action: string
+          admin_id: string | null
+          created_at: string | null
+          id: string
+          target_user_id: string | null
+        }
+        Insert: {
+          action: string
+          admin_id?: string | null
+          created_at?: string | null
+          id?: string
+          target_user_id?: string | null
+        }
+        Update: {
+          action?: string
+          admin_id?: string | null
+          created_at?: string | null
+          id?: string
+          target_user_id?: string | null
+        }
+        Relationships: []
+      }
+      certification_attempts: {
+        Row: {
+          certification_type: string
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          level: string | null
+          score: number
+          user_id: string | null
+        }
+        Insert: {
+          certification_type: string
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          level?: string | null
+          score: number
+          user_id?: string | null
+        }
+        Update: {
+          certification_type?: string
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          level?: string | null
+          score?: number
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      classes: {
+        Row: {
+          class_code: string | null
+          created_at: string | null
+          id: string
+          name: string
+          school_name: string | null
+          teacher_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          class_code?: string | null
+          created_at?: string | null
+          id?: string
+          name: string
+          school_name?: string | null
+          teacher_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          class_code?: string | null
+          created_at?: string | null
+          id?: string
+          name?: string
+          school_name?: string | null
+          teacher_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string
+          role: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string
+          role?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string
+          role?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      student_enrollments: {
+        Row: {
+          class_id: string | null
+          enrolled_at: string | null
+          id: string
+          student_id: string | null
+        }
+        Insert: {
+          class_id?: string | null
+          enrolled_at?: string | null
+          id?: string
+          student_id?: string | null
+        }
+        Update: {
+          class_id?: string | null
+          enrolled_at?: string | null
+          id?: string
+          student_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_enrollments_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_metrics: {
+        Row: {
+          class_id: string | null
+          id: string
+          last_updated: string | null
+          progress_percentage: number | null
+          student_id: string | null
+          test_score: number | null
+        }
+        Insert: {
+          class_id?: string | null
+          id?: string
+          last_updated?: string | null
+          progress_percentage?: number | null
+          student_id?: string | null
+          test_score?: number | null
+        }
+        Update: {
+          class_id?: string | null
+          id?: string
+          last_updated?: string | null
+          progress_percentage?: number | null
+          student_id?: string | null
+          test_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_metrics_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_usage_limits: {
+        Row: {
+          daily_limit: number | null
+          id: string
+          last_reset: string | null
+          used_today: number | null
+          user_id: string | null
+        }
+        Insert: {
+          daily_limit?: number | null
+          id?: string
+          last_reset?: string | null
+          used_today?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          daily_limit?: number | null
+          id?: string
+          last_reset?: string | null
+          used_today?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
