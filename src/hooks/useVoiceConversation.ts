@@ -18,16 +18,23 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
   const sendMessage = useCallback(async (text: string, speakResponse: (text: string) => Promise<void>) => {
     if (!text.trim()) return;
 
-    // Add user message to history
+    // Create user message and optimistically add to UI immediately
     const userMessage: Message = { role: "user", content: text };
-    
+
+    // Show user message right away in the conversation
+    setConversationHistory(prev => [...prev, userMessage]);
+
+    // Prepare updated history to send to the backend
+    const updatedApiHistory: Message[] = [...apiConversationHistory, userMessage];
+    setApiConversationHistory(updatedApiHistory);
+
     setIsLoading(true);
 
     try {
       // Call chat-with-tutor edge function
       console.log("Sending message to chat-with-tutor:", {
         message: text,
-        historyLength: apiConversationHistory.length,
+        historyLength: updatedApiHistory.length,
         conversationLevel,
         correctGrammar
       });
@@ -35,7 +42,7 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
       const { data, error } = await supabase.functions.invoke("chat-with-tutor", {
         body: {
           message: text,
-          conversationHistory: apiConversationHistory,
+          conversationHistory: updatedApiHistory,
           conversationLevel: conversationLevel || "intermediate",
           correctGrammar: correctGrammar || false,
           targetLanguage: "english",
@@ -64,9 +71,9 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
         content: replyContent
       };
 
-      // Update histories with both user message and assistant response
-      setConversationHistory(prev => [...prev, userMessage, assistantMessage]);
-      setApiConversationHistory(prev => [...prev, userMessage, assistantMessage]);
+      // Append assistant message after it arrives
+      setConversationHistory(prev => [...prev, assistantMessage]);
+      setApiConversationHistory(prev => [...prev, assistantMessage]);
 
       console.log("About to call TTS for:", replyContent.substring(0, 50));
       
@@ -76,10 +83,7 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
     } catch (error) {
       console.error("Chat error:", error);
       toast.error("Failed to get response from AI");
-      
-      // Still add user message to history even if request failed
-      setConversationHistory(prev => [...prev, userMessage]);
-      setApiConversationHistory(prev => [...prev, userMessage]);
+      // User message is already in history; no further updates needed here
     } finally {
       setIsLoading(false);
     }
