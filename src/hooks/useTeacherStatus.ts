@@ -1,14 +1,24 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useDemoMode } from '@/context/DemoContext';
 
 export const useTeacherStatus = () => {
+  const { isDemoMode, demoTeacherProfile } = useDemoMode();
   const [isTeacher, setIsTeacher] = useState(false);
   const [teacherId, setTeacherId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkTeacherStatus = async () => {
+      // Return demo teacher status if in demo mode
+      if (isDemoMode && demoTeacherProfile) {
+        setIsTeacher(true);
+        setTeacherId(demoTeacherProfile.id);
+        setIsLoading(false);
+        return;
+      }
+      
       try {
         const { data: session } = await supabase.auth.getSession();
         
