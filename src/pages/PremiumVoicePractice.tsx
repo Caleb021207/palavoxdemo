@@ -174,7 +174,7 @@ const PremiumVoicePractice = () => {
                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
                           1
                         </div>
-                        <span className="flex-1 text-base">Click "Start Practicing" below to begin your session</span>
+                        <span className="flex-1 text-base">Click "Start GPT Session" below to begin your conversation</span>
                       </motion.li>
                       <motion.li
                         initial={{ opacity: 0, x: -10 }}
@@ -185,7 +185,7 @@ const PremiumVoicePractice = () => {
                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
                           2
                         </div>
-                        <span className="flex-1 text-base">Speak naturally in English - the AI will listen and understand you</span>
+                        <span className="flex-1 text-base">Speak naturally - the AI listens and responds in real-time</span>
                       </motion.li>
                       <motion.li
                         initial={{ opacity: 0, x: -10 }}
@@ -196,7 +196,7 @@ const PremiumVoicePractice = () => {
                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
                           3
                         </div>
-                        <span className="flex-1 text-base">Have a real conversation - the AI responds in real-time like a native speaker</span>
+                        <span className="flex-1 text-base">Have a real conversation to practice fluency and vocabulary</span>
                       </motion.li>
                       <motion.li
                         initial={{ opacity: 0, x: -10 }}
@@ -207,7 +207,18 @@ const PremiumVoicePractice = () => {
                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
                           4
                         </div>
-                        <span className="flex-1 text-base">Practice fluency, grammar, and vocabulary through natural dialogue</span>
+                        <span className="flex-1 text-base">AI helps with grammar corrections in real-time</span>
+                      </motion.li>
+                      <motion.li
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.9 }}
+                        className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-blue-500/10 to-transparent hover:from-blue-500/20 transition-all"
+                      >
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
+                          5
+                        </div>
+                        <span className="flex-1 text-base">🌍 The AI is multilingual! Ask it to speak in any language you need - Spanish, French, Mandarin, or any other language</span>
                       </motion.li>
                     </ul>
                   </CardContent>
@@ -222,79 +233,43 @@ const PremiumVoicePractice = () => {
                 whileHover={{ scale: 1.02 }}
               >
                 <Card className="glass border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 hover:border-primary/40 transition-all">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-center justify-center">
-                      <Sparkles className="h-5 w-5 text-primary" />
-                      Powered by Palavox Advanced Voice
-                    </CardTitle>
-                    <p className="text-sm text-muted-foreground text-center">
-                      Real-time AI conversation with natural voice responses
-                    </p>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    {/* Conversation Starters */}
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
-                        <MessageCircle className="h-4 w-4" />
-                        Try starting with:
-                      </h3>
-                      <div className="grid gap-2">
-                        {[
-                          "Tell me about your day",
-                          "What's your favorite hobby?",
-                          "Describe your hometown",
-                          "What are you learning right now?"
-                        ].map((starter, idx) => (
-                          <motion.div
-                            key={idx}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.6 + idx * 0.1 }}
-                            className="p-3 rounded-lg bg-gradient-to-r from-primary/10 to-transparent border border-primary/20 flex items-center gap-2 hover:from-primary/20 transition-all"
-                          >
-                            <Volume2 className="h-4 w-4 text-primary flex-shrink-0" />
-                            <span className="text-sm">{starter}</span>
-                          </motion.div>
-                        ))}
-                      </div>
+                  <CardContent className="py-8 space-y-6">
+                    {/* Header */}
+                    <div className="text-center space-y-1">
+                      <h2 className="text-2xl font-bold text-foreground">Palavox Realtime</h2>
+                      <p className="text-muted-foreground">Palavox Advanced Conversational AI</p>
                     </div>
 
-                    <motion.div 
-                      whileHover={{ scale: 1.02 }} 
-                      whileTap={{ scale: 0.98 }}
+                    {/* Circle Mic Icon */}
+                    <div className="flex justify-center">
+                      <motion.div className="relative">
+                        <motion.div
+                          animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
+                          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                          className="absolute inset-0 bg-primary/30 rounded-full blur-xl"
+                        />
+                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 border-2 border-primary/40 flex items-center justify-center relative">
+                          <Mic className="h-10 w-10 text-primary" />
+                        </div>
+                      </motion.div>
+                    </div>
+
+                    {/* Start GPT Session Button */}
+                    <Button
+                      onClick={startConversation}
+                      disabled={isStarting}
+                      size="lg"
+                      className="w-full py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
                     >
-                      <Button 
-                        onClick={startConversation}
-                        disabled={isStarting}
-                        className="w-full py-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-all relative overflow-hidden group"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        {isStarting ? (
-                          <span className="flex items-center gap-3 relative z-10">
-                            <RefreshCw className="h-5 w-5 animate-spin" />
-                            Connecting...
-                          </span>
-                        ) : (
-                          <span className="flex items-center gap-3 relative z-10">
-                            <motion.div
-                              animate={{
-                                scale: [1, 1.2, 1],
-                              }}
-                              transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                ease: "easeInOut"
-                              }}
-                              className="relative"
-                            >
-                              <div className="absolute inset-0 bg-primary/30 rounded-full blur-md animate-pulse" />
-                              <Mic className="h-6 w-6 relative z-10" />
-                            </motion.div>
-                            <span>Start Practicing</span>
-                          </span>
-                        )}
-                      </Button>
-                    </motion.div>
+                      {isStarting ? (
+                        <span className="flex items-center gap-2">
+                          <RefreshCw className="h-5 w-5 animate-spin" />
+                          Connecting...
+                        </span>
+                      ) : (
+                        "Start GPT Session"
+                      )}
+                    </Button>
                   </CardContent>
                 </Card>
               </motion.div>
