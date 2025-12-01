@@ -13,7 +13,6 @@ import { getLanguagePair } from "@/utils/languageUtils";
 import { useLocalization } from "@/context/LocalizationContext";
 import { getEnglishOnlyMessage } from "@/utils/englishOnlyMessages";
 import { supabase } from "@/integrations/supabase/client";
-import AuthRequiredPrompt from "@/components/auth/AuthRequiredPrompt";
 import type { User } from "@supabase/supabase-js";
 import { motion } from "framer-motion";
 import { GradientBlob } from "@/components/ui/decorative-elements";
@@ -22,6 +21,7 @@ import XPNotification from "@/components/ui/xp-notification";
 import LevelUpModal from "@/components/gamification/LevelUpModal";
 import { useGamification } from "@/hooks/useGamification";
 import { useXPNotification } from "@/contexts/XPNotificationContext";
+import { useDemoMode } from "@/context/DemoContext";
 
 // Importing components
 import VoiceChatHeader from "@/components/voice-chat/VoiceChatHeader";
@@ -42,6 +42,7 @@ import { VoiceChatProps } from "@/types/voiceChat";
 import { Message } from "@/types/chat";
 
 const VoiceChat: React.FC<VoiceChatProps> = () => {
+  const { isDemoMode, demoTeacherProfile } = useDemoMode();
   const { currentLanguage, t } = useLocalization();
   const { native, practice } = getLanguagePair(currentLanguage);
   const { toast } = useToast();
@@ -52,6 +53,16 @@ const VoiceChat: React.FC<VoiceChatProps> = () => {
 
   // Check authentication status
   useEffect(() => {
+    // Always authenticated in demo mode
+    if (isDemoMode && demoTeacherProfile) {
+      setUser({
+        id: demoTeacherProfile.id,
+        email: demoTeacherProfile.email,
+      } as User);
+      setIsCheckingAuth(false);
+      return;
+    }
+    
     const checkAuth = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
@@ -65,7 +76,7 @@ const VoiceChat: React.FC<VoiceChatProps> = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [isDemoMode, demoTeacherProfile]);
 
   // Read URL parameters for deep linking
   const searchParams = new URLSearchParams(window.location.search);
@@ -178,11 +189,6 @@ const VoiceChat: React.FC<VoiceChatProps> = () => {
         <p className="text-muted-foreground">{t("loading") || "Loading..."}</p>
       </div>
     );
-  }
-
-  // Show auth prompt if not logged in
-  if (!user) {
-    return <AuthRequiredPrompt />;
   }
 
   return (

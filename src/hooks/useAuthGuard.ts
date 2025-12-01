@@ -2,13 +2,22 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+import { useDemoMode } from '@/context/DemoContext';
 
 export const useAuthGuard = (redirectTo: string = '/') => {
+  const { isDemoMode } = useDemoMode();
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Always authenticated in demo mode
+    if (isDemoMode) {
+      setIsAuthenticated(true);
+      setIsLoading(false);
+      return;
+    }
+    
     const checkAuth = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
@@ -40,7 +49,7 @@ export const useAuthGuard = (redirectTo: string = '/') => {
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate, redirectTo]);
+  }, [navigate, redirectTo, isDemoMode]);
 
   return { isAuthenticated, isLoading };
 };
