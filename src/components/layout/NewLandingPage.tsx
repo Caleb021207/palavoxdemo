@@ -1,106 +1,24 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Target, BookOpen, Headphones, Mic, Trophy } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { useTheme } from 'next-themes';
 import { useNavigate } from 'react-router-dom';
-import { SwipeUpPanel } from '@/components/ui/swipe-up-panel';
-import AuthDialog from '@/components/home/AuthDialog';
-import LanguageSelectionCard from '@/components/home/LanguageSelectionCard';
 import { useLocalization } from '@/context/LocalizationContext';
-import { useAuthFlow } from '@/hooks/useAuthFlow';
-import { useToast } from '@/hooks/use-toast';
-import { hasStudyMaterials } from '@/utils/languageUtils';
-import { secureStorage } from '@/utils/security/dataEncryption';
-import { supabase } from '@/integrations/supabase/client';
 
 const NewLandingPage = () => {
   const { theme } = useTheme();
-  const { t, setCurrentLanguage } = useLocalization();
-  const { toast } = useToast();
+  const { t } = useLocalization();
   const navigate = useNavigate();
-  
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
-  const [nativeLanguage, setNativeLanguage] = useState("");
-  const [targetLanguage, setTargetLanguage] = useState("");
-  const [studyMaterialsAvailable, setStudyMaterialsAvailable] = useState(true);
 
+  // Auto-redirect to profile (demo teacher dashboard)
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setIsSignedIn(!!session?.user);
-    };
+    const timer = setTimeout(() => {
+      navigate('/profile');
+    }, 2000);
     
-    checkAuth();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setIsSignedIn(!!session?.user);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleAuthSuccess = () => {
-    console.log('Auth success - navigating to profile');
-    setIsAuthDialogOpen(false);
-    navigate('/profile');
-  };
-
-  const {
-    isLogin,
-    setIsLogin,
-    email,
-    setEmail,
-    password,
-    setPassword,
-    isLoading,
-    handleEmailAuth,
-    authError,
-    retryCount
-  } = useAuthFlow(handleAuthSuccess);
-
-  const handleLanguageSelection = () => {
-    if (nativeLanguage && targetLanguage) {
-      secureStorage.setItem("nativeLanguage", nativeLanguage, false);
-      secureStorage.setItem("targetLanguage", targetLanguage, false);
-      
-      const languagePair = `${nativeLanguage}-${targetLanguage}`;
-      sessionStorage.setItem("languagePair", languagePair);
-      
-      const materialsAvailable = hasStudyMaterials(nativeLanguage, targetLanguage);
-      sessionStorage.setItem("hasStudyMaterials", materialsAvailable.toString());
-      
-      setCurrentLanguage(nativeLanguage);
-      
-      toast({
-        title: t("languagePreferencesSaved"),
-        description: t("learningLanguageFromNative", {
-          targetLanguage: t(`languages.${targetLanguage}`),
-          nativeLanguage: t(`languages.${nativeLanguage}`)
-        }),
-      });
-      
-      setIsPanelOpen(false);
-      
-      // If user is not signed in, show auth dialog after toast
-      if (!isSignedIn) {
-        setTimeout(() => {
-          setIsLogin(true);
-          setIsAuthDialogOpen(true);
-        }, 1000);
-      } else {
-        window.location.reload();
-      }
-    } else {
-      toast({
-        title: t("pleaseSelectBothLanguages"),
-        description: t("youNeedToSelectBoth"),
-        variant: "destructive",
-      });
-    }
-  };
+    return () => clearTimeout(timer);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex flex-col items-center justify-center p-6 relative overflow-hidden">
@@ -222,119 +140,41 @@ const NewLandingPage = () => {
           {t("yourPersonalAICompanion")}
         </motion.p>
 
-        {/* Call to Action Buttons with enhanced animations */}
+        {/* Loading message */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
           className="flex flex-col items-center gap-6 mt-12"
         >
-          {/* Primary CTA with particle effect on hover */}
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative"
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.5, 1, 0.5]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="relative px-12 py-5 bg-gradient-to-r from-primary via-palavox-teal to-accent text-white rounded-2xl font-bold text-xl shadow-lg overflow-hidden"
           >
-            <motion.button
-              onClick={() => {
-                if (isSignedIn) {
-                  navigate('/practice');
-                } else {
-                  setIsPanelOpen(true);
-                }
-              }}
-              className="relative px-12 py-5 bg-gradient-to-r from-primary via-palavox-teal to-accent text-white rounded-2xl font-bold text-xl shadow-lg hover:shadow-2xl transition-all overflow-hidden group"
-            >
-              {/* Animated shine effect */}
-              <motion.div
-                animate={{
-                  x: ['-100%', '200%'],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
-              />
-              <span className="relative z-10 flex items-center gap-2">
-                <Sparkles className="h-5 w-5" />
-                {t("startPracticing")}
-              </span>
-            </motion.button>
+            <span className="relative z-10 flex items-center gap-2">
+              <Sparkles className="h-5 w-5" />
+              Loading Demo...
+            </span>
           </motion.div>
 
-          {/* Secondary info with animated icon */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            className="text-sm text-muted-foreground flex items-center gap-2"
+            className="text-sm text-muted-foreground"
           >
-            {t("practiceYourLanguageSkills")}
+            Preparing your teacher dashboard
           </motion.p>
         </motion.div>
       </motion.div>
-
-      {/* Swipe Up Panel */}
-      <SwipeUpPanel
-        isOpen={isPanelOpen}
-        onOpenChange={setIsPanelOpen}
-      >
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-center mb-6">{t("getStarted")}</h2>
-          
-          <LanguageSelectionCard
-            nativeLanguage={nativeLanguage}
-            targetLanguage={targetLanguage}
-            setNativeLanguage={setNativeLanguage}
-            setTargetLanguage={setTargetLanguage}
-            hasStudyMaterials={studyMaterialsAvailable}
-            handleLanguageSelection={handleLanguageSelection}
-          />
-
-          <div className="flex gap-4 justify-center">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                setIsLogin(true);
-                setIsAuthDialogOpen(true);
-              }}
-              className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium"
-            >
-              {t("signIn")}
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                setIsLogin(false);
-                setIsAuthDialogOpen(true);
-              }}
-              className="px-6 py-3 bg-accent text-accent-foreground rounded-lg font-medium"
-            >
-              {t("signUp")}
-            </motion.button>
-          </div>
-        </div>
-      </SwipeUpPanel>
-
-      {/* Auth Dialog */}
-      <AuthDialog
-        isOpen={isAuthDialogOpen}
-        onOpenChange={setIsAuthDialogOpen}
-        isLogin={isLogin}
-        setIsLogin={setIsLogin}
-        email={email}
-        setEmail={setEmail}
-        password={password}
-        setPassword={setPassword}
-        handleEmailAuth={handleEmailAuth}
-        isLoading={isLoading}
-        authError={authError}
-        retryCount={retryCount}
-      />
     </div>
   );
 };
