@@ -6,7 +6,6 @@ import PracticePromptButton from "@/components/practice/PracticePromptButton";
 import PracticeGuide from "@/components/practice/PracticeGuide";
 import { useChatMessages } from "@/components/practice/hooks/useChatMessages";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
-import AuthRequiredPrompt from "@/components/auth/AuthRequiredPrompt";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -133,10 +132,6 @@ const Practice = () => {
     return <div className="flex items-center justify-center min-h-screen">
       <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
     </div>;
-  }
-
-  if (!isAuthenticated) {
-    return <AuthRequiredPrompt />;
   }
 
   // Convert messages to ensure compatibility with ChatContainer

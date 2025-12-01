@@ -11,15 +11,6 @@ const NewLandingPage = () => {
   const { t } = useLocalization();
   const navigate = useNavigate();
 
-  // Auto-redirect to profile (demo teacher dashboard)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate('/profile');
-    }, 2000);
-    
-    return () => clearTimeout(timer);
-  }, [navigate]);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* Enhanced Background Pattern with animations */}
@@ -140,7 +131,7 @@ const NewLandingPage = () => {
           {t("yourPersonalAICompanion")}
         </motion.p>
 
-        {/* Loading message */}
+        {/* Call to Action Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -148,21 +139,30 @@ const NewLandingPage = () => {
           className="flex flex-col items-center gap-6 mt-12"
         >
           <motion.div
-            animate={{
-              scale: [1, 1.1, 1],
-              opacity: [0.5, 1, 0.5]
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="relative px-12 py-5 bg-gradient-to-r from-primary via-palavox-teal to-accent text-white rounded-2xl font-bold text-xl shadow-lg overflow-hidden"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="relative"
           >
-            <span className="relative z-10 flex items-center gap-2">
-              <Sparkles className="h-5 w-5" />
-              Loading Demo...
-            </span>
+            <motion.button
+              onClick={() => navigate('/practice')}
+              className="relative px-12 py-5 bg-gradient-to-r from-primary via-palavox-teal to-accent text-white rounded-2xl font-bold text-xl shadow-lg hover:shadow-2xl transition-all overflow-hidden group"
+            >
+              <motion.div
+                animate={{
+                  x: ['-100%', '200%'],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
+              />
+              <span className="relative z-10 flex items-center gap-2">
+                <Sparkles className="h-5 w-5" />
+                {t("startPracticing")}
+              </span>
+            </motion.button>
           </motion.div>
 
           <motion.p
@@ -171,7 +171,7 @@ const NewLandingPage = () => {
             transition={{ delay: 1 }}
             className="text-sm text-muted-foreground"
           >
-            Preparing your teacher dashboard
+            {t("practiceYourLanguageSkills")}
           </motion.p>
         </motion.div>
       </motion.div>

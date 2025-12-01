@@ -8,7 +8,6 @@ import { useAuthGuard } from "@/hooks/useAuthGuard";
 import { useUsageLimits } from "@/hooks/useUsageLimits";
 import { useToast } from "@/hooks/use-toast";
 import VoiceChatControls from "@/components/premium-voice/VoiceChatControls";
-import AuthRequiredPrompt from "@/components/auth/AuthRequiredPrompt";
 import PageHeader from "@/components/premium-voice/PageHeader";
 import BenefitsList from "@/components/premium-voice/BenefitsList";
 
@@ -95,10 +94,6 @@ const SpanishAdvancedVoiceChat = () => {
 
   if (authLoading || sessionLoading) {
     return <div className="flex justify-center py-8">Loading...</div>;
-  }
-
-  if (!isAuthenticated || !isLoggedIn) {
-    return <AuthRequiredPrompt />;
   }
   
   // Ensure we only show this page for Spanish language users
