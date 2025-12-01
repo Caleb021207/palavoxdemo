@@ -151,10 +151,154 @@ export type Database = {
         }
         Relationships: []
       }
+      compliance_status: {
+        Row: {
+          created_at: string | null
+          id: string
+          status: string | null
+          user_id: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          user_id?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          user_id?: string | null
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      data_breach_notifications: {
+        Row: {
+          affected_users: number | null
+          breach_date: string
+          created_at: string | null
+          description: string | null
+          id: string
+          status: string | null
+        }
+        Insert: {
+          affected_users?: number | null
+          breach_date: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          status?: string | null
+        }
+        Update: {
+          affected_users?: number | null
+          breach_date?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
+      data_export_requests: {
+        Row: {
+          completed_at: string | null
+          id: string
+          requested_at: string | null
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          id?: string
+          requested_at?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          id?: string
+          requested_at?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      district_settings: {
+        Row: {
+          created_at: string | null
+          district_id: string | null
+          id: string
+          max_age: number | null
+          min_age: number | null
+          settings: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          district_id?: string | null
+          id?: string
+          max_age?: number | null
+          min_age?: number | null
+          settings?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          district_id?: string | null
+          id?: string
+          max_age?: number | null
+          min_age?: number | null
+          settings?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "district_settings_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "school_districts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      educational_data_access_audit: {
+        Row: {
+          access_type: string | null
+          accessor_user_id: string | null
+          created_at: string | null
+          data_accessed: string | null
+          data_category: string | null
+          id: string
+          purpose: string | null
+          target_user_id: string | null
+        }
+        Insert: {
+          access_type?: string | null
+          accessor_user_id?: string | null
+          created_at?: string | null
+          data_accessed?: string | null
+          data_category?: string | null
+          id?: string
+          purpose?: string | null
+          target_user_id?: string | null
+        }
+        Update: {
+          access_type?: string | null
+          accessor_user_id?: string | null
+          created_at?: string | null
+          data_accessed?: string | null
+          data_category?: string | null
+          id?: string
+          purpose?: string | null
+          target_user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
           created_at: string | null
+          display_name: string | null
           full_name: string | null
           id: string
           role: string | null
@@ -164,6 +308,7 @@ export type Database = {
         Insert: {
           avatar_url?: string | null
           created_at?: string | null
+          display_name?: string | null
           full_name?: string | null
           id?: string
           role?: string | null
@@ -173,11 +318,33 @@ export type Database = {
         Update: {
           avatar_url?: string | null
           created_at?: string | null
+          display_name?: string | null
           full_name?: string | null
           id?: string
           role?: string | null
           updated_at?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      school_districts: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+          region: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+          region?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+          region?: string | null
         }
         Relationships: []
       }
@@ -203,6 +370,50 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "student_enrollments_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_language_metrics: {
+        Row: {
+          class_id: string | null
+          conversation_complexity: number | null
+          created_at: string | null
+          grammar_accuracy: number | null
+          id: string
+          pronunciation_score: number | null
+          student_id: string | null
+          updated_at: string | null
+          vocabulary_score: number | null
+        }
+        Insert: {
+          class_id?: string | null
+          conversation_complexity?: number | null
+          created_at?: string | null
+          grammar_accuracy?: number | null
+          id?: string
+          pronunciation_score?: number | null
+          student_id?: string | null
+          updated_at?: string | null
+          vocabulary_score?: number | null
+        }
+        Update: {
+          class_id?: string | null
+          conversation_complexity?: number | null
+          created_at?: string | null
+          grammar_accuracy?: number | null
+          id?: string
+          pronunciation_score?: number | null
+          student_id?: string | null
+          updated_at?: string | null
+          vocabulary_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_language_metrics_class_id_fkey"
             columns: ["class_id"]
             isOneToOne: false
             referencedRelation: "classes"
@@ -274,7 +485,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_access_code: { Args: { class_id: string }; Returns: string }
+      process_access_code: {
+        Args: { code_input: string; user_id_input: string }
+        Returns: Json
+      }
+      recalculate_student_metrics: {
+        Args: { student_id_input: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
