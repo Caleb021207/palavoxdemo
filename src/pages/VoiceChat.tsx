@@ -1,330 +1,221 @@
-
-import React from "react";
-import { InteractiveCard } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CardContent } from "@/components/ui/card";
-import { useState, useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { useLanguageMetricsPanel } from "@/components/practice/hooks/useLanguageMetricsPanel";
-import LanguageMetricsPanel from "@/components/practice/LanguageMetricsPanel";
-import { getLanguagePair } from "@/utils/languageUtils";
-import { useLocalization } from "@/context/LocalizationContext";
-import { getEnglishOnlyMessage } from "@/utils/englishOnlyMessages";
-import { supabase } from "@/integrations/supabase/client";
-import type { User } from "@supabase/supabase-js";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { GradientBlob } from "@/components/ui/decorative-elements";
-import { Sparkles } from "lucide-react";
-import XPNotification from "@/components/ui/xp-notification";
-import LevelUpModal from "@/components/gamification/LevelUpModal";
-import { useGamification } from "@/hooks/useGamification";
-import { useXPNotification } from "@/contexts/XPNotificationContext";
-import { useDemoMode } from "@/context/DemoContext";
-
-// Importing components
-import VoiceChatHeader from "@/components/voice-chat/VoiceChatHeader";
-import VoiceRecognitionControls from "@/components/voice-chat/VoiceRecognitionControls";
-import PracticeInfoPanel from "@/components/voice-chat/PracticeInfoPanel";
-import TranscriptDisplay from "@/components/voice-chat/TranscriptDisplay";
-import ListeningIndicator from "@/components/voice-chat/ListeningIndicator";
-import VoiceChatControls from "@/components/voice-chat/VoiceChatControls";
+import { Mic, MicOff, Sparkles, CheckCircle, MessageSquare, Lightbulb } from "lucide-react";
+import NewLayout from "@/components/layout/NewLayout";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import VoiceChatContainer from "@/components/voice-chat/VoiceChatContainer";
-import ConversationStarters from "@/components/premium-voice/ConversationStarters";
-import InformationCard from "@/components/voice-chat/InformationCard";
-
-// Importing hooks
+import VoiceRecognitionControls from "@/components/voice-chat/VoiceRecognitionControls";
+import ListeningIndicator from "@/components/voice-chat/ListeningIndicator";
+import TranscriptDisplay from "@/components/voice-chat/TranscriptDisplay";
+import { useVoiceConversation } from "@/hooks/useVoiceConversation";
 import { useVoiceSpeechRecognition } from "@/hooks/useVoiceSpeechRecognition";
 import { useVoiceTTS } from "@/hooks/useVoiceTTS";
-import { useVoiceConversation } from "@/hooks/useVoiceConversation";
-import { VoiceChatProps } from "@/types/voiceChat";
-import { Message } from "@/types/chat";
+import { DecorativeOrbs } from "@/components/ui/decorative-elements";
 
-const VoiceChat: React.FC<VoiceChatProps> = () => {
-  const { isDemoMode, demoTeacherProfile } = useDemoMode();
-  const { currentLanguage, t } = useLocalization();
-  const { native, practice } = getLanguagePair(currentLanguage);
-  const { toast } = useToast();
+const VoiceChat = () => {
+  const [grammarCorrection, setGrammarCorrection] = useState(true);
   const [conversationLevel, setConversationLevel] = useState<string>("intermediate");
-  const [correctGrammar, setCorrectGrammar] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-
-  // Check authentication status
-  useEffect(() => {
-    // Always authenticated in demo mode
-    if (isDemoMode && demoTeacherProfile) {
-      setUser({
-        id: demoTeacherProfile.id,
-        email: demoTeacherProfile.email,
-      } as User);
-      setIsCheckingAuth(false);
-      return;
-    }
-    
-    const checkAuth = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-      setIsCheckingAuth(false);
-    };
-
-    checkAuth();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [isDemoMode, demoTeacherProfile]);
-
-  // Read URL parameters for deep linking
-  const searchParams = new URLSearchParams(window.location.search);
-  const urlLevel = searchParams.get('level');
-  
-  // Load saved preferences
-  useEffect(() => {
-    // Map URL level parameter to conversation level
-    if (urlLevel) {
-      const levelMap: Record<string, string> = {
-        'A1': 'basic',
-        'A2': 'basic',
-        'B1': 'intermediate',
-        'B2': 'advanced',
-        'C1': 'advanced',
-        'C2': 'advanced'
-      };
-      const mappedLevel = levelMap[urlLevel] || 'intermediate';
-      setConversationLevel(mappedLevel);
-      localStorage.setItem("conversationLevel", mappedLevel);
-    } else {
-      const storedLevel = localStorage.getItem("conversationLevel");
-      if (storedLevel) {
-        setConversationLevel(storedLevel);
-      }
-    }
-    
-    const savedCorrectGrammar = localStorage.getItem('correctGrammar');
-    if (savedCorrectGrammar) {
-      setCorrectGrammar(savedCorrectGrammar === 'true');
-    }
-  }, [urlLevel]);
-
-  const handleLevelChange = (newLevel: string) => {
-    setConversationLevel(newLevel);
-    localStorage.setItem("conversationLevel", newLevel);
-    
-    const levelNames = {
-      basic: getEnglishOnlyMessage("basicLevel"),
-      intermediate: getEnglishOnlyMessage("intermediateLevel"),
-      advanced: getEnglishOnlyMessage("advancedLevel")
-    };
-    
-    toast({
-      title: getEnglishOnlyMessage("conversationLevelUpdated"),
-      description: `${getEnglishOnlyMessage("levelSetTo")} ${levelNames[newLevel as keyof typeof levelNames]}`,
-      variant: "default",
-    });
-  };
-
-  const toggleGrammarCorrection = () => {
-    const newValue = !correctGrammar;
-    setCorrectGrammar(newValue);
-    localStorage.setItem('correctGrammar', String(newValue));
-    
-    toast({
-      title: newValue ? getEnglishOnlyMessage("grammarCorrectionEnabled") : getEnglishOnlyMessage("grammarCorrectionDisabled"),
-      description: newValue ? getEnglishOnlyMessage("tutorWillCorrectGrammar") : getEnglishOnlyMessage("tutorWontCorrectGrammar"),
-      variant: "default",
-    });
-  };
   
   // Initialize hooks
-  const { conversationHistory, apiConversationHistory, isLoading, sendMessage, 
-          clearConversation, handleAnalyzeConversation, sessionIdRef, hasAnalyzedConversation } = useVoiceConversation(conversationLevel, correctGrammar);
+  const { conversationHistory, isLoading, sendMessage, clearConversation } = useVoiceConversation(conversationLevel, grammarCorrection);
   
-  const { showLevelUpModal, setShowLevelUpModal, levelUpData, progression } = useGamification();
-  const { showXPNotification, lastXPGain } = useXPNotification();
-  
-  const { speakWithAzureTTS, isSpeaking } = useVoiceTTS({ practiceLanguage: practice });
+  const { speakWithAzureTTS, isSpeaking } = useVoiceTTS({ practiceLanguage: "english" });
   
   const { isListening, isTranscribing, transcript, toggleListening, handleSendTranscript } = useVoiceSpeechRecognition({
-    targetLanguage: practice,
+    targetLanguage: "english",
     onSendTranscript: (text) => sendMessage(text, speakWithAzureTTS),
     useWhisper: true,
     multilingualMode: true
   });
-
-  // Initialize language metrics panel
-  const { 
-    isExpanded,
-    togglePanel, 
-    metrics,
-    isAnalyzing,
-    analyzeCurrentConversation
-  } = useLanguageMetricsPanel(
-    conversationHistory.map(msg => ({ 
-      role: msg.role as "user" | "assistant" | "system", 
-      content: msg.content,
-      translation: msg.translation
-    }))
-  );
   
-  // Handle phrase click from conversation starters
-  const handlePhraseClick = (phrase: string) => {
-    handleSendTranscript(phrase);
-  };
-  
-  // Auto-clear conversation on unmount
-  useEffect(() => {
-    return () => {
-      clearConversation();
-    };
-  }, []);
-
-  // Show loading state while checking authentication
-  if (isCheckingAuth) {
-    return (
-      <div className="max-w-4xl mx-auto p-4 flex items-center justify-center min-h-[50vh]">
-        <p className="text-muted-foreground">{t("loading") || "Loading..."}</p>
-      </div>
-    );
-  }
-
   return (
-    <>
-      <XPNotification show={showXPNotification} amount={lastXPGain} />
-      {levelUpData && (
-        <LevelUpModal
-          open={showLevelUpModal}
-          onClose={() => setShowLevelUpModal(false)}
-          oldLevel={levelUpData.oldLevel}
-          newLevel={levelUpData.newLevel}
-          totalXP={progression?.total_xp || 0}
-        />
-      )}
-      <div className="relative min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10">
-      <GradientBlob className="top-20 left-10" />
-      <GradientBlob className="bottom-20 right-10" colors="from-palavox-teal to-palavox-accent" />
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <DecorativeOrbs />
       
-      <div className="max-w-4xl mx-auto p-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <VoiceChatHeader />
-        </motion.div>
+      <NewLayout>
+        <ScrollArea className="h-[calc(100vh-4rem)]">
+          <div className="container mx-auto px-4 py-8 max-w-6xl relative z-10">
+            {/* Header Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-12"
+            >
+              <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-primary/20 via-palavox-teal/20 to-accent/20 rounded-full mb-6">
+                <Mic className="h-8 w-8 text-primary" />
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-palavox-teal to-accent bg-clip-text text-transparent">
+                Unlimited Voice Practice
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Speak English naturally with AI and improve your fluency through conversation
+              </p>
+            </motion.div>
 
-        <div className="flex flex-col gap-6">
-          {/* Conversation Settings Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            whileHover={{ scale: 1.01 }}
-          >
-            <InteractiveCard className="glass overflow-hidden bg-gradient-to-br from-card/50 via-card to-card/50 border-primary/20">
-              <CardContent className="p-6 space-y-4">
-                {/* Grammar Correction Toggle */}
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="grammar-correction" className="text-base font-semibold flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-primary" />
-                    {t("correctGrammar") || "Grammar Correction"}
-                  </Label>
-                  <Switch
-                    id="grammar-correction"
-                    checked={correctGrammar}
-                    onCheckedChange={toggleGrammarCorrection}
+            {/* Grammar Correction Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <Card className="mb-8 bg-card/50 backdrop-blur-sm border-primary/20 shadow-lg">
+                <CardContent className="p-6">
+                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Sparkles className="h-5 w-5 text-primary" />
+                        <h3 className="text-lg font-semibold">AI Feedback Mode</h3>
+                      </div>
+                      <p className="text-base text-muted-foreground">
+                        {grammarCorrection 
+                          ? "The AI will correct your grammar and pronunciation during conversations"
+                          : "The AI will focus on natural conversation flow without corrections"}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 bg-accent/10 p-4 rounded-lg">
+                      <Label htmlFor="grammar-toggle" className="text-base font-medium cursor-pointer">
+                        Grammar Correction
+                      </Label>
+                      <Switch
+                        id="grammar-toggle"
+                        checked={grammarCorrection}
+                        onCheckedChange={setGrammarCorrection}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Mic Control Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Card className="mb-8 bg-card/50 backdrop-blur-sm border-primary/20 shadow-lg">
+                <CardContent className="p-8">
+                  <div className="flex justify-center mb-6">
+                    <VoiceRecognitionControls
+                      isListening={isListening}
+                      isLoading={isLoading}
+                      isSpeaking={isSpeaking}
+                      transcript={transcript}
+                      toggleListening={toggleListening}
+                      handleSendTranscript={handleSendTranscript}
+                    />
+                  </div>
+                  
+                  <ListeningIndicator isListening={isListening} />
+                  
+                  <TranscriptDisplay 
+                    transcript={transcript} 
+                    isListening={isListening}
+                    isTranscribing={isTranscribing}
                   />
-                </div>
-              </CardContent>
-            </InteractiveCard>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            whileHover={{ scale: 1.005 }}
-          >
-            <InteractiveCard className="p-6 glass overflow-hidden bg-gradient-to-br from-card/50 via-card to-card/50 border-primary/20 shadow-xl">
-          <div className="flex justify-center mb-6">
-            <VoiceRecognitionControls
-              isListening={isListening}
-              isLoading={isLoading}
-              isSpeaking={isSpeaking}
-              transcript={transcript}
-              toggleListening={toggleListening}
-              handleSendTranscript={handleSendTranscript}
-            />
+                  {(conversationHistory.length > 0 || isLoading) && (
+                    <div className="mt-6">
+                      <VoiceChatContainer 
+                        messages={conversationHistory}
+                        isLoading={isLoading}
+                        targetLanguage="english"
+                        onPlayAudio={speakWithAzureTTS}
+                      />
+                    </div>
+                  )}
+
+                  {conversationHistory.length > 0 && (
+                    <div className="mt-4 flex justify-center">
+                      <Button
+                        variant="outline"
+                        onClick={clearConversation}
+                        className="text-sm"
+                      >
+                        Clear Conversation
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Info Cards Grid */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="grid md:grid-cols-2 gap-6"
+            >
+              {/* How Students Use This */}
+              <Card className="bg-card/50 backdrop-blur-sm border-primary/20 shadow-lg">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg">
+                      <MessageSquare className="h-6 w-6 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-semibold">How to Use This Feature</h3>
+                  </div>
+                  <ul className="space-y-3 text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span>Click the microphone and speak naturally in English</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span>The AI will respond to you with voice and text</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span>Practice pronunciation and conversational skills</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span>Get instant feedback on grammar when enabled</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              {/* Conversation Starters */}
+              <Card className="bg-card/50 backdrop-blur-sm border-primary/20 shadow-lg">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-gradient-to-br from-palavox-teal/20 to-accent/20 rounded-lg">
+                      <Lightbulb className="h-6 w-6 text-palavox-teal" />
+                    </div>
+                    <h3 className="text-xl font-semibold">Conversation Starters</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">Try starting with:</p>
+                  <ul className="space-y-3 text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-palavox-teal mt-0.5 flex-shrink-0" />
+                      <span>"Hello, how are you today?"</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-palavox-teal mt-0.5 flex-shrink-0" />
+                      <span>"What did you do this weekend?"</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-palavox-teal mt-0.5 flex-shrink-0" />
+                      <span>"Can you help me practice ordering food?"</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="h-5 w-5 text-palavox-teal mt-0.5 flex-shrink-0" />
+                      <span>"Tell me about your favorite hobby"</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
-          
-          <ListeningIndicator isListening={isListening} />
-          
-          <TranscriptDisplay 
-            transcript={transcript} 
-            isListening={isListening}
-            isTranscribing={isTranscribing}
-          />
-
-          {(conversationHistory.length > 0 || isLoading) && (
-            <VoiceChatContainer 
-              messages={conversationHistory}
-              isLoading={isLoading}
-              targetLanguage={practice.toLowerCase()}
-              onPlayAudio={speakWithAzureTTS}
-            />
-          )}
-
-          <VoiceChatControls
-            conversationHistory={conversationHistory}
-            apiConversationHistory={apiConversationHistory}
-            sessionIdRef={sessionIdRef}
-            clearConversation={clearConversation}
-            analyzeCurrentConversation={analyzeCurrentConversation}
-            practice={practice}
-            isAnalyzing={isAnalyzing}
-            hasAnalyzed={hasAnalyzedConversation}
-            />
-          </InteractiveCard>
-        </motion.div>
-
-        {/* Language Metrics Panel */}
-        {metrics && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <LanguageMetricsPanel
-              metrics={metrics}
-              isExpanded={isExpanded}
-              onToggle={togglePanel}
-              isLoading={isAnalyzing}
-              onAnalyze={analyzeCurrentConversation}
-            />
-          </motion.div>
-        )}
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          <ConversationStarters 
-            onPhraseClick={handlePhraseClick}
-            targetLanguage={practice}
-            isLoading={isLoading}
-            hasMessages={conversationHistory.length > 0}
-          />
-          
-          <InformationCard />
-        </motion.div>
-        </div>
-      </div>
+        </ScrollArea>
+      </NewLayout>
     </div>
-    </>
   );
 };
 

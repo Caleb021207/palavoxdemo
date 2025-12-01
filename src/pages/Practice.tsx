@@ -1,255 +1,175 @@
 import { useState, useEffect } from "react";
-import { useLocalization } from "@/context/LocalizationContext";
-import PracticeHeader from "@/components/practice/PracticeHeader";
-import ChatContainer from "@/components/practice/ChatContainer";
-import PracticePromptButton from "@/components/practice/PracticePromptButton";
-import PracticeGuide from "@/components/practice/PracticeGuide";
-import { useChatMessages } from "@/components/practice/hooks/useChatMessages";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { InteractiveCard } from "@/components/ui/card";
-import { Trash, Sparkles } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import type { TranslationType } from "@/components/practice/hooks/useTranslationHandler";
-import { secureStorage } from "@/utils/security/dataEncryption";
 import { motion } from "framer-motion";
-import { GradientBlob } from "@/components/ui/decorative-elements";
-import XPNotification from "@/components/ui/xp-notification";
-import LevelUpModal from "@/components/gamification/LevelUpModal";
-import { useGamification } from "@/hooks/useGamification";
-import { useXPNotification } from "@/contexts/XPNotificationContext";
-
-// Create an interface that matches the Message structure from useChatMessages
-interface MessageWithTranslationType {
-  role: "user" | "assistant";
-  content: string;
-  translation?: TranslationType;
-}
+import { MessageCircle, Sparkles, CheckCircle, BookOpen } from "lucide-react";
+import NewLayout from "@/components/layout/NewLayout";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import ChatContainer from "@/components/practice/ChatContainer";
+import { useChatMessages } from "@/components/practice/hooks/useChatMessages";
+import { DecorativeOrbs } from "@/components/ui/decorative-elements";
 
 const Practice = () => {
-  const { currentLanguage, t } = useLocalization();
-  const { toast } = useToast();
-  const [targetLanguage, setTargetLanguage] = useState<string>("spanish");
+  const [grammarCorrection, setGrammarCorrection] = useState(true);
   const [conversationLevel, setConversationLevel] = useState<string>("intermediate");
-  const { showLevelUpModal, setShowLevelUpModal, levelUpData, progression } = useGamification();
-  const { showXPNotification, lastXPGain } = useXPNotification();
-  
-  // Read URL parameters for deep linking
-  const searchParams = new URLSearchParams(window.location.search);
-  const urlLevel = searchParams.get('level');
-  const urlTopic = searchParams.get('topic');
-  const urlFocus = searchParams.get('focus');
-  
-  useEffect(() => {
-    const savedTargetLanguage = secureStorage.getItem("targetLanguage");
-    const savedNativeLanguage = secureStorage.getItem("nativeLanguage");
-    
-    if (savedNativeLanguage && savedTargetLanguage) {
-      setTargetLanguage(savedTargetLanguage);
-    } else {
-      if (currentLanguage === "english") {
-        setTargetLanguage("spanish");
-      } else {
-        setTargetLanguage("english");
-      }
-    }
-    
-    // Map URL level parameter to conversation level
-    if (urlLevel) {
-      const levelMap: Record<string, string> = {
-        'A1': 'basic',
-        'A2': 'basic',
-        'B1': 'intermediate',
-        'B2': 'advanced',
-        'C1': 'advanced',
-        'C2': 'advanced'
-      };
-      const mappedLevel = levelMap[urlLevel] || 'intermediate';
-      setConversationLevel(mappedLevel);
-      localStorage.setItem("conversationLevel", mappedLevel);
-    } else {
-      // Initialize conversation level from localStorage
-      const storedLevel = localStorage.getItem("conversationLevel");
-      if (storedLevel) {
-        setConversationLevel(storedLevel);
-      }
-    }
-    
-    // Debug for Thai language - Fix the comparison to use lowercase comparison
-    if (currentLanguage.toLowerCase() === 'thai') {
-      console.log('Practice component initialized with Thai language:', {
-        currentLanguage,
-        targetLanguage: savedTargetLanguage || (currentLanguage === "english" ? "spanish" : "english"),
-        urlLevel,
-        urlTopic,
-        urlFocus
-      });
-    }
-  }, [currentLanguage, urlLevel]);
-  
-  const handleLevelChange = (newLevel: string) => {
-    setConversationLevel(newLevel);
-    localStorage.setItem("conversationLevel", newLevel);
-    
-    const levelNames = {
-      basic: t("basicLevel") || "Basic (A1-A2)",
-      intermediate: t("intermediateLevel") || "Intermediate (B1)", 
-      advanced: t("advancedLevel") || "Advanced (B2-C1)"
-    };
-    
-    toast({
-      title: t("conversationLevelUpdated") || "Conversation Level Updated",
-      description: `${t("levelSetTo") || "Level set to"} ${levelNames[newLevel as keyof typeof levelNames]}`,
-      variant: "default",
-    });
-  };
   
   const {
     messages,
     input,
     setInput,
-    isLoading: chatLoading,
-    sendLanguageLearningPrompt,
     handleSubmit,
-    clearConversation,
-    getPlaceholderText,
-    correctGrammar,
-    toggleGrammarCorrection
+    isLoading,
+    getPlaceholderText
   } = useChatMessages(conversationLevel);
-  
-  // Auto-clear conversation on unmount
-  useEffect(() => {
-    return () => {
-      clearConversation();
-    };
-  }, []);
-
-  // Convert messages to ensure compatibility with ChatContainer
-  const compatibleMessages = messages.map(msg => ({
-    role: msg.role,
-    content: msg.content,
-    // Convert complex translation objects to strings if needed
-    translation: typeof msg.translation === 'string' ? 
-      msg.translation : 
-      msg.translation ? JSON.stringify(msg.translation) : undefined
-  }));
-
-  // Additional debug for Thai messages - fix the comparison to use lowercase comparison
-  if (currentLanguage.toLowerCase() === 'thai') {
-    console.log('Practice component rendering with Thai:', {
-      messageCount: messages.length,
-      hasTranslations: messages.filter(m => m.translation).length,
-      currentLanguage
-    });
-  }
 
   return (
-    <>
-      <XPNotification show={showXPNotification} amount={lastXPGain} />
-      {levelUpData && (
-        <LevelUpModal
-          open={showLevelUpModal}
-          onClose={() => setShowLevelUpModal(false)}
-          oldLevel={levelUpData.oldLevel}
-          newLevel={levelUpData.newLevel}
-          totalXP={progression?.total_xp || 0}
-        />
-      )}
-      <div className="relative min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10">
-      <GradientBlob className="top-20 left-10" />
-      <GradientBlob className="bottom-20 right-10" colors="from-palavox-teal to-palavox-accent" />
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <DecorativeOrbs />
       
-      <div className="max-w-4xl mx-auto p-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <PracticeHeader targetLanguage={targetLanguage} />
-        </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          whileHover={{ scale: 1.01 }}
-        >
-          <InteractiveCard className="mb-6 glass overflow-hidden bg-gradient-to-br from-card/50 via-card to-card/50 border-primary/20">
-            <div className="p-6 space-y-4">
-              {/* Grammar Correction Toggle */}
-              <div className="flex items-center justify-between">
-                <Label htmlFor="grammar-correction" className="text-base font-semibold flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-primary" />
-                  {t("correctGrammar") || "Grammar Correction"}
-                </Label>
-                <Switch
-                  id="grammar-correction"
-                  checked={correctGrammar}
-                  onCheckedChange={toggleGrammarCorrection}
-                />
-              </div>
-            </div>
-          </InteractiveCard>
-        </motion.div>
-      
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="flex justify-between items-center mb-4 gap-4"
-        >
-          <motion.div 
-            className="flex space-x-3 items-center"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <PracticePromptButton
-              onClick={sendLanguageLearningPrompt}
-              isLoading={chatLoading}
-              targetLanguage={targetLanguage}
-            />
-          </motion.div>
-          
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button 
-              variant="outline" 
-              onClick={clearConversation}
-              className="flex items-center gap-3 px-6 py-6 text-lg hover:shadow-xl hover:border-primary/50 transition-all bg-gradient-to-r from-card/80 to-card"
-              size="lg"
+      <NewLayout>
+        <ScrollArea className="h-[calc(100vh-4rem)]">
+          <div className="container mx-auto px-4 py-8 max-w-6xl relative z-10">
+            {/* Header Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-12"
             >
-              <Trash className="h-5 w-5" />
-              {t("clearConversation")}
-            </Button>
-          </motion.div>
-        </motion.div>
+              <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-primary/20 via-palavox-teal/20 to-accent/20 rounded-full mb-6">
+                <MessageCircle className="h-8 w-8 text-primary" />
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-palavox-teal to-accent bg-clip-text text-transparent">
+                English Text Practice
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Improve your English writing and grammar through AI-powered conversations
+              </p>
+            </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <ChatContainer
-            messages={compatibleMessages}
-            input={input}
-            setInput={setInput}
-            handleSubmit={handleSubmit}
-            isLoading={chatLoading}
-            getPlaceholderText={getPlaceholderText}
-            targetLanguage={targetLanguage}
-          />
-        </motion.div>
+            {/* Grammar Correction Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <Card className="mb-8 bg-card/50 backdrop-blur-sm border-primary/20 shadow-lg">
+                <CardContent className="p-6">
+                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Sparkles className="h-5 w-5 text-primary" />
+                        <h3 className="text-lg font-semibold">AI Feedback Mode</h3>
+                      </div>
+                      <p className="text-base text-muted-foreground">
+                        {grammarCorrection 
+                          ? "The AI will correct your grammar, vocabulary, and sentence structure"
+                          : "The AI will focus on natural conversation flow without corrections"}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 bg-accent/10 p-4 rounded-lg">
+                      <Label htmlFor="grammar-toggle" className="text-base font-medium cursor-pointer">
+                        Grammar Correction
+                      </Label>
+                      <Switch
+                        id="grammar-toggle"
+                        checked={grammarCorrection}
+                        onCheckedChange={setGrammarCorrection}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-         <PracticeGuide targetLanguage={targetLanguage} />
-        </motion.div>
-      </div>
+            {/* Chat Container */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <ChatContainer
+                messages={messages}
+                input={input}
+                setInput={setInput}
+                handleSubmit={handleSubmit}
+                isLoading={isLoading}
+                getPlaceholderText={getPlaceholderText}
+                targetLanguage="english"
+              />
+            </motion.div>
+
+            {/* Info Cards */}
+            {messages.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="mt-8 grid md:grid-cols-2 gap-6"
+              >
+                <Card className="bg-card/50 backdrop-blur-sm border-primary/20 shadow-lg">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-2 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg">
+                        <BookOpen className="h-6 w-6 text-primary" />
+                      </div>
+                      <h3 className="text-xl font-semibold">How It Works</h3>
+                    </div>
+                    <ul className="space-y-3 text-muted-foreground">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <span>Type your messages in English naturally</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <span>Get instant AI feedback on grammar and vocabulary</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <span>Learn from corrections and improve over time</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <span>Practice at your own pace with unlimited messages</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card/50 backdrop-blur-sm border-primary/20 shadow-lg">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-2 bg-gradient-to-br from-palavox-teal/20 to-accent/20 rounded-lg">
+                        <Sparkles className="h-6 w-6 text-palavox-teal" />
+                      </div>
+                      <h3 className="text-xl font-semibold">Tips for Students</h3>
+                    </div>
+                    <ul className="space-y-3 text-muted-foreground">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-palavox-teal mt-0.5 flex-shrink-0" />
+                        <span>Try to form complete sentences, even if they're simple</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-palavox-teal mt-0.5 flex-shrink-0" />
+                        <span>Don't worry about mistakes — they're part of learning!</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-palavox-teal mt-0.5 flex-shrink-0" />
+                        <span>Ask follow-up questions if you don't understand something</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-palavox-teal mt-0.5 flex-shrink-0" />
+                        <span>Use newly learned words to help remember them</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+          </div>
+        </ScrollArea>
+      </NewLayout>
     </div>
-    </>
   );
 };
 
