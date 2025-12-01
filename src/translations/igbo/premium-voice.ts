@@ -1,0 +1,42 @@
+
+import { TranslationRecord } from "../types";
+
+const premiumVoiceTranslations: TranslationRecord = {
+  premiumVoicePractice: "Mmemme Olu Premium",
+  practiceConversationalEnglish: "Mụọ mkparịta ụka Bekee na GPT-4o Realtime",
+  minutesRemainingThisMonth: "{{minutes}} nkeji fọdụrụ ọnwa a",
+  startPremiumSession: "Malite Nnọkọ Premium",
+  endSession: "Kwụsị Nnọkọ",
+  poweredByGPT4oRealtime: "Nke GPT-4o Realtime na-akwado",
+  conversation: "Mkparịta ụka",
+  you: "Gị",
+  aiTutor: "Onye nkụzi AI",
+  minutesLeft: "{{minutes}} nkeji fọdụrụ",
+  connected: "Ejikọtara",
+  premiumVoiceReady: "Mmemme olu premium dị njikere. Malite ikwu okwu!",
+  limitReached: "Eruru Oke",
+  monthlyLimitMessage: "I jirila nkeji {{minutes}} niile ọnwa a. Ga-eweghachi na 1st.",
+  sessionSaved: "Echekwara Nnọkọ",
+  usedMinutesMessage: "Ejiri nkeji {{minutes}} na nnọkọ a",
+  timeWarning: "Ịdọ Aka Ná Ntị Oge",
+  minutesRemainingWarning: "{{minutes}} nkeji fọdụrụ",
+  sessionEnded: "Nnọkọ Kwụsịrị",
+  premiumSessionEndedMessage: "Nnọkọ premium gị nke nkeji 15 akwụsịla",
+  premiumVoiceInstructions: "E mere atụmatụ njirimara a maka mkparịta ụka na-enweghị nsogbu, nke na-agbanwe agbanwe. Ị na-enweta nkeji 15 nke omume kwa ọnwa. Naanị pịa bọtịnụ ahụ wee sị 'Ndewo, kedu ka ị mere?' Onye nkụzi AI ga-enyere gị aka mụọ nkà ikwu okwu Bekee gị. Ọ bụrụ na ọ dị mkpa, ọ nwekwara ike inyere gị aka n'asụsụ nne gị.",
+  gptLanguageSupport: "GPT-4o Realtime na-akwado asụsụ 20+. Ọ bụ ezie na e mere ya nke ọma na Bekee, ọ na-enye mkparịta ụka nke okike n'asụsụ gị.",
+  customLanguageSupport: "Custom Realtime AI na-akwado asụsụ 99+. Sistemu a na-eji ụdị ọtụtụ asụsụ pụrụ iche gụnyere Whisper (nchọpụta okwu), GPT-4o-mini (mkparịta ụka), na Azure TTS (njikọ olu).",
+  recommendedForYourLanguage: "A na-atụ aro maka asụsụ gị",
+  multilingualSupport: "ỌTỤTỤ ASỤSỤ",
+  customRealtimeDisclaimer: "Ndekọ ọ bụla nwere oke nke 1 nkeji. Mgbe 3 sekọnd nke ịgbachi nkịtị gasịrị, ozi gị ga-eziga n'onwe ya.",
+  openaiLatestVoiceModel: "Ụdị olu ọhụrụ OpenAI",
+  connecting: "Na-ejikọta...",
+  startGptSession: "Malite Nnọkọ GPT",
+  startCustomSession: "Malite Nnọkọ Omenala",
+  exchanges: "mgbanwe",
+  stateListening: "na-ege ntị",
+  stateProcessing: "na-edozi",
+  stateSpeaking: "na-ekwu okwu",
+  stateIdle: "na-ezu ike",
+};
+
+export default premiumVoiceTranslations;

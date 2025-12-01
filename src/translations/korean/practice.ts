@@ -1,0 +1,127 @@
+
+import { TranslationRecord } from "../types";
+
+const practiceTranslations: TranslationRecord = {
+  textPractice: "텍스트 연습",
+  practiceWithAITutor: "AI 언어 튜터와 연습하기",
+  chatWithAITutor: "AI 튜터와 채팅하여 영어를 연습해보세요! AI가 문법, 어휘, 발음을 교정하는 데 도움을 줄 것입니다. 언어나 문화에 대한 질문을 자유롭게 해보세요.",
+  startVoiceChat: "음성 대화 시작",
+  stopVoiceChat: "음성 대화 중지",
+  getSkillsAssessment: "능력 평가 받기",
+  reading: "읽기",
+  writing: "쓰기",
+  speaking: "말하기",
+  listening: "듣기",
+  overallLevel: "전체 수준",
+  startChatting: "AI 언어 튜터와 채팅을 시작하세요!",
+  clickToStartVoice: "튜터와 대화를 시작하려면 '음성 대화 시작'을 클릭하세요",
+  allowMicAccess: "음성 기능을 사용하려면 마이크 접근을 허용해주세요",
+  typeMessage: "한국어 또는 영어로 메시지를 입력하세요...",
+  startTextChatting: "AI 튜터와 텍스트 채팅 시작하기",
+  typeMessageBelow: "시작하려면 아래에 메시지를 입력하세요",
+  practiceWithTextChat: "텍스트 채팅으로 연습하기",
+  textConversationPractice: "텍스트 대화 연습",
+  
+  // Core UI elements for practice page
+  practice: "연습",
+  send: "보내기",
+  correctGrammar: "문법 교정",
+  clearConversation: "대화 내용 지우기",
+  
+  // Practice guide and tips
+  practiceGuide: "{{language}} 연습 가이드",
+  practiceGuideDescription: "{{language}} 연습을 최대한 활용하기 위한 몇 가지 팁:",
+  practiceTip1: "간단하더라도 완전한 문장을 만들어보세요.",
+  practiceTip2: "실수를 걱정하지 마세요 — 실수는 학습의 일부입니다!",
+  practiceTip3: "이해하지 못하는 것이 있으면 설명을 요청하세요.",
+  practiceTip4: "최근에 배운 단어들을 사용해보세요.",
+  practiceTip5: "AI가 여러분의 실력 수준에 맞춰 점진적으로 향상을 도와드릴 것입니다.",
+  
+  // Prompt and placeholder text
+  sendEnglishPracticePrompt: "영어 연습 메시지 보내기",
+  noticeTextBasedPractice: "참고: 이것은 텍스트 기반 연습 기능입니다. 음성 연습은 무제한 음성 채팅 또는 프리미엄 음성 채팅 기능을 사용해보세요.",
+  askAboutGrammarRules: "문법 규칙에 대해 질문하기",
+  practiceConversationsDifferentSituations: "다양한 상황에서 대화 연습하기",
+  learnNewVocabulary: "새로운 어휘 배우기",
+  discussCulturalTopics: "문화적 주제 토론하기",
+  practicePrompt: "안녕하세요! {{targetLanguage}} 대화를 연습하고 싶습니다. {{targetLanguage}}의 문법, 어휘, 사용법을 교정해주세요. 기본적인 대화부터 시작할 수 있을까요?",
+  chatPlaceholder: "{{targetLanguage}} 연습을 위한 메시지를 입력하세요...",
+  
+  // Template strings for dynamic content
+  startConversationIn: "{{language}}로 대화 시작하기",
+  
+  // Pronunciation practice
+  pronunciationPractice: "발음 연습",
+  improvePronunciationSkills: "표적 연습으로 발음 기술 향상",
+  improvePronunciationSkillsWith: "{language}의 특정 연습으로 발음 기술 향상",
+  practiceExercise: "연습 문제",
+  selectComplexityLevel: "복잡도 수준 선택",
+  novice: "초보자",
+  intermediate: "중급자", 
+  advanced: "고급자",
+  superior: "최고급자",
+  noviceLevelShortDescription: "기본 표현과 인사",
+  intermediateLevelShortDescription: "간단한 대화와 질문",
+  advancedLevelShortDescription: "복잡한 문장과 개념",
+  superiorLevelShortDescription: "학술적이고 전문적인 언어",
+  selectLevelToStart: "연습을 시작할 레벨을 선택하세요",
+  tryAgain: "다시 시도",
+  newPhrase: "새 구문",
+  excellent: "훌륭함",
+  good: "좋음",
+  fair: "보통",
+  needsImprovement: "개선 필요",
+  excellentPronunciationFeedback: "훌륭합니다! 당신의 발음은 매우 정확합니다.",
+  goodPronunciationFeedback: "잘했어요! 당신의 발음은 대부분 정확합니다.",
+  fairPronunciationFeedback: "보통입니다. 발음을 향상시키기 위해 계속 연습하세요.",
+  needsImprovementPronunciationFeedback: "더 많은 연습이 필요합니다. 강조된 단어에 집중하세요.",
+  failedToGeneratePhrase: "연습 구문 생성에 실패했습니다. 다시 시도해주세요.",
+  failedToAnalyzePronunciation: "발음 분석에 실패했습니다. 다시 시도해주세요.",
+  
+  // New translations for updated pronunciation practice page
+  chooseDifficultyLevelBasedOn: "언어 숙련도에 따라 난이도 수준을 선택하세요",
+  startExercise: "연습 시작",
+  generatingExercise: "연습 생성 중...",
+  generatingNewPhrase: "새 구문 생성 중...",
+  levelDescription: "레벨 설명",
+  difficultyLevel: "난이도 수준",
+  noviceLevelDescription: "간단한 어휘의 기본 표현. 초보자에게 완벽합니다.",
+  intermediateLevelDescription: "적당한 어휘의 일상적인 구문. 중급 학습자에게 좋습니다.",
+  advancedLevelDescription: "고급 어휘의 복잡한 문장. 숙련된 학습자에게 적합합니다.",
+  superiorLevelDescription: "전문 어휘의 학술적이고 전문적인 내용.",
+  pronunciationPracticeTips: "발음 연습 팁",
+  listenCarefullyTip: "말하기를 시도하기 전에 오디오를 주의 깊게 들으세요",
+  payAttentionToStressTip: "강세 패턴과 억양에 주의를 기울이세요",
+  practiceDifficultSoundsTip: "어려운 소리를 여러 번 연습하세요",
+  recordYourselfTip: "자신을 녹음하고 원어민과 비교하세요",
+  bePatientTip: "인내하세요 - 발음 향상에는 시간이 걸립니다",
+  listenToPhrase: "구문 듣기",
+  playing: "재생 중...",
+  topic: "주제",
+  clickWordToHear: "단어를 클릭하여 듣기",
+  
+  // Recording-related translations
+  clickStartToRecord: "'녹음 시작'을 클릭하여 시작하세요",
+  startRecording: "녹음 시작",
+  stopRecording: "녹음 중지",
+  yourPronunciation: "당신의 발음",
+  listeningToYou: "듣고 있습니다...",
+  loading: "로딩 중...",
+  microphoneAccessRequired: "마이크 접근 필요",
+  microphoneAccessFailed: "마이크 접근 실패",
+  speechRecognitionError: "음성 인식 오류",
+  speechRecognitionNotSupported: "음성 인식이 브라우저에서 지원되지 않습니다",
+  noSpeechDetected: "음성이 감지되지 않음",
+  pleaseTryAgain: "다시 시도해주세요",
+  processing: "처리 중...",
+  
+  // Practice mode selection
+  startPracticing: "연습 시작하기",
+  practiceYourLanguageSkills: "언어 능력을 연습하세요",
+  choosePracticeMode: "연습 모드 선택",
+  typeAndChat: "AI 튜터와 타이핑하며 채팅하기",
+  speakAndListen: "자연스러운 대화로 말하고 듣기",
+  improvePronunciation: "목표 지향적 연습으로 발음 향상"
+};
+
+export default practiceTranslations;

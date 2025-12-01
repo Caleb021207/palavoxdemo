@@ -1,0 +1,85 @@
+
+import { TranslationRecord } from "../types";
+
+const practiceTranslations: TranslationRecord = {
+  conversationPractice: "Практика розмови",
+  startConversation: "Почати розмову",
+  endConversation: "Завершити розмову",
+  typeMessage: "Введіть повідомлення",
+  sendMessage: "Надіслати повідомлення",
+  listeningTo: "Прослуховування",
+  speaking: "Розмова",
+  userSaid: "Ви сказали",
+  aiResponse: "Відповідь ШІ",
+  conversationHistory: "Історія розмов",
+  clearHistory: "Очистити історію",
+  practiceTopics: "Теми для практики",
+  suggestedPrompts: "Запропоновані підказки",
+  translation: "Переклад",
+  translationPlaceholder: "Переклад з'явиться тут",
+  showTranslation: "Показати переклад",
+  hideTranslation: "Сховати переклад",
+  conversation: "Розмова",
+  chatWithAI: "Спілкуйтеся з нашим мовним наставником ШІ",
+  emptyStateMessage: "Почніть розмову з нашим мовним наставником ШІ",
+  
+  // Text Practice Page specific translations
+  textPractice: "Текстова практика",
+  practiceWithAITutor: "Практика з ШІ-репетитором мови",
+  chatWithAITutor: "Спілкуйтеся з нашим ШІ-репетитором, щоб практикувати англійську через текстові розмови! ШІ допоможе виправити вашу граматику, словниковий запас і вживання. Не соромтеся запитувати про мову чи культуру.",
+  startVoiceChat: "Почати голосовий чат",
+  stopVoiceChat: "Зупинити голосовий чат",
+  getSkillsAssessment: "Отримати оцінку навичок",
+  reading: "Читання",
+  writing: "Письмо",
+  listening: "Слухання",
+  overallLevel: "Загальний рівень",
+  startChatting: "Почніть спілкуватися з вашим ШІ-репетитором!",
+  clickToStartVoice: "Натисніть 'Почати голосовий чат', щоб почати розмову з репетитором",
+  typeMessageBelow: "Введіть повідомлення нижче, щоб почати",
+  
+  // Additional practice translations
+  practice: "Практика",
+  practiceWithAI: "Практика з ШІ",
+  startTextChatting: "Почати текстовий чат",
+  clearConversation: "Очистити розмову",
+  correctGrammar: "Виправити граматику",
+  startConversationIn: "Почати розмову {{language}}",
+  practiceGuide: "Посібник з практики {{language}}",
+  practiceGuideDescription: "Дотримуйтесь цих порад, щоб максимально ефективно вивчати {{language}}:",
+  practiceTip1: "Намагайтеся складати повні речення, навіть якщо вони прості.",
+  practiceTip2: "Не хвилюйтеся через помилки — вони є частиною навчання!",
+  practiceTip3: "Просіть пояснення, якщо щось незрозуміло.",
+  practiceTip4: "Спробуйте використовувати нещодавно вивчені слова.",
+  practiceTip5: "Наш ШІ адаптується до вашого рівня навичок і поступово допоможе вам покращитися.",
+  typeYourMessageHere: "Введіть ваше повідомлення тут...",
+  chatPlaceholder: "Введіть повідомлення для практики {{targetLanguage}}...",
+  practicePrompt: "Привіт! Я хотів би попрактикуватися в розмові {{targetLanguage}}. Будь ласка, допоможіть мені виправити граматику, словниковий запас та використання {{targetLanguage}}. Давайте почнемо з базової розмови?",
+  responseSuggestions: "Пропозиції відповідей",
+  clickPlayToHearPronunciation: "Натисніть відтворення, щоб почути вимову",
+  
+  // Recording-related translations
+  clickStartToRecord: "Натисніть 'Почати запис', щоб розпочати",
+  startRecording: "Почати запис",
+  stopRecording: "Зупинити запис",
+  yourPronunciation: "Ваша вимова",
+  listeningToYou: "Слухаємо вас...",
+  loading: "Завантаження...",
+  microphoneAccessRequired: "Потрібен доступ до мікрофона",
+  microphoneAccessFailed: "Не вдалося отримати доступ до мікрофона",
+  speechRecognitionError: "Помилка розпізнавання мовлення",
+  speechRecognitionNotSupported: "Розпізнавання мовлення не підтримується у вашому браузері",
+  noSpeechDetected: "Мовлення не виявлено",
+  pleaseTryAgain: "Будь ласка, спробуйте ще раз",
+  send: "Надіслати",
+  
+  // Practice mode selection
+  startPracticing: "Почати практику",
+  practiceYourLanguageSkills: "Практикуйте свої мовні навички",
+  choosePracticeMode: "Вибрати режим практики",
+  typeAndChat: "Друкуйте та спілкуйтеся зі своїм ШІ-репетитором",
+  speakAndListen: "Говоріть та слухайте у природних розмовах",
+  improvePronunciation: "Покращуйте свою вимову за допомогою цільових вправ"
+};
+
+export default practiceTranslations;

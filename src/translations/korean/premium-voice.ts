@@ -1,0 +1,91 @@
+
+import { TranslationRecord } from "../types";
+
+const premiumVoiceTranslations: TranslationRecord = {
+  premiumVoiceChat: "프리미엄 음성 채팅",
+  premiumVoiceChatBenefits: "프리미엄 음성 혜택",
+  cefrA1Description: "초급자 - 기본 구문과 표현",
+  cefrA2Description: "초등 - 간단한 일상 의사소통",
+  cefrB1Description: "중급 - 친숙한 주제에 대해 논의 가능",
+  cefrB2Description: "중상급 - 유창하게 상호작용 가능",
+  beginner: "초급자",
+  elementary: "초등",
+  intermediate: "중급",
+  upperIntermediate: "중상급",
+  selectCEFRLevel: "CEFR 레벨 선택",
+  selectedLevel: "선택된 레벨",
+  cooldownPeriodActive: "주간 제한 도달",
+  cooldownActive: "주간 제한 활성화",
+  waitBeforeNextSession: "다음 세션을 시작하기 전에 대기해야 합니다",
+  cooldownPeriodDescription: "다음 프리미엄 음성 채팅 세션을 시작하기 전에 {{time}} 기다려야 합니다.",
+  loginRequired: "로그인 필요",
+  pleaseLoginToAccessPremiumFeature: "프리미엄 기능에 액세스하려면 로그인하세요",
+  redirectingToLogin: "로그인 페이지로 이동합니다",
+  failedToStartSession: "세션 시작에 실패했습니다",
+  failedToCreateSession: "세션 생성에 실패했습니다",
+  loginRequiredDescription: "프리미엄 음성 채팅 기능에 액세스하려면 계정에 로그인하세요.",
+  conversationHistoryCleared: "대화 내용이 지워졌습니다",
+  resetsAt6AM: "10분 주간 허용량이 {{time}} 후에 재설정됩니다 (월요일 오전 6시)",
+  dailyLimitReached: "10분의 주간 허용량을 모두 사용했습니다. 시간은 월요일 오전 6시에 재설정됩니다.",
+  remaining: "이번 주 남은 시간",
+  premiumVoiceChatDescription: "AI 프리미엄 튜터와 자연스러운 음성 대화를 나누어 {{practice}} 연습을 하세요! AI가 문법, 어휘, 발음을 교정하는 데 도움을 줄 것입니다.",
+  premiumVoiceNote: "프리미엄 음성 채팅은 매주 10분 세션으로 제한됩니다",
+  premiumVoiceNoteWithReset: "프리미엄 음성 채팅은 주간 10분의 연습 시간을 허용합니다. 시간은 매주 월요일 오전 6시(중부 시간)에 재설정됩니다.",
+  benefitNaturalVoice: "ElevenLabs 기술을 사용한 자연스럽고 인간적인 음성 상호작용",
+  benefitAccentPronunciation: "몰입형 학습을 위한 정확한 억양과 발음",
+  benefitRegularPractice: "매주 월요일 오전 6시에 재설정되는 10분의 주간 연습 시간",
+  timeLimit10MinReached: "10분 시간 제한에 도달했습니다",
+  
+  // Voice chat controls
+  startVoiceChat: "음성 채팅 시작",
+  stopVoiceChat: "음성 채팅 중지",
+  voiceChatEnded: "음성 채팅이 종료되었습니다",
+  speaking: "말하는 중...",
+  startChatting: "채팅 시작하기",
+  
+  // Added missing key
+  premiumSessionLimitReached: "프리미엄 세션 제한에 도달했습니다",
+  
+  // Premium Voice Practice Page
+  premiumVoicePractice: "프리미엄 음성 연습",
+  practiceConversationalEnglish: "GPT-4o Realtime으로 회화 영어 연습하기",
+  minutesRemainingThisMonth: "이번 달 {{minutes}}분 남음",
+  startPremiumSession: "프리미엄 세션 시작",
+  endSession: "세션 종료",
+  poweredByGPT4oRealtime: "GPT-4o Realtime 제공",
+  conversation: "대화",
+  you: "당신",
+  aiTutor: "AI 튜터",
+  minutesLeft: "{{minutes}}분 남음",
+  connected: "연결됨",
+  premiumVoiceReady: "프리미엄 음성 연습이 준비되었습니다. 말하기 시작하세요!",
+  limitReached: "한도 도달",
+  monthlyLimitMessage: "이번 달 {{minutes}}분을 모두 사용했습니다. 1일에 재설정됩니다.",
+  sessionSaved: "세션 저장됨",
+  usedMinutesMessage: "이번 세션에서 {{minutes}}분 사용",
+  timeWarning: "시간 경고",
+  minutesRemainingWarning: "{{minutes}}분 남음",
+  sessionEnded: "세션 종료",
+  premiumSessionEndedMessage: "15분 프리미엄 세션이 종료되었습니다",
+  premiumVoiceInstructions: "이 기능은 유창하고 역동적인 대화를 위해 설계되었습니다. 한 달에 15분의 연습 시간이 주어집니다. 버튼을 누르고 '안녕하세요, 어떻게 지내세요?'라고 말하기만 하면 됩니다. AI 튜터가 영어 말하기 기술을 연습하는 데 도움을 줄 것입니다. 필요한 경우 모국어로도 도움을 받을 수 있습니다.",
+  
+  // Language support messages
+  gptLanguageSupport: "GPT-4o Realtime은 20개 이상의 언어를 지원합니다. 영어에 최적화되어 있지만 귀하의 언어로 자연스러운 대화를 제공합니다.",
+  customLanguageSupport: "Custom Realtime AI는 99개 이상의 언어를 지원합니다. 이 시스템은 Whisper(음성 인식), GPT-4o-mini(대화) 및 Azure TTS(음성 합성)를 포함한 전문 다국어 모델을 사용합니다.",
+  recommendedForYourLanguage: "귀하의 언어에 권장",
+  multilingualSupport: "다국어",
+  customRealtimeDisclaimer: "각 녹음은 1분으로 제한됩니다. 3초간 침묵하면 메시지가 자동으로 전송됩니다.",
+  
+  // Voice practice page
+  openaiLatestVoiceModel: "OpenAI의 최신 음성 모델",
+  connecting: "연결 중...",
+  startGptSession: "GPT 세션 시작",
+  startCustomSession: "맞춤 세션 시작",
+  exchanges: "대화",
+  stateListening: "듣는 중",
+  stateProcessing: "처리 중",
+  stateSpeaking: "말하는 중",
+  stateIdle: "대기 중",
+};
+
+export default premiumVoiceTranslations;

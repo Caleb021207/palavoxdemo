@@ -1,0 +1,92 @@
+
+import { TranslationRecord } from "../types";
+
+const premiumVoiceTranslations: TranslationRecord = {
+  premiumVoiceChat: "Chat Vocal Premium",
+  premiumVoiceChatBenefits: "Avantages de la Voix Premium",
+  textConversationPractice: "Pratique de la Conversation Écrite",
+  cefrA1Description: "Débutant - Phrases et expressions basiques",
+  cefrA2Description: "Élémentaire - Communication quotidienne simple",
+  cefrB1Description: "Intermédiaire - Peut discuter de sujets familiers",
+  cefrB2Description: "Intermédiaire Supérieur - Peut interagir avec aisance",
+  beginner: "Débutant",
+  elementary: "Élémentaire",
+  intermediate: "Intermédiaire",
+  upperIntermediate: "Intermédiaire Supérieur",
+  selectCEFRLevel: "Sélectionner le Niveau CECR",
+  selectedLevel: "Niveau Sélectionné",
+  cooldownPeriodActive: "Limite Hebdomadaire Atteinte",
+  cooldownActive: "Limite Hebdomadaire Atteinte",
+  waitBeforeNextSession: "Vous devez attendre avant de commencer une autre session",
+  cooldownPeriodDescription: "Vous devez attendre {{time}} avant de commencer une autre session de chat vocal premium.",
+  resetsAt6AM: "Votre temps hebdomadaire de 10 minutes sera réinitialisé dans {{time}} (Lundi à 6h00)",
+  dailyLimitReached: "Vous avez utilisé vos 10 minutes hebdomadaires. Le temps sera réinitialisé le lundi à 6h00.",
+  loginRequired: "Connexion Requise",
+  pleaseLoginToAccessPremiumFeature: "Veuillez vous connecter pour accéder à la fonctionnalité de chat vocal premium",
+  redirectingToLogin: "Redirection vers la page de connexion",
+  failedToStartSession: "Échec du démarrage de la session",
+  failedToCreateSession: "Échec de la création de la session",
+  loginRequiredDescription: "Pour accéder à la fonctionnalité de chat vocal premium, veuillez vous connecter à votre compte.",
+  conversationHistoryCleared: "Historique de conversation effacé",
+  remaining: "restantes cette semaine",
+  premiumVoiceChatDescription: "Ayez des conversations vocales naturelles avec notre tuteur IA premium pour pratiquer {{practice}} ! L'IA vous aidera à corriger votre grammaire, votre vocabulaire et votre prononciation.",
+  premiumVoiceNote: "L'utilisation du chat vocal premium est limitée à une session de 10 minutes par semaine",
+  premiumVoiceNoteWithReset: "Le chat vocal premium permet 10 minutes de temps de pratique hebdomadaire. Votre temps est réinitialisé chaque lundi à 6h00 heure centrale.",
+  benefitNaturalVoice: "Interactions vocales naturelles et humaines utilisant la technologie ElevenLabs",
+  benefitAccentPronunciation: "Accent et prononciation précis pour un apprentissage immersif",
+  benefitRegularPractice: "10 minutes de temps de pratique hebdomadaire, réinitialisé chaque lundi à 6h00 heure centrale",
+  
+  // Voice chat controls
+  startVoiceChat: "Commencer le chat vocal",
+  stopVoiceChat: "Arrêter le chat vocal",
+  voiceChatEnded: "Chat vocal terminé",
+  timeLimit10MinReached: "Limite de temps de 10 minutes atteinte",
+  speaking: "Parle...",
+  startChatting: "Commencer à discuter",
+  
+  // Added missing key
+  premiumSessionLimitReached: "Limite de Session Premium Atteinte",
+  
+  // Premium Voice Practice Page
+  premiumVoicePractice: "Pratique Vocale Premium",
+  practiceConversationalEnglish: "Pratiquez l'anglais conversationnel avec GPT-4o Realtime",
+  minutesRemainingThisMonth: "{{minutes}} minutes restantes ce mois-ci",
+  startPremiumSession: "Démarrer la Session Premium",
+  endSession: "Terminer la Session",
+  poweredByGPT4oRealtime: "Propulsé par GPT-4o Realtime",
+  conversation: "Conversation",
+  you: "Vous",
+  aiTutor: "Tuteur IA",
+  minutesLeft: "{{minutes}} minutes restantes",
+  connected: "Connecté",
+  premiumVoiceReady: "La pratique vocale premium est prête. Commencez à parler !",
+  limitReached: "Limite Atteinte",
+  monthlyLimitMessage: "Vous avez utilisé toutes les {{minutes}} minutes de ce mois. Réinitialisation le 1er.",
+  sessionSaved: "Session Enregistrée",
+  usedMinutesMessage: "Utilisé {{minutes}} minute{{plural}} cette session",
+  timeWarning: "Avertissement de Temps",
+  minutesRemainingWarning: "{{minutes}} minute{{plural}} restante{{plural}}",
+  sessionEnded: "Session Terminée",
+  premiumSessionEndedMessage: "Votre session premium de 15 minutes est terminée",
+  premiumVoiceInstructions: "Cette fonctionnalité est conçue pour des conversations fluides et dynamiques. Vous disposez de 15 minutes de pratique par mois. Appuyez simplement sur le bouton et dites 'Bonjour, comment allez-vous ?' Le tuteur IA vous aidera à pratiquer vos compétences orales en anglais. Si nécessaire, il peut également vous assister dans votre langue maternelle.",
+  
+  // Language support messages
+  gptLanguageSupport: "GPT-4o Realtime prend en charge plus de 20 langues. Bien qu'optimisé pour l'anglais, il fournit des conversations naturelles dans votre langue.",
+  customLanguageSupport: "Custom Realtime AI prend en charge plus de 99 langues. Ce système utilise des modèles multilingues spécialisés, notamment Whisper (reconnaissance vocale), GPT-4o-mini (conversation) et Azure TTS (synthèse vocale).",
+  recommendedForYourLanguage: "Recommandé pour votre langue",
+  multilingualSupport: "MULTILINGUE",
+  customRealtimeDisclaimer: "Chaque enregistrement est limité à 1 minute. Après 3 secondes de silence, votre message sera automatiquement envoyé.",
+  
+  // Voice practice page
+  openaiLatestVoiceModel: "Dernier modèle vocal d'OpenAI",
+  connecting: "Connexion...",
+  startGptSession: "Démarrer Session GPT",
+  startCustomSession: "Démarrer Session Personnalisée",
+  exchanges: "échanges",
+  stateListening: "écoute",
+  stateProcessing: "traitement",
+  stateSpeaking: "parle",
+  stateIdle: "inactif",
+};
+
+export default premiumVoiceTranslations;

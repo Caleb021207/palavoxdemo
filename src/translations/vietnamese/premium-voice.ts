@@ -1,0 +1,67 @@
+
+import { TranslationRecord } from "../types";
+
+const premiumVoiceTranslations: TranslationRecord = {
+  premiumVoiceChat: "Chat Giọng Nói Cao Cấp",
+  premiumVoiceChatBenefits: "Lợi ích Chat Giọng Nói Cao Cấp",
+  textConversationPractice: "Luyện Tập Hội Thoại Văn Bản",
+  cefrA1Description: "Sơ cấp - Cụm từ và biểu hiện cơ bản",
+  cefrA2Description: "Cơ bản - Giao tiếp hàng ngày đơn giản",
+  cefrB1Description: "Trung cấp - Có thể thảo luận các chủ đề quen thuộc",
+  cefrB2Description: "Trung cấp cao - Có thể tương tác một cách thoải mái",
+  beginner: "Người mới bắt đầu",
+  elementary: "Cơ bản",
+  intermediate: "Trung cấp",
+  upperIntermediate: "Trung cấp cao",
+  selectCEFRLevel: "Chọn Cấp độ CEFR",
+  selectedLevel: "Cấp độ đã chọn",
+  cooldownPeriodActive: "Đã đạt giới hạn hàng tuần",
+  cooldownActive: "Đã đạt giới hạn hàng tuần",
+  waitBeforeNextSession: "Bạn cần đợi trước khi bắt đầu phiên tiếp theo",
+  loginRequired: "Yêu cầu đăng nhập",
+  pleaseLoginToAccessPremiumFeature: "Vui lòng đăng nhập để truy cập tính năng chat giọng nói cao cấp",
+  startVoiceChat: "Bắt đầu chat giọng nói",
+  stopVoiceChat: "Dừng chat giọng nói",
+  
+  // Premium Voice Practice Page
+  premiumVoicePractice: "Luyện Tập Giọng Nói Cao Cấp",
+  practiceConversationalEnglish: "Luyện tập tiếng Anh giao tiếp với GPT-4o Realtime",
+  minutesRemainingThisMonth: "Còn {{minutes}} phút trong tháng này",
+  startPremiumSession: "Bắt Đầu Phiên Cao Cấp",
+  endSession: "Kết Thúc Phiên",
+  poweredByGPT4oRealtime: "Được hỗ trợ bởi GPT-4o Realtime",
+  conversation: "Hội Thoại",
+  you: "Bạn",
+  aiTutor: "Gia Sư AI",
+  minutesLeft: "Còn {{minutes}} phút",
+  connected: "Đã Kết Nối",
+  premiumVoiceReady: "Luyện tập giọng nói cao cấp đã sẵn sàng. Bắt đầu nói!",
+  limitReached: "Đã Đạt Giới Hạn",
+  monthlyLimitMessage: "Bạn đã sử dụng hết {{minutes}} phút trong tháng này. Đặt lại vào ngày 1.",
+  sessionSaved: "Phiên Đã Lưu",
+  usedMinutesMessage: "Đã sử dụng {{minutes}} phút trong phiên này",
+  timeWarning: "Cảnh Báo Thời Gian",
+  minutesRemainingWarning: "Còn {{minutes}} phút",
+  sessionEnded: "Phiên Đã Kết Thúc",
+  premiumSessionEndedMessage: "Phiên cao cấp 15 phút của bạn đã kết thúc",
+  premiumVoiceInstructions: "Tính năng này được thiết kế cho các cuộc hội thoại trôi chảy, năng động. Bạn có 15 phút luyện tập mỗi tháng. Chỉ cần nhấn nút và nói 'Xin chào, bạn khỏe không?' Gia sư AI sẽ giúp bạn luyện tập kỹ năng nói tiếng Anh. Nếu cần, nó cũng có thể hỗ trợ bạn bằng ngôn ngữ mẹ đẻ của bạn.",
+  
+  gptLanguageSupport: "GPT-4o Realtime hỗ trợ hơn 20 ngôn ngữ. Mặc dù được tối ưu hóa cho tiếng Anh, nó cung cấp các cuộc hội thoại tự nhiên bằng ngôn ngữ của bạn.",
+  customLanguageSupport: "Custom Realtime AI hỗ trợ hơn 99 ngôn ngữ. Hệ thống này sử dụng các mô hình đa ngôn ngữ chuyên biệt bao gồm Whisper (nhận dạng giọng nói), GPT-4o-mini (hội thoại) và Azure TTS (tổng hợp giọng nói).",
+  recommendedForYourLanguage: "Được đề xuất cho ngôn ngữ của bạn",
+  multilingualSupport: "ĐA NGÔN NGỮ",
+  customRealtimeDisclaimer: "Mỗi bản ghi được giới hạn 1 phút. Sau 3 giây im lặng, tin nhắn của bạn sẽ được gửi tự động.",
+  
+  // Voice practice page
+  openaiLatestVoiceModel: "Mô hình giọng nói mới nhất của OpenAI",
+  connecting: "Đang kết nối...",
+  startGptSession: "Bắt đầu Phiên GPT",
+  startCustomSession: "Bắt đầu Phiên Tùy chỉnh",
+  exchanges: "trao đổi",
+  stateListening: "đang lắng nghe",
+  stateProcessing: "đang xử lý",
+  stateSpeaking: "đang nói",
+  stateIdle: "không hoạt động",
+};
+
+export default premiumVoiceTranslations;

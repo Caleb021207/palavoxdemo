@@ -1,0 +1,42 @@
+
+import { TranslationRecord } from "../types";
+
+const premiumVoiceTranslations: TranslationRecord = {
+  premiumVoicePractice: "Tababarka Codka Premium",
+  practiceConversationalEnglish: "Ku celceli Ingiriiska wadahadalka ah GPT-4o Realtime",
+  minutesRemainingThisMonth: "{{minutes}} daqiiqo ayaa hadhay bisha",
+  startPremiumSession: "Bilow Fadhiga Premium",
+  endSession: "Dhammaystir Fadhiga",
+  poweredByGPT4oRealtime: "Waxaa kaashada GPT-4o Realtime",
+  conversation: "Wadahadal",
+  you: "Adiga",
+  aiTutor: "Macalin AI",
+  minutesLeft: "{{minutes}} daqiiqo ayaa hadhay",
+  connected: "La xidhay",
+  premiumVoiceReady: "Tababarka codka premium diyaar. Bilow hadalka!",
+  limitReached: "Xadka Waa La Gaadhay",
+  monthlyLimitMessage: "Waxaad isticmaashay dhammaan {{minutes}} daqiiqo bisha. Waxaa dib u bilaabanaya 1da.",
+  sessionSaved: "Fadhigii Waa La Kaydiyey",
+  usedMinutesMessage: "Waxaa la isticmaalay {{minutes}} daqiiqo fadhigan",
+  timeWarning: "Digniin Waqti",
+  minutesRemainingWarning: "{{minutes}} daqiiqo ayaa hadhay",
+  sessionEnded: "Fadhigii Wuu Dhamaaday",
+  premiumSessionEndedMessage: "Fadhigaaga premium-ka ah ee 15 daqiiqo wuu dhamaaday",
+  premiumVoiceInstructions: "Astaamahan waxaa loogu talagalay wadahadallo socodka leh oo firfircoon. Waxaad heshaa 15 daqiiqo oo tababbaro ah bishii. Kaliya riix batoonka oo dheh 'Salaamu calaykum, sidee tahay?' Macalin AI ayaa kaa caawin doona inaad ku tababbarto xirfadaha hadalka Ingiriiska. Haddii loo baahdo, wuxuu kaa caawin karaa luqadda hooyo ee.",
+  gptLanguageSupport: "GPT-4o Realtime wuxuu taageeraa 20+ luqadood. In kasta oo loo habeeyey Ingiriisiga, wuxuu bixiyaa wadahadal dabiici ah luqaddaada.",
+  customLanguageSupport: "Custom Realtime AI wuxuu taageeraa 99+ luqadood. Nidaamkan wuxuu isticmaalaa moodooyinka luqadaha badan oo gaar ah oo ay ku jiraan Whisper (aqoonsiga codka), GPT-4o-mini (wadahadalka), iyo Azure TTS (isku darka codka).",
+  recommendedForYourLanguage: "Waxaa lagu taliyey luqaddaada",
+  multilingualSupport: "LUQADO BADAN",
+  customRealtimeDisclaimer: "Duubista kasta waxaa xaddidan 1 daqiiqo. Ka dib 3 ilbiriqsi oo aamusnaan ah, fariintaada ayaa si toos ah loo diri doonaa.",
+  openaiLatestVoiceModel: "Qaabka codka ugu dambeeyay ee OpenAI",
+  connecting: "La xiriiraya...",
+  startGptSession: "Bilow Fadhiga GPT",
+  startCustomSession: "Bilow Fadhiga Gaarka ah",
+  exchanges: "isdhaafsiin",
+  stateListening: "dhegaysanaya",
+  stateProcessing: "habaynaya",
+  stateSpeaking: "hadlaya",
+  stateIdle: "nasanaya",
+};
+
+export default premiumVoiceTranslations;

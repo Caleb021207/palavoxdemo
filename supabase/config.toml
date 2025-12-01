@@ -1,0 +1,35 @@
+project_id = "dukpljcweixxmpkiblwo"
+
+[functions.verify-certification-code]
+verify_jwt = true
+
+[functions.record-certification-usage]
+verify_jwt = true
+
+[functions.premium-voice-realtime]
+verify_jwt = false
+
+[functions.track-premium-voice-session]
+verify_jwt = false
+
+[functions.custom-realtime-conversation]
+verify_jwt = false
+
+[functions.gemini-voice-realtime]
+verify_jwt = false
+
+[functions.seed-course-data]
+verify_jwt = true
+
+[functions.award-xp]
+verify_jwt = true
+
+[functions.check-streak]
+verify_jwt = true
+
+[functions.get-leaderboard-data]
+verify_jwt = true
+
+[functions.initialize-student-progression]
+verify_jwt = true
+

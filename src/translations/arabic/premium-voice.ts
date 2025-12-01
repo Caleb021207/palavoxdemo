@@ -1,0 +1,91 @@
+
+import { TranslationRecord } from "../types";
+
+const premiumVoiceTranslations: TranslationRecord = {
+  premiumVoiceChat: "الدردشة الصوتية المتميزة",
+  premiumVoiceChatBenefits: "فوائد الدردشة الصوتية المتميزة",
+  cefrA1Description: "مبتدئ - الجمل والتعبيرات الأساسية",
+  cefrA2Description: "أساسي - التواصل اليومي البسيط",
+  cefrB1Description: "متوسط - يمكن مناقشة المواضيع المألوفة",
+  cefrB2Description: "متوسط متقدم - يمكن التفاعل بطلاقة",
+  beginner: "مبتدئ",
+  elementary: "أساسي",
+  intermediate: "متوسط",
+  upperIntermediate: "متوسط متقدم",
+  selectCEFRLevel: "اختر مستوى CEFR",
+  selectedLevel: "المستوى المحدد",
+  cooldownPeriodActive: "تم الوصول إلى الحد الأسبوعي",
+  cooldownActive: "تم الوصول إلى الحد الأسبوعي",
+  waitBeforeNextSession: "يجب الانتظار قبل بدء جلسة أخرى",
+  cooldownPeriodDescription: "يجب الانتظار {{time}} قبل بدء جلسة أخرى",
+  resetsAt6AM: "سيتم إعادة تعيين الوقت المسموح أسبوعياً وهو 10 دقائق في {{time}} (الإثنين الساعة 6:00 صباحاً)",
+  dailyLimitReached: "لقد استخدمت الـ 10 دقائق المسموح بها أسبوعياً. سيتم إعادة تعيين الوقت يوم الإثنين الساعة 6:00 صباحاً.",
+  loginRequired: "تسجيل الدخول مطلوب",
+  pleaseLoginToAccessPremiumFeature: "يرجى تسجيل الدخول للوصول إلى ميزة الدردشة الصوتية المتميزة",
+  redirectingToLogin: "جاري التوجيه إلى صفحة تسجيل الدخول",
+  failedToStartSession: "فشل في بدء الجلسة",
+  failedToCreateSession: "فشل في إنشاء الجلسة",
+  loginRequiredDescription: "للوصول إلى ميزة الدردشة الصوتية المتميزة، يرجى تسجيل الدخول إلى حسابك.",
+  conversationHistoryCleared: "تم مسح سجل المحادثة",
+  remaining: "متبقي هذا الأسبوع",
+  premiumVoiceChatDescription: "قم بإجراء محادثات صوتية طبيعية مع مدرس الذكاء الاصطناعي المتميز لتدريب {{practice}}! سيساعدك الذكاء الاصطناعي في تصحيح قواعدك ومفرداتك ونطقك.",
+  premiumVoiceNote: "استخدام الدردشة الصوتية المتميزة محدود بـ 10 دقائق أسبوعياً",
+  premiumVoiceNoteWithReset: "تتيح الدردشة الصوتية المتميزة 10 دقائق من وقت التدريب أسبوعياً. يتم إعادة تعيين الوقت كل يوم إثنين الساعة 6:00 صباحاً بالتوقيت المركزي.",
+  benefitNaturalVoice: "تفاعلات صوتية طبيعية وإنسانية باستخدام تقنية ElevenLabs",
+  benefitAccentPronunciation: "لهجة ونطق دقيقان للتعلم الغامر",
+  benefitRegularPractice: "10 دقائق من وقت التدريب أسبوعياً، مع إعادة التعيين كل يوم إثنين الساعة 6:00 صباحاً",
+  timeLimit10MinReached: "تم الوصول إلى الحد الزمني 10 دقائق",
+  
+  // Voice chat controls
+  startVoiceChat: "بدء الدردشة الصوتية",
+  stopVoiceChat: "إيقاف الدردشة الصوتية",
+  voiceChatEnded: "انتهت الدردشة الصوتية",
+  speaking: "يتحدث...",
+  startChatting: "بدء الدردشة",
+  
+  // Added missing key
+  premiumSessionLimitReached: "تم الوصول إلى حد الجلسة المتميزة",
+  
+  // Premium Voice Practice Page
+  premiumVoicePractice: "ممارسة الصوت المميزة",
+  practiceConversationalEnglish: "تدرب على الإنجليزية المحادثة مع GPT-4o Realtime",
+  minutesRemainingThisMonth: "{{minutes}} دقيقة متبقية هذا الشهر",
+  startPremiumSession: "بدء جلسة مميزة",
+  endSession: "إنهاء الجلسة",
+  poweredByGPT4oRealtime: "مدعوم بواسطة GPT-4o Realtime",
+  conversation: "محادثة",
+  you: "أنت",
+  aiTutor: "معلم الذكاء الاصطناعي",
+  minutesLeft: "{{minutes}} دقيقة متبقية",
+  connected: "متصل",
+  premiumVoiceReady: "ممارسة الصوت المميزة جاهزة. ابدأ بالتحدث!",
+  limitReached: "تم الوصول إلى الحد الأقصى",
+  monthlyLimitMessage: "لقد استخدمت جميع {{minutes}} دقيقة هذا الشهر. يتم إعادة التعيين في اليوم الأول.",
+  sessionSaved: "تم حفظ الجلسة",
+  usedMinutesMessage: "تم استخدام {{minutes}} دقيقة في هذه الجلسة",
+  timeWarning: "تحذير الوقت",
+  minutesRemainingWarning: "{{minutes}} دقيقة متبقية",
+  sessionEnded: "انتهت الجلسة",
+  premiumSessionEndedMessage: "انتهت جلستك المميزة التي مدتها 15 دقيقة",
+  premiumVoiceInstructions: "تم تصميم هذه الميزة للمحادثات السلسة والديناميكية. تحصل على 15 دقيقة من التدريب شهريًا. ما عليك سوى الضغط على الزر وقول 'مرحبًا، كيف حالك؟' سيساعدك معلم الذكاء الاصطناعي على ممارسة مهارات التحدث بالإنجليزية. إذا لزم الأمر، يمكنه أيضًا مساعدتك بلغتك الأم.",
+  
+  // Language support messages
+  gptLanguageSupport: "يدعم GPT-4o Realtime أكثر من 20 لغة. على الرغم من تحسينه للغة الإنجليزية، إلا أنه يوفر محادثات طبيعية بلغتك.",
+  customLanguageSupport: "يدعم Custom Realtime AI أكثر من 99 لغة. يستخدم هذا النظام نماذج متعددة اللغات متخصصة بما في ذلك Whisper (التعرف على الكلام) و GPT-4o-mini (المحادثة) و Azure TTS (تركيب الكلام).",
+  recommendedForYourLanguage: "موصى به للغتك",
+  multilingualSupport: "متعدد اللغات",
+  customRealtimeDisclaimer: "كل تسجيل محدود بدقيقة واحدة. بعد 3 ثوانٍ من الصمت، سيتم إرسال رسالتك تلقائيًا.",
+  
+  // Voice practice page
+  openaiLatestVoiceModel: "أحدث نموذج صوتي من OpenAI",
+  connecting: "جاري الاتصال...",
+  startGptSession: "بدء جلسة GPT",
+  startCustomSession: "بدء جلسة مخصصة",
+  exchanges: "تبادلات",
+  stateListening: "استماع",
+  stateProcessing: "معالجة",
+  stateSpeaking: "يتحدث",
+  stateIdle: "خامل",
+};
+
+export default premiumVoiceTranslations;
