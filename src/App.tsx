@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { UsageLimitAlert } from "@/components/usage/UsageLimitAlert";
 import { XPNotificationProvider } from "@/contexts/XPNotificationContext";
 import { DemoProvider } from "@/context/DemoContext";
+import { AccessCodeDialog } from "@/components/auth/AccessCodeDialog";
 import NewLayout from "@/components/layout/NewLayout";
 import NewLandingPage from "@/components/layout/NewLandingPage";
 import Practice from "@/pages/Practice";
@@ -24,6 +25,7 @@ function App() {
     <Router>
       <DemoProvider>
         <XPNotificationProvider>
+          <AccessCodeDialog />
           <UsageLimitAlert />
           <NewLayout>
             <Routes>

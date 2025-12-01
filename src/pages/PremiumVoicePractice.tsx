@@ -218,7 +218,7 @@ const PremiumVoicePractice = () => {
                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
                           5
                         </div>
-                        <span className="flex-1 text-base">🌍 The AI is multilingual! Ask it to speak in any language you need - Spanish, French, Mandarin, or any other language</span>
+                        <span className="flex-1 text-base">The AI is multilingual! Ask it to speak in any language you need - Spanish, French, Mandarin, or any other language</span>
                       </motion.li>
                     </ul>
                   </CardContent>
