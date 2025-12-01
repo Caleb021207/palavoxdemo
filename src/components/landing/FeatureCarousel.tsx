@@ -35,8 +35,8 @@ const FeatureCarousel = () => {
   const features: Feature[] = [
     {
       id: 'practice',
-      title: 'Practice',
-      description: 'Practice reading and writing with AI-powered text conversations',
+      title: 'Text Practice',
+      description: 'Students practice English reading and writing through AI-powered text conversations with instant feedback',
       icon: MessageSquare,
       route: '/practice',
       gradient: 'from-primary to-palavox-teal'
@@ -44,7 +44,7 @@ const FeatureCarousel = () => {
     {
       id: 'unlimited-voice',
       title: 'Unlimited Voice Practice',
-      description: 'Natural voice conversations for immersive language learning',
+      description: 'Students engage in natural English voice conversations for immersive speaking and listening practice',
       icon: Mic,
       route: '/voice-chat',
       gradient: 'from-palavox-teal to-accent'
@@ -52,7 +52,7 @@ const FeatureCarousel = () => {
     {
       id: 'pronunciation',
       title: 'Pronunciation Practice',
-      description: 'Perfect your pronunciation with AI-powered speech analysis',
+      description: 'Students perfect their English pronunciation with AI-powered speech analysis and real-time feedback',
       icon: Volume2,
       route: '/pronunciation-practice',
       gradient: 'from-accent to-primary'
@@ -60,7 +60,7 @@ const FeatureCarousel = () => {
     {
       id: 'advanced-conversation',
       title: 'Advanced Conversation',
-      description: 'Premium voice features with Palavox Advanced AI technology',
+      description: 'Students practice sophisticated English dialogues with Palavox Advanced AI for fluency development',
       icon: Sparkles,
       route: '/premium-voice-practice',
       gradient: 'from-primary to-accent'
@@ -68,7 +68,7 @@ const FeatureCarousel = () => {
     {
       id: 'testing-progress',
       title: 'Testing & Progress',
-      description: 'Track your learning journey with AI-powered analysis and testing',
+      description: 'Students track their English learning journey with AI-powered assessments and detailed progress analytics',
       icon: Brain,
       route: '/analysis',
       gradient: 'from-palavox-teal to-primary'
@@ -76,7 +76,7 @@ const FeatureCarousel = () => {
     {
       id: 'profile',
       title: 'Profile',
-      description: 'View your achievements, certificates, and learning statistics',
+      description: 'Students view their English learning achievements, earned certificates, and performance statistics',
       icon: User,
       route: '/profile',
       gradient: 'from-accent to-palavox-teal'

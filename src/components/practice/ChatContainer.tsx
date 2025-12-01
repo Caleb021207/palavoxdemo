@@ -51,7 +51,7 @@ export default function ChatContainer({
   return (
     <div className="space-y-2">
       <Card className="overflow-hidden mb-2">
-        <ScrollArea className="h-[500px] p-4 select-none" onContextMenu={(e) => e.preventDefault()} onCopy={(e) => e.preventDefault()}>
+        <ScrollArea className="h-[500px] p-4">
           {messages.length === 0 ? (
             <EmptyChatState />
           ) : (
