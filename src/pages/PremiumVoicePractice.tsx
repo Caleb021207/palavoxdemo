@@ -405,13 +405,13 @@ const PremiumVoicePractice = () => {
                 <SelectItem value="gpt" className="text-lg py-3">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-5 h-5 text-primary" />
-                    GPT-4o Realtime
+                    Palavox Advanced Voice
                   </div>
                 </SelectItem>
                 <SelectItem value="custom" className="text-lg py-3">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-5 h-5 text-accent" />
-                    Custom Realtime AI
+                    Palavox Custom AI
                   </div>
                 </SelectItem>
               </SelectContent>
@@ -430,7 +430,7 @@ const PremiumVoicePractice = () => {
             <div className={`p-6 space-y-3 ${selectedMode === 'gpt' ? 'bg-gradient-to-br from-primary/10 via-primary/5 to-transparent' : 'bg-gradient-to-br from-accent/10 via-accent/5 to-transparent'}`}>
               <h4 className="font-semibold text-lg flex items-center gap-2">
                 <Sparkles className={`w-5 h-5 ${selectedMode === 'gpt' ? 'text-primary' : 'text-accent'}`} />
-                {selectedMode === 'gpt' ? 'GPT-4o Realtime' : 'Custom Realtime AI'}
+                {selectedMode === 'gpt' ? 'Palavox Advanced Voice' : 'Palavox Custom AI'}
               </h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {selectedMode === 'gpt' ? t('gptLanguageSupport') : t('customLanguageSupport')}
@@ -456,7 +456,7 @@ const PremiumVoicePractice = () => {
               <InteractiveCard className="p-8 glass border-primary/30 hover:border-primary/50 transition-all shadow-xl overflow-hidden bg-gradient-to-br from-card/50 via-card to-card/50">
                 <div className="flex flex-col items-center gap-6">
                   <div className="text-center space-y-1">
-                    <h3 className="text-2xl font-bold gradient-text">GPT-4o Realtime</h3>
+                    <h3 className="text-2xl font-bold gradient-text">Palavox Advanced Voice</h3>
                     <p className="text-sm text-muted-foreground">{t('openaiLatestVoiceModel')}</p>
                   </div>
 
@@ -518,8 +518,8 @@ const PremiumVoicePractice = () => {
               <InteractiveCard className="p-8 glass border-accent/30 hover:border-accent/50 transition-all shadow-xl overflow-hidden bg-gradient-to-br from-card/50 via-card to-card/50">
                 <div className="flex flex-col items-center gap-6">
                   <div className="text-center space-y-2">
-                    <h3 className="text-2xl font-bold gradient-text">Custom Realtime AI</h3>
-                    <motion.div 
+                    <h3 className="text-2xl font-bold gradient-text">Palavox Custom AI</h3>
+                    <motion.div
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-accent/10 to-primary/10 border border-accent/30"
                       whileHover={{ scale: 1.05 }}
                     >
