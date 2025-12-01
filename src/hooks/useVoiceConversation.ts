@@ -20,14 +20,13 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
 
     // Add user message to history
     const userMessage: Message = { role: "user", content: text };
-    setConversationHistory(prev => [...prev, userMessage]);
-    setApiConversationHistory(prev => [...prev, userMessage]);
-
+    
     setIsLoading(true);
 
     try {
       // Call chat-with-tutor edge function
       // Edge function expects: message (current text) + conversationHistory (previous messages)
+      // Use current apiConversationHistory state (doesn't include the message we're about to send)
       const { data, error } = await supabase.functions.invoke("chat-with-tutor", {
         body: {
           message: text,
@@ -39,16 +38,26 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Edge function error:", error);
+        throw error;
+      }
+
+      // Validate response has content
+      const replyContent = data?.reply || data?.response;
+      if (!replyContent || typeof replyContent !== 'string') {
+        console.error("Invalid response from edge function:", data);
+        throw new Error("Invalid response format from AI");
+      }
 
       const assistantMessage: Message = {
         role: "assistant",
-        content: data.reply || data.response
+        content: replyContent
       };
 
-      // Add assistant response to history
-      setConversationHistory(prev => [...prev, assistantMessage]);
-      setApiConversationHistory(prev => [...prev, assistantMessage]);
+      // Update histories with both user message and assistant response
+      setConversationHistory(prev => [...prev, userMessage, assistantMessage]);
+      setApiConversationHistory(prev => [...prev, userMessage, assistantMessage]);
 
       // Auto-play TTS for the response
       await speakResponse(assistantMessage.content);
@@ -56,6 +65,10 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
     } catch (error) {
       console.error("Chat error:", error);
       toast.error("Failed to get response from AI");
+      
+      // Still add user message to history even if request failed
+      setConversationHistory(prev => [...prev, userMessage]);
+      setApiConversationHistory(prev => [...prev, userMessage]);
     } finally {
       setIsLoading(false);
     }
