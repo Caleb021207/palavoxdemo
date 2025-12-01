@@ -48,36 +48,36 @@ serve(async (req) => {
   }
 
   try {
-    // Verify authentication
-    const authorization = req.headers.get('Authorization');
-    if (!authorization) {
-      console.error('No authorization header provided');
-      return new Response(
-        JSON.stringify({ error: 'Authentication required' }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      {
-        global: { headers: { Authorization: authorization } },
-        auth: { persistSession: false }
-      }
-    );
-
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+    // DEMO MODE: Skip authentication for public demo access
+    const DEMO_USER_ID = "demo-user-00000000-0000-0000-0000-000000000000";
+    let userId = DEMO_USER_ID;
     
-    if (userError || !user) {
-      console.error('Invalid user token:', userError);
-      return new Response(
-        JSON.stringify({ error: 'Invalid authentication token' }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
+    // Optional: Try to get user if authenticated, but don't require it
+    const authorization = req.headers.get('Authorization');
+    if (authorization && !authorization.includes('anon')) {
+      try {
+        const supabaseClient = createClient(
+          Deno.env.get('SUPABASE_URL') ?? '',
+          Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+          {
+            global: { headers: { Authorization: authorization } },
+            auth: { persistSession: false }
+          }
+        );
 
-    console.log(`Authenticated request from user: ${user.id}`);
+        const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+        if (user && !userError) {
+          userId = user.id;
+          console.log(`Authenticated request from user: ${user.id}`);
+        } else {
+          console.log('Using demo mode - no authentication required');
+        }
+      } catch (authError) {
+        console.log('Auth check failed, continuing in demo mode:', authError);
+      }
+    } else {
+      console.log('Demo mode: Public access without authentication');
+    }
 
     // Get request data
     const requestData = await req.json();
@@ -145,13 +145,18 @@ serve(async (req) => {
       );
     }
 
-    // Check text practice token limits (skip for hint requests)
+    // Check text practice token limits (skip for hint requests and demo mode)
     let usingFallbackModel = false;
-    if (requestType !== 'hint') {
+    if (requestType !== 'hint' && userId !== DEMO_USER_ID) {
       try {
+        const supabaseClient = createClient(
+          Deno.env.get('SUPABASE_URL') ?? '',
+          Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+        );
+        
         const { data: limitCheck, error: limitError } = await supabaseClient.rpc(
           'can_send_text_message',
-          { p_student_id: user.id }
+          { p_student_id: userId }
         );
 
         if (limitError) {
@@ -195,7 +200,7 @@ serve(async (req) => {
     ];
 
     if (suspiciousPatterns.some(pattern => pattern.test(trimmedMessage))) {
-      console.warn(`Potential prompt injection detected from user ${user.id}:`, trimmedMessage.substring(0, 100));
+      console.warn(`Potential prompt injection detected from user ${userId}:`, trimmedMessage.substring(0, 100));
       // Log but still process - most are false positives
     }
     // ===== END INPUT VALIDATION =====
@@ -213,8 +218,10 @@ serve(async (req) => {
     
     console.log(`Validated languages: User language: ${userLanguage}, Target language: ${targetLanguage}`);
 
-    // Log the access for FERPA compliance with actual user ID
-    logDataAccess(user.id, "language_practice", "language_learning");
+    // Log the access for FERPA compliance (skip in demo mode)
+    if (userId !== DEMO_USER_ID) {
+      logDataAccess(userId, "language_practice", "language_learning");
+    }
 
     console.log(`Received message: ${trimmedMessage.substring(0, 100)} Request type: ${requestType} User language: ${userLanguage} Target language: ${targetLanguage} Request translation: ${requestData.requestTranslation} Grammar correction: ${correctGrammar} Conversation level: ${conversationLevel} Conversation history length: ${limitedHistory.length}`);
 
@@ -412,33 +419,37 @@ Focus on having an engaging, natural conversation. Do NOT provide grammar correc
       }
     }
 
-    // Track text practice token usage
-    try {
-      console.log(`Tracking ${totalTokensUsed} tokens for user ${user.id}`);
-      
-      // Create admin client for tracking
-      const supabaseAdmin = createClient(
-        Deno.env.get('SUPABASE_URL') ?? '',
-        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-        { auth: { persistSession: false } }
-      );
+    // Track text practice token usage (skip in demo mode)
+    if (userId !== DEMO_USER_ID) {
+      try {
+        console.log(`Tracking ${totalTokensUsed} tokens for user ${userId}`);
+        
+        // Create admin client for tracking
+        const supabaseAdmin = createClient(
+          Deno.env.get('SUPABASE_URL') ?? '',
+          Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+          { auth: { persistSession: false } }
+        );
 
-      const { error: trackingError } = await supabaseAdmin.rpc(
-        'increment_text_practice_token_usage',
-        { 
-          p_user_id: user.id, 
-          p_tokens: totalTokensUsed 
+        const { error: trackingError } = await supabaseAdmin.rpc(
+          'increment_text_practice_token_usage',
+          { 
+            p_user_id: userId, 
+            p_tokens: totalTokensUsed 
+          }
+        );
+
+        if (trackingError) {
+          console.error('Failed to track text practice tokens:', trackingError);
+        } else {
+          console.log(`Successfully tracked ${totalTokensUsed} tokens for user ${userId}`);
         }
-      );
-
-      if (trackingError) {
-        console.error('Failed to track text practice tokens:', trackingError);
-      } else {
-        console.log(`Successfully tracked ${totalTokensUsed} tokens for user ${user.id}`);
+      } catch (trackingError) {
+        console.error('Error tracking text practice usage:', trackingError);
+        // Don't fail the request if tracking fails
       }
-    } catch (trackingError) {
-      console.error('Error tracking text practice usage:', trackingError);
-      // Don't fail the request if tracking fails
+    } else {
+      console.log(`Demo mode: Skipping token tracking for ${totalTokensUsed} tokens`);
     }
 
     // Update conversation history (limited to prevent unbounded growth)
