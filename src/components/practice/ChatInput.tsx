@@ -3,7 +3,6 @@ import React, { useState, useRef, KeyboardEvent, FormEvent, useEffect } from "re
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
-import { useLocalization } from "@/context/LocalizationContext";
 import HintButton from "./HintButton";
 import type { Message } from "@/types/chat";
 
@@ -26,7 +25,6 @@ export default function ChatInput({
   messages,
   targetLanguage
 }: ChatInputProps) {
-  const { t } = useLocalization();
   const [rows, setRows] = useState(1);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   
@@ -78,7 +76,7 @@ export default function ChatInput({
             className="h-14 w-14 p-0"
           >
             <Send className="h-7 w-7" />
-            <span className="sr-only">{t("send")}</span>
+            <span className="sr-only">Send</span>
           </Button>
         </div>
       </div>

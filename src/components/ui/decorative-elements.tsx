@@ -99,3 +99,14 @@ export const WavyLine: React.FC<{
     </svg>
   );
 };
+
+export const DecorativeOrbs: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <div className={cn("absolute inset-0 overflow-hidden pointer-events-none -z-10", className)}>
+      <GradientBlob className="top-20 -left-20" size="w-96 h-96" colors="bg-gradient-to-br from-primary/20 to-palavox-teal/20" />
+      <GradientBlob className="-top-40 right-20" size="w-80 h-80" colors="bg-gradient-to-bl from-palavox-teal/15 to-accent/15" />
+      <GradientBlob className="bottom-20 -right-20" size="w-96 h-96" colors="bg-gradient-to-tr from-accent/20 to-primary/20" />
+      <GradientBlob className="-bottom-40 left-1/3" size="w-72 h-72" colors="bg-gradient-to-t from-palavox-teal/10 to-primary/10" />
+    </div>
+  );
+};
