@@ -106,18 +106,15 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
         className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-2 w-full justify-start"
       >
         {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        <span>{isExpanded ? t("hideTranslation") : t("showTranslation")}</span>
+        <span className="font-medium">{isExpanded ? "Hide Translation" : "View Translation"}</span>
       </button>
       
-      {/* Translation content - only shown when expanded */}
+      {/* Demo translation content - only shown when expanded */}
       {isExpanded && (
-        <TranslationContent
-          role={role}
-          translation={translationText}
-          isTranslationPlaying={isTranslationPlaying}
-          isTranslationLoading={isTranslationLoading}
-          onPlayTranslationAudio={onPlayTranslationAudio}
-        />
+        <div className="text-sm text-muted-foreground italic bg-muted/30 p-3 rounded">
+          <p>🌍 <strong>Demo Feature:</strong> Students can view AI responses translated into their native language for better understanding and learning.</p>
+          <p className="mt-2 text-xs">This helps ESL learners comprehend complex responses while practicing English conversation skills.</p>
+        </div>
       )}
     </div>
   );
