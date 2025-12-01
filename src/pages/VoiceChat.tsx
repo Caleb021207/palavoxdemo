@@ -36,8 +36,7 @@ const VoiceChat = () => {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <DecorativeOrbs />
       
-      <NewLayout>
-        <ScrollArea className="h-[calc(100vh-4rem)]">
+      <ScrollArea className="h-[calc(100vh-4rem)]">
           <div className="container mx-auto px-4 py-8 max-w-6xl relative z-10">
             {/* Header Section */}
             <motion.div
@@ -214,7 +213,6 @@ const VoiceChat = () => {
             </motion.div>
           </div>
         </ScrollArea>
-      </NewLayout>
     </div>
   );
 };

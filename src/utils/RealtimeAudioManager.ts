@@ -195,12 +195,6 @@ export class RealtimeChat {
     try {
       console.log("🚀 Getting ephemeral token...");
       
-      // Get ephemeral token from edge function
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('Not authenticated');
-      }
-
       const endpoint = this.provider === 'gemini' 
         ? 'gemini-voice-realtime' 
         : 'premium-voice-realtime';
@@ -210,7 +204,7 @@ export class RealtimeChat {
         {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${session.access_token}`,
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
             'Content-Type': 'application/json',
           }
         }
