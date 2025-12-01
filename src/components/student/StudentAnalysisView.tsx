@@ -18,14 +18,14 @@ const demoAnalyses: Analysis[] = [
     reading_listening_score: 25,
     written_production_score: 10,
     spoken_fluency_score: 43,
-    strengths: ["Can understand familiar everyday words and basic phrases", "Shows potential for verbal communication in simple contexts"],
-    weaknesses: ["Very limited vocabulary range", "Significant grammar and word order errors", "Struggles with written expression"],
+    strengths: ["Strong comprehension of complex texts and abstract concepts", "Effective use of varied vocabulary across different contexts", "Good fluency and coherence in extended discourse", "Able to express nuanced opinions and arguments clearly"],
+    weaknesses: ["Minor errors in highly complex grammatical structures", "Could refine formal register and stylistic choices", "Occasional imprecision in specialized vocabulary"],
     recommendations: [
-      "Use Text Practice at A1 level to build foundational grammar and expand basic vocabulary. Focus on simple sentence structures and common everyday phrases.",
-      "Use Voice Practice at A1 level to develop confidence in spoken communication. Start with basic greetings and simple exchanges.",
-      "Use Pronunciation Practice at A1 level to establish correct sound production. Focus on high-frequency words and essential phonemes."
+      "Use Text Practice at B2-C1 level to master advanced grammatical structures and refine formal writing styles. Focus on academic essays, professional reports, and stylistic variation.",
+      "Use Voice Practice at B2-C1 level to perfect fluency in spontaneous discussions. Practice debating abstract topics and using sophisticated argumentation techniques.",
+      "Use Pronunciation Practice at B2-C1 level to achieve near-native intonation and stress patterns. Work on subtle aspects of connected speech and natural rhythm."
     ],
-    detailed_feedback: "The test taker shows a basic ability to form simple sentences verbally but struggles significantly with written communication. Vocabulary is limited to everyday topics, and prevalent errors in grammar and word order hinder effective communication."
+    detailed_feedback: "The test taker demonstrates strong command of the language with effective communication across a wide range of topics. They can express ideas fluently and spontaneously with good grammatical control, though minor errors occasionally occur in complex structures. Written and spoken communication is generally clear, well-organized, and appropriate for most contexts."
   },
   {
     id: "exam-2",
