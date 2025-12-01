@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
   MessageSquare, 
@@ -27,7 +27,8 @@ const FeatureCarousel = () => {
   const { t } = useLocalization();
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
+
+  const CARD_WIDTH = 450; // Width + gap between cards
 
   const features: Feature[] = [
     {
@@ -81,7 +82,6 @@ const FeatureCarousel = () => {
   ];
 
   const paginate = (newDirection: number) => {
-    setDirection(newDirection);
     setCurrentIndex((prevIndex) => {
       let newIndex = prevIndex + newDirection;
       if (newIndex < 0) newIndex = features.length - 1;
@@ -97,37 +97,6 @@ const FeatureCarousel = () => {
     }, 8000);
     return () => clearInterval(timer);
   }, [currentIndex]);
-
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 800 : -800,
-      opacity: 0,
-      scale: 0.9
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      scale: 1
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 800 : -800,
-      opacity: 0,
-      scale: 0.9
-    })
-  };
-
-  const getVisibleCards = () => {
-    const cards = [];
-    for (let i = -1; i <= 1; i++) {
-      let index = currentIndex + i;
-      if (index < 0) index = features.length + index;
-      if (index >= features.length) index = index - features.length;
-      cards.push({ feature: features[index], offset: i });
-    }
-    return cards;
-  };
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20">
@@ -182,38 +151,48 @@ const FeatureCarousel = () => {
       </motion.div>
 
       {/* Carousel Container */}
-      <div className="relative w-full max-w-6xl h-[500px] flex items-center justify-center perspective-1000">
-        <AnimatePresence initial={false} custom={direction}>
-          {getVisibleCards().map(({ feature, offset }) => {
-            const isCenter = offset === 0;
+      <div className="relative w-full max-w-6xl h-[500px] flex items-center justify-center overflow-hidden">
+        {/* Sliding Track */}
+        <motion.div
+          className="flex gap-12 absolute"
+          animate={{
+            x: -currentIndex * CARD_WIDTH + (typeof window !== 'undefined' ? window.innerWidth / 2 - 200 : 600)
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 90,
+            damping: 25,
+            mass: 1
+          }}
+          style={{
+            willChange: 'transform'
+          }}
+        >
+          {features.map((feature, index) => {
             const Icon = feature.icon;
+            const distanceFromCenter = Math.abs(index - currentIndex);
+            const isCenter = index === currentIndex;
             
             return (
               <motion.div
                 key={feature.id}
-                custom={direction}
-                variants={isCenter ? variants : undefined}
-                initial={isCenter ? "enter" : undefined}
-                animate="center"
-                exit={isCenter ? "exit" : undefined}
+                className="flex-shrink-0 w-[400px] cursor-pointer"
+                onClick={() => navigate(feature.route)}
+                animate={{
+                  scale: isCenter ? 1 : 0.8,
+                  opacity: isCenter ? 1 : 0.3,
+                  filter: isCenter ? 'blur(0px)' : 'blur(2px)'
+                }}
                 transition={{
-                  x: { duration: 1.2, ease: [0.25, 0.1, 0.25, 1] },
-                  opacity: { duration: 1, ease: "easeInOut" },
-                  scale: { duration: 1, ease: "easeOut" }
+                  duration: 0.8,
+                  ease: [0.25, 0.1, 0.25, 1]
                 }}
                 style={{
-                  position: 'absolute',
-                  x: offset * 450,
-                  scale: isCenter ? 1 : 0.75,
-                  opacity: isCenter ? 1 : 0.25,
-                  zIndex: isCenter ? 10 : 5 - Math.abs(offset),
-                  filter: isCenter ? 'none' : 'blur(3px)'
+                  zIndex: isCenter ? 10 : 5 - distanceFromCenter
                 }}
-                className={`w-[400px] cursor-pointer ${isCenter ? '' : 'pointer-events-none'}`}
-                onClick={() => isCenter && navigate(feature.route)}
               >
                 <motion.div 
-                  className={`bg-card border border-border rounded-3xl p-8 shadow-2xl transition-shadow duration-500 ${isCenter ? '' : 'pointer-events-none'}`}
+                  className="bg-card border border-border rounded-3xl p-8 shadow-2xl"
                   animate={{
                     boxShadow: isCenter 
                       ? '0 25px 50px -12px rgba(0, 0, 0, 0.25)' 
@@ -237,7 +216,7 @@ const FeatureCarousel = () => {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
+                      transition={{ delay: 0.3, duration: 0.6 }}
                       className="flex justify-center"
                     >
                       <Button
@@ -255,7 +234,7 @@ const FeatureCarousel = () => {
               </motion.div>
             );
           })}
-        </AnimatePresence>
+        </motion.div>
 
         {/* Navigation Buttons */}
         <Button
@@ -282,10 +261,7 @@ const FeatureCarousel = () => {
         {features.map((_, index) => (
           <motion.button
             key={index}
-            onClick={() => {
-              setDirection(index > currentIndex ? 1 : -1);
-              setCurrentIndex(index);
-            }}
+            onClick={() => setCurrentIndex(index)}
             className={`h-3 rounded-full transition-all duration-500 ${
               index === currentIndex 
                 ? 'bg-primary w-12' 
