@@ -25,8 +25,13 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
 
     try {
       // Call chat-with-tutor edge function
-      // Edge function expects: message (current text) + conversationHistory (previous messages)
-      // Use current apiConversationHistory state (doesn't include the message we're about to send)
+      console.log("Sending message to chat-with-tutor:", {
+        message: text,
+        historyLength: apiConversationHistory.length,
+        conversationLevel,
+        correctGrammar
+      });
+      
       const { data, error } = await supabase.functions.invoke("chat-with-tutor", {
         body: {
           message: text,
@@ -38,14 +43,18 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
         }
       });
 
+      console.log("Edge function response:", { data, error });
+
       if (error) {
         console.error("Edge function error:", error);
         throw error;
       }
 
       // Validate response has content
-      const replyContent = data?.reply || data?.response;
-      if (!replyContent || typeof replyContent !== 'string') {
+      const replyContent = data?.content || data?.reply || data?.response || "";
+      console.log("Reply content:", replyContent);
+      
+      if (!replyContent || typeof replyContent !== 'string' || replyContent.trim() === '') {
         console.error("Invalid response from edge function:", data);
         throw new Error("Invalid response format from AI");
       }
@@ -59,8 +68,10 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
       setConversationHistory(prev => [...prev, userMessage, assistantMessage]);
       setApiConversationHistory(prev => [...prev, userMessage, assistantMessage]);
 
+      console.log("About to call TTS for:", replyContent.substring(0, 50));
+      
       // Auto-play TTS for the response
-      await speakResponse(assistantMessage.content);
+      await speakResponse(replyContent);
 
     } catch (error) {
       console.error("Chat error:", error);
