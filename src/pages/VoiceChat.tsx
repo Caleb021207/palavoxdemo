@@ -23,6 +23,12 @@ const VoiceChat = () => {
   // Initialize hooks
   const { conversationHistory, isLoading, sendMessage, clearConversation } = useVoiceConversation(conversationLevel, grammarCorrection);
   
+  // Add grammar correction flag to messages
+  const messagesWithGrammarFlag = conversationHistory.map(msg => ({
+    ...msg,
+    grammarCorrectionEnabled: grammarCorrection
+  }));
+  
   const { speakWithAzureTTS, isSpeaking } = useVoiceTTS({ practiceLanguage: "english" });
   
   const { isListening, isTranscribing, transcript, toggleListening, handleSendTranscript, clearTranscript, updateTranscript } = useVoiceSpeechRecognition({
@@ -131,7 +137,7 @@ const VoiceChat = () => {
                   {(conversationHistory.length > 0 || isLoading) && (
                     <div className="mt-6">
                       <VoiceChatContainer 
-                        messages={conversationHistory}
+                        messages={messagesWithGrammarFlag}
                         isLoading={isLoading}
                         targetLanguage="english"
                         onPlayAudio={speakWithAzureTTS}

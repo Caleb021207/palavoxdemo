@@ -14,6 +14,7 @@ interface TranslationSectionProps {
   isTranslationLoading: boolean;
   originalContent: string; // Original content to compare with translation
   onPlayTranslationAudio?: () => void;
+  grammarCorrectionEnabled?: boolean;
 }
 
 const TranslationSection: React.FC<TranslationSectionProps> = ({
@@ -24,7 +25,8 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
   isTranslationPlaying,
   isTranslationLoading,
   originalContent,
-  onPlayTranslationAudio
+  onPlayTranslationAudio,
+  grammarCorrectionEnabled = false,
 }) => {
   const { t } = useLocalization();
   const { toast } = useToast();
@@ -111,9 +113,15 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
       
       {/* Demo translation content - only shown when expanded */}
       {isExpanded && (
-        <div className="text-sm text-muted-foreground italic bg-muted/30 p-3 rounded">
+        <div className="text-sm text-muted-foreground italic bg-muted/30 p-3 rounded space-y-2">
           <p>🌍 <strong>Demo Feature:</strong> Students can view AI responses translated into their native language for better understanding and learning.</p>
-          <p className="mt-2 text-xs">This helps ESL learners comprehend complex responses while practicing English conversation skills.</p>
+          <p className="text-xs">This helps ESL learners comprehend complex responses while practicing English conversation skills.</p>
+          
+          {grammarCorrectionEnabled && (
+            <p className="text-xs pt-2 border-t border-border/50">
+              ✏️ <strong>Grammar Correction:</strong> This response includes corrections to help improve your grammar and sentence structure.
+            </p>
+          )}
         </div>
       )}
     </div>

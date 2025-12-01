@@ -10,6 +10,7 @@ interface Message {
   role: "user" | "assistant";
   content: string;
   translation?: string;
+  grammarCorrectionEnabled?: boolean;
 }
 
 interface ChatContainerProps {
@@ -53,6 +54,7 @@ export default function ChatContainer({
                 role={message.role}
                 content={message.content}
                 translation={message.translation}
+                grammarCorrectionEnabled={message.grammarCorrectionEnabled}
               />
             ))}
             

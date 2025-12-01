@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import HintButton from "@/components/practice/HintButton";
 import { useLocalization } from "@/context/LocalizationContext";
 import ChatMessage from "@/components/practice/ChatMessage";
+import LoadingIndicator from "@/components/practice/LoadingIndicator";
 import { VoiceChatContainerProps } from "@/types/voiceChat";
 import { TranslationType } from "@/types/chat";
 import { Button } from "@/components/ui/button";
@@ -53,7 +54,8 @@ const VoiceChatContainer: React.FC<VoiceChatContainerProps> = ({
                   role="assistant" 
                   content={message.content} 
                   translation={message.translation as TranslationType} 
-                  onPlayAudio={onPlayAudio} 
+                  onPlayAudio={onPlayAudio}
+                  grammarCorrectionEnabled={message.grammarCorrectionEnabled}
                 />
                 {onPlayAudio && (
                   <Button
@@ -74,7 +76,8 @@ const VoiceChatContainer: React.FC<VoiceChatContainerProps> = ({
                 role={message.role as "user" | "assistant"} 
                 content={message.content} 
                 translation={message.translation as TranslationType} 
-                onPlayAudio={onPlayAudio} 
+                onPlayAudio={onPlayAudio}
+                grammarCorrectionEnabled={message.grammarCorrectionEnabled}
               />
               {message.role === "assistant" && onPlayAudio && (
                 <Button
@@ -90,13 +93,7 @@ const VoiceChatContainer: React.FC<VoiceChatContainerProps> = ({
           );
         })}
             
-            {isLoading && <div className="flex justify-center my-6">
-                <div className="flex space-x-3">
-                  <div className="w-3 h-3 bg-muted-foreground rounded-full animate-bounce" />
-                  <div className="w-3 h-3 bg-muted-foreground rounded-full animate-bounce [animation-delay:0.2s]" />
-                  <div className="w-3 h-3 bg-muted-foreground rounded-full animate-bounce [animation-delay:0.4s]" />
-                </div>
-              </div>}
+            {isLoading && <LoadingIndicator />}
             
             <div ref={scrollRef} />
           </div>}
