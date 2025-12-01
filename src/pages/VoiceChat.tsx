@@ -134,16 +134,14 @@ const VoiceChat = () => {
                     onTranscriptChange={updateTranscript}
                   />
 
-                  {(conversationHistory.length > 0 || isLoading) && (
-                    <div className="mt-6">
-                      <VoiceChatContainer 
-                        messages={messagesWithGrammarFlag}
-                        isLoading={isLoading}
-                        targetLanguage="english"
-                        onPlayAudio={speakWithAzureTTS}
-                      />
-                    </div>
-                  )}
+                  <div className="mt-6">
+                    <VoiceChatContainer 
+                      messages={messagesWithGrammarFlag}
+                      isLoading={isLoading}
+                      targetLanguage="english"
+                      onPlayAudio={speakWithAzureTTS}
+                    />
+                  </div>
 
                   {conversationHistory.length > 0 && (
                     <div className="mt-4 flex justify-center">
