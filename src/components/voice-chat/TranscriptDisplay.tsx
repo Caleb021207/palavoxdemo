@@ -43,9 +43,19 @@ const TranscriptDisplay: React.FC<TranscriptDisplayProps> = ({
                 {t("listening")}... (click stop when done)
               </p>
             ) : transcript ? (
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground font-medium">Your message:</p>
-                <p className="text-base">{transcript}</p>
+              <div className="space-y-3">
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground font-medium">Your message:</p>
+                  <p className="text-base">{transcript}</p>
+                </div>
+                <Button 
+                  onClick={handleSend}
+                  className="w-full"
+                  disabled={!transcript.trim()}
+                >
+                  <Send className="h-4 w-4 mr-2" />
+                  Send Message
+                </Button>
               </div>
             ) : null}
           </div>
