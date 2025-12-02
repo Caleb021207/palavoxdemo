@@ -17,7 +17,7 @@ import { useVoiceTTS } from "@/hooks/useVoiceTTS";
 import { DecorativeOrbs } from "@/components/ui/decorative-elements";
 
 const VoiceChat = () => {
-  const [grammarCorrection, setGrammarCorrection] = useState(true);
+  const [grammarCorrection, setGrammarCorrection] = useState(false);
   const [conversationLevel, setConversationLevel] = useState<string>("intermediate");
   
   // Initialize hooks
