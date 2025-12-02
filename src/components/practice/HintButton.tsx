@@ -17,30 +17,30 @@ export default function HintButton({ targetLanguage, messages, className }: Hint
   const [open, setOpen] = useState(false);
   const { t } = useLocalization();
   
-  // Demo example suggestions to show as static content
+  // Demo example suggestions to show as static content (English above, Spanish below)
   const demoSuggestions = [
     {
       title: "Greetings and Responses",
       suggestions: [
-        { phrase: "¡Hola! Estoy bien, gracias. ¿Y tú?", translation: "Hi! I'm good, thank you. And you?" },
-        { phrase: "¡Hola! Todo bien por aquí, ¿y tú?", translation: "Hi! All good here, how about you?" },
-        { phrase: "¡Hola! Me alegra verte. ¿Cómo has estado?", translation: "Hi! Glad to see you. How have you been?" }
+        { english: "Hi! I'm good, thank you. And you?", spanish: "¡Hola! Estoy bien, gracias. ¿Y tú?" },
+        { english: "Hi! All good here, how about you?", spanish: "¡Hola! Todo bien por aquí, ¿y tú?" },
+        { english: "Hi! Glad to see you. How have you been?", spanish: "¡Hola! Me alegra verte. ¿Cómo has estado?" }
       ]
     },
     {
       title: "Asking about the Other Person",
       suggestions: [
-        { phrase: "¿Qué tal tu día?", translation: "How is your day going?" },
-        { phrase: "¿Has hecho algo interesante últimamente?", translation: "Have you done anything interesting lately?" },
-        { phrase: "¿Cómo va tu trabajo/estudio?", translation: "How is your work/studies going?" }
+        { english: "How is your day going?", spanish: "¿Qué tal tu día?" },
+        { english: "Have you done anything interesting lately?", spanish: "¿Has hecho algo interesante últimamente?" },
+        { english: "How is your work/studies going?", spanish: "¿Cómo va tu trabajo/estudio?" }
       ]
     },
     {
       title: "Continuing the Conversation",
       suggestions: [
-        { phrase: "¿Te gustaría hacer algo este fin de semana?", translation: "Would you like to do something this weekend?" },
-        { phrase: "¿Qué opinas sobre la situación actual?", translation: "What do you think about the current situation?" },
-        { phrase: "Me gustaría saber más sobre ti.", translation: "I would like to know more about you." }
+        { english: "Would you like to do something this weekend?", spanish: "¿Te gustaría hacer algo este fin de semana?" },
+        { english: "What do you think about the current situation?", spanish: "¿Qué opinas sobre la situación actual?" },
+        { english: "I would like to know more about you.", spanish: "Me gustaría saber más sobre ti." }
       ]
     }
   ];
@@ -88,8 +88,8 @@ export default function HintButton({ targetLanguage, messages, className }: Hint
                     key={i}
                     className="p-2.5 text-sm rounded-md bg-muted/50 hover:bg-muted transition-colors"
                   >
-                    <div className="font-medium text-foreground">{suggestion.phrase}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5 italic">{suggestion.translation}</div>
+                    <div className="font-medium text-foreground">{suggestion.english}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5 italic">{suggestion.spanish}</div>
                   </div>
                 ))}
               </div>
