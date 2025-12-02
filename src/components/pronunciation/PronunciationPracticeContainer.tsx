@@ -510,7 +510,7 @@ const PronunciationPracticeContainer = () => {
                       animate={{ opacity: 1 }}
                     >
                       {isRecording 
-                        ? "🎙️ Recording... Click stop when finished" 
+                        ? "Recording... Click stop when finished"
                         : isGrading 
                           ? "Analyzing your pronunciation..."
                           : "Click record and read the phrase aloud"}
