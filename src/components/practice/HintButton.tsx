@@ -74,13 +74,6 @@ export default function HintButton({ targetLanguage, messages, className }: Hint
           </p>
         </div>
         
-        {/* Feature highlight */}
-        <div className="p-3 bg-muted/30 border-b flex items-center gap-2">
-          <Volume2 className="h-4 w-4 text-primary" />
-          <p className="text-xs text-muted-foreground">
-            Click play to hear pronunciation for any suggestion
-          </p>
-        </div>
         
         {/* Demo suggestions display */}
         <div className="p-2 max-h-[350px] overflow-y-auto">
