@@ -2,22 +2,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { HelpCircle } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { HelpCircle, Volume2, Lightbulb } from "lucide-react";
 import { useLocalization } from "@/context/LocalizationContext";
-import { supabase } from "@/integrations/supabase/client";
 import type { Message } from "@/types/chat";
 import { Separator } from "@/components/ui/separator";
-
-interface SuggestionItem {
-  phrase: string;
-  translation: string;
-}
-
-interface SuggestionCategory {
-  title: string;
-  suggestions: SuggestionItem[];
-}
 
 interface HintButtonProps {
   targetLanguage: string;
@@ -27,107 +15,38 @@ interface HintButtonProps {
 
 export default function HintButton({ targetLanguage, messages, className }: HintButtonProps) {
   const [open, setOpen] = useState(false);
-  const [hints, setHints] = useState<SuggestionCategory[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { t } = useLocalization();
   
-  const { t, currentLanguage } = useLocalization();
-  const { toast } = useToast();
-  
-  const fetchSuggestions = async () => {
-    if (messages.length === 0) return;
-    
-    setIsLoading(true);
-    try {
-      // Get the last few messages from the conversation (max 5)
-      const recentMessages = messages.slice(-5);
-      
-      console.log("Fetching hints with params:", {
-        targetLanguage,
-        userLanguage: currentLanguage || 'english',
-        messageCount: recentMessages.length
-      });
-      
-      const { data, error } = await supabase.functions.invoke("chat-with-tutor", {
-        body: {
-          conversationHistory: recentMessages,
-          requestType: 'hint',
-          targetLanguage,
-          userLanguage: currentLanguage || 'english', // Use current UI language
-        }
-      });
-      
-      if (error) {
-        console.error("Error fetching hints:", error);
-        throw error;
-      }
-      
-      console.log("Hint response:", data);
-      
-      // Updated structure handling - check if suggestions are in data.categories or data.suggestions
-      if (data?.categories && Array.isArray(data.categories)) {
-        setHints(data.categories as SuggestionCategory[]);
-      } else if (data?.suggestions && Array.isArray(data.suggestions)) {
-        setHints(data.suggestions as SuggestionCategory[]);
-      } else {
-        // Fallback hints if the API doesn't return suggestions in the expected format
-        setHints([
-          {
-            title: t("greetings"),
-            suggestions: [
-              { phrase: "Hola, ¿cómo estás?", translation: "Hello, how are you?" },
-              { phrase: "Buenos días", translation: "Good morning" },
-              { phrase: "Encantado de conocerte", translation: "Nice to meet you" }
-            ]
-          },
-          {
-            title: t("questions"),
-            suggestions: [
-              { phrase: "¿Qué te gusta hacer?", translation: "What do you like to do?" },
-              { phrase: "¿De dónde eres?", translation: "Where are you from?" },
-              { phrase: "¿Cuál es tu comida favorita?", translation: "What's your favorite food?" }
-            ]
-          }
-        ]);
-      }
-    } catch (err) {
-      console.error("Error fetching hints:", err);
-      toast({
-        title: t("error"),
-        description: t("couldNotGenerateHints"),
-        variant: "destructive",
-      });
-      
-      // Set fallback hints on error
-      setHints([
-        {
-          title: t("greetings"),
-          suggestions: [
-            { phrase: "Hola, ¿cómo estás?", translation: "Hello, how are you?" },
-            { phrase: "Buenos días", translation: "Good morning" },
-            { phrase: "Encantado de conocerte", translation: "Nice to meet you" }
-          ]
-        },
-        {
-          title: t("questions"),
-          suggestions: [
-            { phrase: "¿Qué te gusta hacer?", translation: "What do you like to do?" },
-            { phrase: "¿De dónde eres?", translation: "Where are you from?" },
-            { phrase: "¿Cuál es tu comida favorita?", translation: "What's your favorite food?" }
-          ]
-        }
-      ]);
-    } finally {
-      setIsLoading(false);
+  // Demo example suggestions to show as static content
+  const demoSuggestions = [
+    {
+      title: "Greetings and Responses",
+      suggestions: [
+        { phrase: "¡Hola! Estoy bien, gracias. ¿Y tú?", translation: "Hi! I'm good, thank you. And you?" },
+        { phrase: "¡Hola! Todo bien por aquí, ¿y tú?", translation: "Hi! All good here, how about you?" },
+        { phrase: "¡Hola! Me alegra verte. ¿Cómo has estado?", translation: "Hi! Glad to see you. How have you been?" }
+      ]
+    },
+    {
+      title: "Asking about the Other Person",
+      suggestions: [
+        { phrase: "¿Qué tal tu día?", translation: "How is your day going?" },
+        { phrase: "¿Has hecho algo interesante últimamente?", translation: "Have you done anything interesting lately?" },
+        { phrase: "¿Cómo va tu trabajo/estudio?", translation: "How is your work/studies going?" }
+      ]
+    },
+    {
+      title: "Continuing the Conversation",
+      suggestions: [
+        { phrase: "¿Te gustaría hacer algo este fin de semana?", translation: "Would you like to do something this weekend?" },
+        { phrase: "¿Qué opinas sobre la situación actual?", translation: "What do you think about the current situation?" },
+        { phrase: "Me gustaría saber más sobre ti.", translation: "I would like to know more about you." }
+      ]
     }
-  };
+  ];
   
   return (
-    <Popover open={open} onOpenChange={(isOpen) => {
-      setOpen(isOpen);
-      if (isOpen) {
-        fetchSuggestions();
-      }
-    }}>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button 
           variant="outline" 
@@ -139,48 +58,58 @@ export default function HintButton({ targetLanguage, messages, className }: Hint
         </Button>
       </PopoverTrigger>
       <PopoverContent 
-        className="w-80 p-0" 
+        className="w-96 p-0" 
         align="end" 
         alignOffset={-40}
         sideOffset={8}
       >
-        <div className="p-4 bg-muted/30 border-b">
-          <h4 className="font-medium text-sm">{t("responseSuggestions")}</h4>
-          <p className="text-xs text-muted-foreground mt-1">
-            {t("clickPlayToHearPronunciation")}
+        {/* Feature Description Header */}
+        <div className="p-4 bg-gradient-to-br from-primary/10 to-accent/10 border-b">
+          <div className="flex items-center gap-2 mb-2">
+            <Lightbulb className="h-5 w-5 text-primary" />
+            <h4 className="font-semibold text-base">Response Suggestions</h4>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            When students stall out in a conversation, they can click here to receive contextual response suggestions with translations in their native language.
           </p>
         </div>
         
-        <div className="p-2 max-h-[300px] overflow-y-auto">
-          {isLoading ? (
-            <div className="flex items-center justify-center p-4">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-            </div>
-          ) : hints.length === 0 ? (
-            <div className="p-4 text-sm text-muted-foreground text-center">
-              {t("startConversationForSuggestions")}
-            </div>
-          ) : (
-            hints.map((category, idx) => (
-              <div key={idx} className="mb-4">
-                <h5 className="text-xs font-medium text-muted-foreground px-2 mb-1">
-                  {category.title}
-                </h5>
-                <div className="space-y-1">
-                  {category.suggestions.map((suggestion, i) => (
-                    <div 
-                      key={i}
-                      className="p-2 text-sm rounded-md hover:bg-muted"
-                    >
-                      <div className="font-medium">{suggestion.phrase}</div>
-                      <div className="text-xs text-muted-foreground">{suggestion.translation}</div>
-                    </div>
-                  ))}
-                </div>
-                {idx < hints.length - 1 && <Separator className="my-2" />}
+        {/* Feature highlight */}
+        <div className="p-3 bg-muted/30 border-b flex items-center gap-2">
+          <Volume2 className="h-4 w-4 text-primary" />
+          <p className="text-xs text-muted-foreground">
+            Click play to hear pronunciation for any suggestion
+          </p>
+        </div>
+        
+        {/* Demo suggestions display */}
+        <div className="p-2 max-h-[350px] overflow-y-auto">
+          {demoSuggestions.map((category, idx) => (
+            <div key={idx} className="mb-4">
+              <h5 className="text-xs font-medium text-primary px-2 mb-2 uppercase tracking-wide">
+                {category.title}
+              </h5>
+              <div className="space-y-1">
+                {category.suggestions.map((suggestion, i) => (
+                  <div 
+                    key={i}
+                    className="p-2.5 text-sm rounded-md bg-muted/50 hover:bg-muted transition-colors"
+                  >
+                    <div className="font-medium text-foreground">{suggestion.phrase}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5 italic">{suggestion.translation}</div>
+                  </div>
+                ))}
               </div>
-            ))
-          )}
+              {idx < demoSuggestions.length - 1 && <Separator className="my-3" />}
+            </div>
+          ))}
+        </div>
+        
+        {/* Footer note */}
+        <div className="p-3 bg-muted/20 border-t">
+          <p className="text-xs text-center text-muted-foreground">
+            Suggestions are AI-generated based on conversation context
+          </p>
         </div>
       </PopoverContent>
     </Popover>

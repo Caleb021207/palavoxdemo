@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Lock, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const CORRECT_CODE = "PALAVOX2024"; // Change this to your desired access code
+const CORRECT_CODE = "PVX-2025"; // Change this to your desired access code
 
 export const AccessCodeDialog = () => {
   const [open, setOpen] = useState(false);
