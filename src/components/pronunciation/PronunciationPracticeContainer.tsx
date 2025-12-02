@@ -467,7 +467,7 @@ const PronunciationPracticeContainer = () => {
                   <div className="p-8 bg-gradient-to-br from-muted/30 to-muted/10 rounded-2xl border border-border/30">
                     {renderClickableWords()}
                     <p className="text-sm text-muted-foreground text-center mt-4">
-                      💡 Click any word to hear its pronunciation
+                      Click any word to hear its pronunciation
                     </p>
                   </div>
                   
@@ -512,8 +512,8 @@ const PronunciationPracticeContainer = () => {
                       {isRecording 
                         ? "🎙️ Recording... Click stop when finished" 
                         : isGrading 
-                          ? "🔄 Analyzing your pronunciation..."
-                          : "🎯 Click record and read the phrase aloud"}
+                          ? "Analyzing your pronunciation..."
+                          : "Click record and read the phrase aloud"}
                     </motion.p>
                     
                     <motion.div className="flex justify-center gap-4">
