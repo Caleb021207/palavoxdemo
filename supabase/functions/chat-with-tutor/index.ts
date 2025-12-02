@@ -352,9 +352,6 @@ YOUR RESPONSE FORMAT:
 
 📝 Grammar note: [Brief, kind correction of ONLY the most important errors]
 
-IMPORTANT: At the end of every response when grammar correction mode is active, add this note:
-"✏️ Grammar Correction Mode is active - receiving feedback on important errors."
-
 ONLY correct these types of errors:
 - Verb tense mistakes that confuse meaning ("I go yesterday" → "I went yesterday")
 - Subject-verb agreement errors ("He go to school" → "He goes to school")  
