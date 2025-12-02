@@ -341,7 +341,7 @@ serve(async (req) => {
 - Adapt your language complexity to match the student's level (${currentLevel.cefr})
 - Use clear, natural English
 
-${correctGrammar ? 
+${correctGrammar && targetLanguage === "english" ? 
   `✍️ GRAMMAR CORRECTION MODE (Active):
 
 When this mode is ON, provide feedback ONLY for significant errors that impact clarity or comprehension.
