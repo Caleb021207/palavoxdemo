@@ -71,14 +71,16 @@ export const useVoiceConversation = (conversationLevel?: string, correctGrammar?
         content: replyContent
       };
 
-      // Append assistant message after it arrives
-      setConversationHistory(prev => [...prev, assistantMessage]);
+      // Update API history (for backend context)
       setApiConversationHistory(prev => [...prev, assistantMessage]);
 
       console.log("About to call TTS for:", replyContent.substring(0, 50));
       
-      // Auto-play TTS for the response
+      // Play TTS first - this resolves when audio STARTS playing
       await speakResponse(replyContent);
+
+      // Only show the message AFTER audio begins playing
+      setConversationHistory(prev => [...prev, assistantMessage]);
 
     } catch (error) {
       console.error("Chat error:", error);
