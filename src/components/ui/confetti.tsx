@@ -53,7 +53,7 @@ const ConfettiExplosion: React.FC<ConfettiProps> = ({
             transition={{
               duration: 3,
               delay: particle.delay,
-              ease: "easeOut"
+              ease: "easeOut" as const
             }}
             className="absolute w-3 h-3 rounded-full"
             style={{ backgroundColor: particle.color }}

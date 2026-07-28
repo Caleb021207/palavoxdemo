@@ -53,7 +53,7 @@ const CertNotification: React.FC<CertNotificationProps> = ({ show, certType }) =
               transition={{
                 duration: 0.8,
                 repeat: 3,
-                ease: "easeInOut"
+                ease: "easeInOut" as const
               }}
             >
               <img

@@ -59,7 +59,7 @@ const XPNotification: React.FC<XPNotificationProps> = ({ show, amount }) => {
               transition={{
                 duration: 0.8,
                 repeat: 3,
-                ease: "easeInOut"
+                ease: "easeInOut" as const
               }}
             />
             <div className="flex items-center gap-2">

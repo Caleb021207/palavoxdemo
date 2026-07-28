@@ -123,17 +123,17 @@ const FeatureCarousel = () => {
       {/* Floating orbs */}
       <motion.div
         animate={{ y: [0, -30, 0], x: [0, 20, 0], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" as const }}
         className="absolute top-20 left-10 w-96 h-96 bg-primary/20 rounded-full blur-3xl"
       />
       <motion.div
         animate={{ y: [0, 30, 0], x: [0, -20, 0], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" as const, delay: 2 }}
         className="absolute bottom-20 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl"
       />
       <motion.div
         animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.3, 0.15] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" as const, delay: 4 }}
         className="absolute top-1/2 left-1/3 w-[500px] h-[500px] bg-palavox-teal/15 rounded-full blur-3xl"
       />
 
@@ -141,7 +141,7 @@ const FeatureCarousel = () => {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.8, ease: "easeOut" as const }}
         className="text-center mb-12 relative z-10"
       >
         <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-palavox-teal to-accent bg-clip-text text-transparent mb-4">
