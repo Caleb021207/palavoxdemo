@@ -193,7 +193,6 @@ export class RealtimeChat {
 
   async init() {
     try {
-      console.log("🚀 Getting ephemeral token...");
       
       const endpoint = this.provider === 'gemini' 
         ? 'gemini-voice-realtime' 
@@ -223,14 +222,12 @@ export class RealtimeChat {
 
       const token = data.client_secret.value;
       this.sessionStartTime = data.session_start;
-      console.log("✅ Token received");
 
       // Create peer connection
       this.pc = new RTCPeerConnection();
 
       // Set up audio playback
       this.pc.ontrack = (e) => {
-        console.log("🎵 Audio track received");
         this.audioEl.srcObject = e.streams[0];
       };
 
@@ -251,7 +248,6 @@ export class RealtimeChat {
 
       this.dc.addEventListener("message", (e) => {
         const event = JSON.parse(e.data);
-        console.log("📨 Event:", event.type);
 
         if (event.type === 'response.audio.delta') {
           this.onSpeakingChange(true);
@@ -289,7 +285,6 @@ export class RealtimeChat {
         sdp: answerSdp,
       });
 
-      console.log("✅ WebRTC connected");
     } catch (error) {
       console.error('Error initializing:', error);
       throw error;

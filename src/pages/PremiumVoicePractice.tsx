@@ -29,7 +29,6 @@ const PremiumVoicePractice = () => {
   }, []);
 
   const handleMessage = (event: any) => {
-    console.log("Event received:", event);
   };
 
   const startConversation = async () => {
@@ -174,7 +173,7 @@ const PremiumVoicePractice = () => {
                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
                           1
                         </div>
-                        <span className="flex-1 text-base">Click "Start GPT Session" below to begin your conversation</span>
+                        <span className="flex-1 text-base">Click "Start Voice Session" below to begin your conversation</span>
                       </motion.li>
                       <motion.li
                         initial={{ opacity: 0, x: -10 }}
@@ -254,7 +253,7 @@ const PremiumVoicePractice = () => {
                       </motion.div>
                     </div>
 
-                    {/* Start GPT Session Button */}
+                    {/* Start Voice Session Button */}
                     <Button
                       onClick={startConversation}
                       disabled={isStarting}
@@ -267,7 +266,7 @@ const PremiumVoicePractice = () => {
                           Connecting...
                         </span>
                       ) : (
-                        "Start GPT Session"
+                        "Start Voice Session"
                       )}
                     </Button>
                   </CardContent>
