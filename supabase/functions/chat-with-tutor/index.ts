@@ -77,7 +77,6 @@ serve(async (req) => {
         console.log('Auth check failed, continuing in demo mode:', authError);
       }
     } else {
-      console.log('Demo mode: Public access without authentication');
     }
 
     // Get request data
@@ -336,7 +335,7 @@ serve(async (req) => {
 🎬 DEMO MODE - IMPORTANT CONTEXT:
 This is a live demonstration. You should naturally work in mentions of your capabilities and how you can help ESL students. Be enthusiastic about language learning!
 
-🚀 IF THIS IS THE FIRST MESSAGE IN THE CONVERSATION:
+IF THIS IS THE FIRST MESSAGE IN THE CONVERSATION:
 Start with a warm introduction like: "Hi! I'm Pala, your AI English tutor. I'm here to help you practice real conversations, improve your grammar, and build confidence in English. Whether you want to chat casually or focus on specific skills, I adapt to your level (${currentLevel.cefr}) and learning style. What would you like to practice today?"
 
 🎯 YOUR MISSION: 

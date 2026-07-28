@@ -147,7 +147,6 @@ serve(async (req) => {
           p_user_id: userId,
           p_tokens: estimatedTokens
         });
-        console.log(`✅ Tracked ${estimatedTokens} token(s) of TTS usage for user ${userId}`);
       } catch (trackError) {
         console.error('Error tracking TTS usage:', trackError);
         // Don't fail the request if tracking fails

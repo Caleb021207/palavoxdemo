@@ -11,9 +11,6 @@ serve(async (req) => {
   }
 
   try {
-    // Demo mode - skip authentication and usage limits
-    console.log("🎭 Demo mode: Skipping auth and usage limits");
-
     // Get ephemeral token from OpenAI
     const openaiApiKey = Deno.env.get('OPENAI_API_KEY');
     if (!openaiApiKey) {
@@ -40,7 +37,6 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    console.log("✅ Ephemeral token created (demo mode)");
 
     // Generate session ID for tracking
     const sessionId = crypto.randomUUID();
