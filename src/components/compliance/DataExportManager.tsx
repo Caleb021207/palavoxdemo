@@ -39,7 +39,7 @@ export default function DataExportManager() {
           user_id: user.id,
           request_type: type,
           file_format: format,
-        });
+        } as never);
 
       if (error) throw error;
     },

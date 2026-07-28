@@ -31,7 +31,7 @@ export const ensureUserProfile = async (userId: string) => {
           target_level: 'B2',
           target_date: null,
           role: 'student', // Default role
-        });
+        } as never);
 
       if (insertError) {
         console.error('Error creating user profile:', insertError);
