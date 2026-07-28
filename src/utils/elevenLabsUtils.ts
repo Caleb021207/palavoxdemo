@@ -27,7 +27,7 @@ export async function generateTTS({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'xi-api-key': process.env.ELEVEN_LABS_API_KEY || '',
+        'xi-api-key': (import.meta as any).env?.VITE_ELEVEN_LABS_API_KEY || '',
       },
       body: JSON.stringify({
         text,
