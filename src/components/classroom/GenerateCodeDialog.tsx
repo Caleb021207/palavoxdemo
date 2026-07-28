@@ -57,7 +57,7 @@ const GenerateCodeDialog = ({ open, onOpenChange }: GenerateCodeDialogProps) => 
           name: className,
           academic_year: getCurrentAcademicYear(),
           class_code: '' // Will be updated with the access code
-        })
+        } as never)
         .select()
         .single();
 

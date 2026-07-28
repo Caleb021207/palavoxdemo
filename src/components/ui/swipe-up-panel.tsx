@@ -28,7 +28,7 @@ export const SwipeUpPanel = ({ children, isOpen, onOpenChange, className }: Swip
     closed: {
       y: '85%',
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         damping: 30,
         stiffness: 300
       }
@@ -36,7 +36,7 @@ export const SwipeUpPanel = ({ children, isOpen, onOpenChange, className }: Swip
     open: {
       y: 0,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         damping: 30,
         stiffness: 300
       }

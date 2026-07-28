@@ -1,11 +1,8 @@
+import { corsHeadersFor } from "../_shared/allowedOrigins.ts";
 
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
 
 // Map language names to OpenAI voices
 const languageToVoiceMap: Record<string, string> = {
@@ -31,6 +28,7 @@ const languageToVoiceMap: Record<string, string> = {
 };
 
 serve(async (req) => {
+  const corsHeaders = corsHeadersFor(req);
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -149,7 +147,6 @@ serve(async (req) => {
           p_user_id: userId,
           p_tokens: estimatedTokens
         });
-        console.log(`✅ Tracked ${estimatedTokens} token(s) of TTS usage for user ${userId}`);
       } catch (trackError) {
         console.error('Error tracking TTS usage:', trackError);
         // Don't fail the request if tracking fails

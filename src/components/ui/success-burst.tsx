@@ -21,7 +21,7 @@ const SuccessBurst: React.FC<SuccessBurstProps> = ({ show }) => {
         <motion.div
           initial={{ scale: 1, opacity: 0.8 }}
           animate={{ scale: 2.5, opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: "easeOut" as const }}
           className="absolute inset-0 rounded-full bg-green-500"
         />
         <div className="relative w-20 h-20 rounded-full bg-green-500 flex items-center justify-center shadow-2xl">

@@ -34,7 +34,7 @@ const AnimatedLoader: React.FC<AnimatedLoaderProps> = ({
           rotate: {
             duration: 1.5,
             repeat: Infinity,
-            ease: "linear"
+            ease: "linear" as const
           },
           scale: {
             duration: 1,

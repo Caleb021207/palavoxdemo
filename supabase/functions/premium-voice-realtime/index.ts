@@ -1,21 +1,16 @@
+import { corsHeadersFor } from "../_shared/allowedOrigins.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
 
 serve(async (req) => {
+  const corsHeaders = corsHeadersFor(req);
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Demo mode - skip authentication and usage limits
-    console.log("🎭 Demo mode: Skipping auth and usage limits");
-
     // Get ephemeral token from OpenAI
     const openaiApiKey = Deno.env.get('OPENAI_API_KEY');
     if (!openaiApiKey) {
@@ -42,7 +37,6 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    console.log("✅ Ephemeral token created (demo mode)");
 
     // Generate session ID for tracking
     const sessionId = crypto.randomUUID();

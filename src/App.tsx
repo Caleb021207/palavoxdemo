@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { UsageLimitAlert } from "@/components/usage/UsageLimitAlert";
 import { XPNotificationProvider } from "@/contexts/XPNotificationContext";
@@ -9,16 +9,13 @@ import NewLayout from "@/components/layout/NewLayout";
 import NewLandingPage from "@/components/layout/NewLandingPage";
 import Practice from "@/pages/Practice";
 import TranscriptAnalysis from "@/pages/TranscriptAnalysis";
-import Progress from "@/pages/Progress";
 import Profile from "@/pages/Profile";
 import PronunciationPracticeContainer from "@/components/pronunciation/PronunciationPracticeContainer";
 import VoiceChat from "@/pages/VoiceChat";
 import Settings from "@/pages/Settings";
 import Legal from "@/pages/Legal";
-import CertificationCodeTester from "@/pages/CertificationCodeTester";
 import PremiumVoicePractice from "@/pages/PremiumVoicePractice";
-import ClassMetrics from "@/pages/ClassMetrics";
-import Certificate from "@/pages/Certificate";
+import NotFound from "@/pages/NotFound";
 
 function App() {
   return (
@@ -37,11 +34,12 @@ function App() {
               <Route path="/settings" element={<Settings />} />
               <Route path="/legal" element={<Legal />} />
               <Route path="/analysis" element={<TranscriptAnalysis />} />
-              <Route path="/code-tester" element={<CertificationCodeTester />} />
               <Route path="/premium-voice-practice" element={<PremiumVoicePractice />} />
-              <Route path="/class-metrics" element={<ClassMetrics />} />
-              <Route path="/certificate" element={<Certificate />} />
-              
+              {/* Retired demo stubs — redirect instead of showing dead ends */}
+              <Route path="/certificate" element={<Navigate to="/" replace />} />
+              <Route path="/class-metrics" element={<Navigate to="/" replace />} />
+              <Route path="/code-tester" element={<Navigate to="/" replace />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
           </NewLayout>
@@ -52,3 +50,4 @@ function App() {
 }
 
 export default App;
+

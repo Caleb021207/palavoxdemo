@@ -18,7 +18,7 @@ const variants = {
     y: 0,
     transition: {
       duration: 0.4,
-      ease: "easeOut",
+      ease: "easeOut" as const,
       when: "beforeChildren",
       staggerChildren: 0.1,
     },
@@ -28,7 +28,7 @@ const variants = {
     y: 20,
     transition: {
       duration: 0.3,
-      ease: "easeIn",
+      ease: "easeIn" as const,
     },
   },
 };

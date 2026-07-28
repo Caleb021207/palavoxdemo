@@ -318,17 +318,17 @@ const PronunciationPracticeContainer = () => {
       {/* Floating orbs */}
       <motion.div
         animate={{ y: [0, -30, 0], x: [0, 20, 0], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" as const }}
         className="absolute top-20 left-10 w-96 h-96 bg-primary/20 rounded-full blur-3xl"
       />
       <motion.div
         animate={{ y: [0, 30, 0], x: [0, -20, 0], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" as const, delay: 2 }}
         className="absolute bottom-20 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl"
       />
       <motion.div
         animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.3, 0.15] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" as const, delay: 4 }}
         className="absolute top-1/2 left-1/3 w-[500px] h-[500px] bg-palavox-teal/15 rounded-full blur-3xl"
       />
 
@@ -337,13 +337,13 @@ const PronunciationPracticeContainer = () => {
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: "easeOut" as const }}
           className="mb-10 text-center"
         >
           <motion.div 
             className="inline-flex items-center justify-center gap-3 mb-6"
             animate={{ scale: [1, 1.02, 1] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" as const }}
           >
             <div className="p-4 bg-gradient-to-br from-primary to-accent rounded-3xl shadow-2xl">
               <Volume2 className="w-12 h-12 text-white" />

@@ -29,7 +29,6 @@ const PremiumVoicePractice = () => {
   }, []);
 
   const handleMessage = (event: any) => {
-    console.log("Event received:", event);
   };
 
   const startConversation = async () => {
@@ -115,13 +114,13 @@ const PremiumVoicePractice = () => {
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.6, ease: "easeOut" as const }}
           >
             <div className="mb-8 text-center">
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5, ease: "backOut" }}
+                transition={{ duration: 0.5, ease: "backOut" as const }}
                 className="inline-flex items-center justify-center gap-3 mb-4"
               >
                 <div className="p-3 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl backdrop-blur-sm border border-primary/20">
@@ -174,7 +173,7 @@ const PremiumVoicePractice = () => {
                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
                           1
                         </div>
-                        <span className="flex-1 text-base">Click "Start GPT Session" below to begin your conversation</span>
+                        <span className="flex-1 text-base">Click "Start Voice Session" below to begin your conversation</span>
                       </motion.li>
                       <motion.li
                         initial={{ opacity: 0, x: -10 }}
@@ -245,7 +244,7 @@ const PremiumVoicePractice = () => {
                       <motion.div className="relative">
                         <motion.div
                           animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
-                          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" as const }}
                           className="absolute inset-0 bg-primary/30 rounded-full blur-xl"
                         />
                         <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 border-2 border-primary/40 flex items-center justify-center relative">
@@ -254,7 +253,7 @@ const PremiumVoicePractice = () => {
                       </motion.div>
                     </div>
 
-                    {/* Start GPT Session Button */}
+                    {/* Start Voice Session Button */}
                     <Button
                       onClick={startConversation}
                       disabled={isStarting}
@@ -267,7 +266,7 @@ const PremiumVoicePractice = () => {
                           Connecting...
                         </span>
                       ) : (
-                        "Start GPT Session"
+                        "Start Voice Session"
                       )}
                     </Button>
                   </CardContent>
@@ -278,7 +277,7 @@ const PremiumVoicePractice = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.4, ease: "easeOut" as const }}
             >
               <Card className="glass border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-accent/5">
                 <CardHeader>

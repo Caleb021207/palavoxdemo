@@ -59,10 +59,11 @@ export const generateDemoStudents = () => {
 };
 
 export const generateDemoMetrics = () => {
-  const dates = [
-    'Oct 1', 'Oct 8', 'Oct 15', 'Oct 22', 'Oct 29',
-    'Nov 5', 'Nov 12', 'Nov 19', 'Nov 26'
-  ];
+  // Rolling 9-week window ending this week, so the demo never looks stale
+  const dates = Array.from({ length: 9 }, (_, index) => {
+    const day = new Date(Date.now() - (8 - index) * 7 * 24 * 60 * 60 * 1000);
+    return day.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  });
 
   // Linear improvement starting at 55% and ending at 82%
   const startScore = 55;

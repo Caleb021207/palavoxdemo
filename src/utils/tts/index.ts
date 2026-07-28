@@ -1,4 +1,6 @@
 
+import { languageCodeMap as _languageCodeMap } from './constants';
+
 export { languageCodeMap, TTL_DURATION, CACHE_CLEANUP_INTERVAL } from './constants';
 export { ttsCache } from './cache';
 export { isTTSSupported, useBrowserTTS } from './browserTTS';
@@ -12,6 +14,5 @@ export type { TTSOptions } from './types';
  * @returns The language code (en-US, es-ES, etc.)
  */
 export const getSpeechSynthesisLanguageCode = (language: string): string => {
-  const { languageCodeMap } = require('./constants');
-  return languageCodeMap[language?.toLowerCase()] || 'en-US';
+  return _languageCodeMap[language?.toLowerCase()] || 'en-US';
 };

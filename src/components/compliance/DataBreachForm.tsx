@@ -48,7 +48,7 @@ export default function DataBreachForm() {
           affected_user_count: breachData.affectedUserCount,
           affected_data_types: breachData.affectedDataTypes,
           created_by: user?.id,
-        });
+        } as never);
 
       if (error) throw error;
     },

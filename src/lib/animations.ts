@@ -4,7 +4,7 @@ export const fadeIn = {
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.4, ease: "easeOut" }
+    transition: { duration: 0.4, ease: "easeOut" as const }
   },
 };
 
@@ -13,7 +13,7 @@ export const scaleIn = {
   visible: { 
     opacity: 1, 
     scale: 1,
-    transition: { duration: 0.3, ease: "easeOut" }
+    transition: { duration: 0.3, ease: "easeOut" as const }
   },
 };
 
@@ -22,7 +22,7 @@ export const slideInRight = {
   visible: { 
     opacity: 1, 
     x: 0,
-    transition: { duration: 0.4, ease: "easeOut" }
+    transition: { duration: 0.4, ease: "easeOut" as const }
   },
 };
 
@@ -55,7 +55,7 @@ export const floatAnimation = {
       duration: 3,
       repeat: Infinity,
       repeatType: "reverse" as const,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
     },
   },
 };
@@ -70,7 +70,7 @@ export const shake = {
 export const successPulse = {
   animate: {
     scale: [1, 1.1, 1],
-    transition: { duration: 0.6, ease: "easeOut" }
+    transition: { duration: 0.6, ease: "easeOut" as const }
   }
 };
 
@@ -98,6 +98,6 @@ export const slideInUp = {
   visible: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.4, ease: "easeOut" }
+    transition: { duration: 0.4, ease: "easeOut" as const }
   }
 };
