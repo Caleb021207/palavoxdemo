@@ -7,112 +7,147 @@ import AnalysisResults from "@/components/transcript-analysis/AnalysisResults";
 import ProgressTimeline from "@/components/transcript-analysis/ProgressTimeline";
 import { Analysis } from "@/components/transcript-analysis/types";
 
-// Demo data: 4 exams matching the example
+// Demo data: 4 sample assessments for one student across the 2025-2026 school year
 const demoAnalyses: Analysis[] = [
   {
     id: "exam-1",
-    upload_date: "2024-10-08T10:00:00Z",
-    file_name: "palavox-score-report-806f620d-d3fb-42d1-a89c-d9c91ff45814 (4).png",
+    upload_date: "2025-09-12T10:00:00Z",
+    file_name: "Emma Rodriguez — Fall Placement Assessment",
     overall_score: 26,
     cefr_level: "A1",
     reading_listening_score: 25,
     written_production_score: 10,
     spoken_fluency_score: 43,
-    strengths: ["Strong comprehension of complex texts and abstract concepts", "Effective use of varied vocabulary across different contexts", "Good fluency and coherence in extended discourse", "Able to express nuanced opinions and arguments clearly"],
-    weaknesses: ["Minor errors in highly complex grammatical structures", "Could refine formal register and stylistic choices", "Occasional imprecision in specialized vocabulary"],
-    recommendations: [
-      "Use Text Practice at B2-C1 level to master advanced grammatical structures and refine formal writing styles. Focus on academic essays, professional reports, and stylistic variation.",
-      "Use Voice Practice at B2-C1 level to perfect fluency in spontaneous discussions. Practice debating abstract topics and using sophisticated argumentation techniques.",
-      "Use Pronunciation Practice at B2-C1 level to achieve near-native intonation and stress patterns. Work on subtle aspects of connected speech and natural rhythm."
+    strengths: [
+      "Recognizes common greetings and everyday classroom phrases",
+      "Can introduce herself with short memorized sentences",
+      "Understands simple questions when spoken slowly and clearly"
     ],
-    detailed_feedback: "The test taker demonstrates strong command of the language with effective communication across a wide range of topics. They can express ideas fluently and spontaneously with good grammatical control, though minor errors occasionally occur in complex structures. Written and spoken communication is generally clear, well-organized, and appropriate for most contexts."
+    weaknesses: [
+      "Very limited vocabulary outside of a few familiar topics",
+      "Written responses are incomplete and often single words",
+      "Frequent basic grammar errors with verb forms and word order",
+      "Struggles to follow speech at natural speed"
+    ],
+    recommendations: [
+      "Use Text Practice at A1 level to build core vocabulary and simple present-tense sentences about daily routines.",
+      "Use Voice Practice at A1 level to rehearse short introductions, greetings, and yes/no exchanges.",
+      "Use Pronunciation Practice at A1 level to work on individual sounds and clear word-level articulation."
+    ],
+    detailed_feedback: "At this stage the student communicates with isolated words and memorized phrases on very familiar topics. Comprehension depends on slow, clear speech and repetition, and written production is still fragmentary. The priority is building a base of high-frequency vocabulary and simple sentence patterns."
   },
   {
     id: "exam-2",
-    upload_date: "2024-10-27T10:00:00Z",
-    file_name: "score-report-Test-Student-2025-10-07 (1).png",
-    overall_score: 78,
-    cefr_level: "B2",
-    reading_listening_score: 76,
-    written_production_score: 79,
-    spoken_fluency_score: 79,
-    strengths: ["Strong comprehension of complex topics and abstract concepts", "Effective use of varied vocabulary in different contexts", "Good fluency and coherence in extended discourse"],
-    weaknesses: ["Minor errors in advanced grammatical structures", "Could refine formal register and stylistic choices"],
-    recommendations: [
-      "Use Text Practice at B2 level to master complex grammatical structures. Focus on formal writing, reports, and essays to enhance professional communication skills.",
-      "Use Voice Practice at B2 level to develop fluency in spontaneous conversations. Practice discussing abstract topics and expressing nuanced opinions confidently.",
-      "Use Pronunciation Practice at B2 level to perfect intonation patterns and stress. Work on natural rhythm and connected speech for more native-like pronunciation."
+    upload_date: "2025-11-14T10:00:00Z",
+    file_name: "Emma Rodriguez — Fall Progress Check",
+    overall_score: 52,
+    cefr_level: "A2",
+    reading_listening_score: 54,
+    written_production_score: 48,
+    spoken_fluency_score: 55,
+    strengths: [
+      "Handles routine exchanges about school, family, and free time",
+      "Produces short connected sentences using present and simple past",
+      "Understands the main point of short, clearly spoken messages"
     ],
-    detailed_feedback: "Excellent progress! Reached B2 level with strong performance across all skills."
+    weaknesses: [
+      "Runs out of vocabulary when topics move beyond daily life",
+      "Errors with past tenses and prepositions interrupt meaning",
+      "Speech is still hesitant with frequent pauses"
+    ],
+    recommendations: [
+      "Use Text Practice at A2 level to consolidate past tenses and connectors like 'because', 'but', and 'then'.",
+      "Use Voice Practice at A2 level to practice short role-plays such as ordering food or asking for directions.",
+      "Use Pronunciation Practice at A2 level to work on word stress and sentence rhythm in short phrases."
+    ],
+    detailed_feedback: "Clear progress from the placement assessment. The student now manages simple, routine tasks and can describe familiar people and situations in a few linked sentences. Accuracy and fluency still break down under time pressure or when the topic is unfamiliar."
   },
   {
     id: "exam-3",
-    upload_date: "2024-11-02T10:00:00Z",
-    file_name: "palavox-score-report-d95102ec-f071-41b7-a690-202f1555b04c.png",
+    upload_date: "2026-02-06T10:00:00Z",
+    file_name: "Emma Rodriguez — Winter Progress Check",
     overall_score: 69,
     cefr_level: "B1",
     reading_listening_score: 68,
     written_production_score: 69,
     spoken_fluency_score: 70,
-    strengths: ["Can understand main points of clear standard input on familiar matters", "Developing vocabulary for everyday topics", "Able to produce simple connected text on familiar subjects"],
-    weaknesses: ["Inconsistent grammatical accuracy in complex structures", "Limited vocabulary beyond familiar topics", "Struggles with expressing abstract ideas"],
-    recommendations: [
-      "Use Text Practice at B1 level to solidify intermediate grammar. Focus on past tenses, conditionals, and expanding vocabulary across different topics.",
-      "Use Voice Practice at B1 level to increase spontaneity in conversations. Practice describing experiences, plans, and opinions to develop fluency.",
-      "Use Pronunciation Practice at B1 level to improve clarity and confidence. Work on word stress, sentence rhythm, and reducing first-language interference."
+    strengths: [
+      "Understands the main points of clear standard speech on familiar matters",
+      "Writes simple connected text about experiences and plans",
+      "Can explain opinions and give short reasons"
     ],
-    detailed_feedback: "Slight dip in performance but core skills remain strong. Focus on consistency."
+    weaknesses: [
+      "Inconsistent accuracy in complex structures such as conditionals",
+      "Vocabulary is thin outside of familiar and school-related topics",
+      "Difficulty expressing abstract ideas without circumlocution"
+    ],
+    recommendations: [
+      "Use Text Practice at B1 level to solidify conditionals, relative clauses, and topic-specific vocabulary.",
+      "Use Voice Practice at B1 level to describe experiences and plans spontaneously and extend answers.",
+      "Use Pronunciation Practice at B1 level to reduce first-language interference and improve sentence-level intonation."
+    ],
+    detailed_feedback: "The student has reached an independent-user threshold. She can deal with most situations likely to arise while travelling or in class, and can produce straightforward connected text on familiar subjects. Growth areas are grammatical consistency and vocabulary range for abstract topics."
   },
   {
     id: "exam-4",
-    upload_date: "2024-11-02T14:00:00Z",
-    file_name: "score-report-Test-Student-2025-10-07 (1).png",
+    upload_date: "2026-05-15T10:00:00Z",
+    file_name: "Emma Rodriguez — Spring Final Assessment",
     overall_score: 78,
     cefr_level: "B2",
     reading_listening_score: 77,
     written_production_score: 78,
     spoken_fluency_score: 79,
-    strengths: ["Strong comprehension of complex topics and abstract concepts", "Effective use of varied vocabulary in different contexts", "Good fluency and coherence in extended discourse"],
-    weaknesses: ["Minor errors in advanced grammatical structures", "Could refine formal register and stylistic choices"],
-    recommendations: [
-      "Use Text Practice at B2 level to master complex grammatical structures. Focus on formal writing, reports, and essays to enhance professional communication skills.",
-      "Use Voice Practice at B2 level to develop fluency in spontaneous conversations. Practice discussing abstract topics and expressing nuanced opinions confidently.",
-      "Use Pronunciation Practice at B2 level to perfect intonation patterns and stress. Work on natural rhythm and connected speech for more native-like pronunciation."
+    strengths: [
+      "Comprehends complex texts and discussions on both concrete and abstract topics",
+      "Uses varied vocabulary appropriately across different contexts",
+      "Speaks with enough fluency and coherence for sustained interaction",
+      "Can present a clear, developed argument with supporting detail"
     ],
-    detailed_feedback: "Returned to B2 level! Consistent strong performance across all skills."
+    weaknesses: [
+      "Occasional errors in advanced grammatical structures",
+      "Formal register and stylistic choices could be more consistent",
+      "Some imprecision with specialized or academic vocabulary"
+    ],
+    recommendations: [
+      "Use Text Practice at B2 level to master complex structures and formal writing such as reports and essays.",
+      "Use Voice Practice at B2 level to debate abstract topics and express nuanced opinions confidently.",
+      "Use Pronunciation Practice at B2 level to refine intonation, stress, and natural connected speech."
+    ],
+    detailed_feedback: "Strong end-of-year result. The student interacts with a degree of fluency and spontaneity that makes regular interaction with proficient speakers comfortable, and writes clear, detailed text on a range of subjects. Remaining work is refinement of register and precision rather than basic control."
   }
 ];
 
-// Demo milestones based on the 4 exams
+// Demo milestones based on the 4 assessments
 const demoMilestones = [
   {
     id: "milestone-1",
     milestone_type: "level_up",
     previous_value: 26,
-    current_value: 78,
-    improvement_percentage: 200,
-    achievement_date: "2024-10-27T10:00:00Z",
-    description: "Massive improvement! Jumped from A1 to B2 level"
+    current_value: 52,
+    improvement_percentage: 100,
+    achievement_date: "2025-11-14T10:00:00Z",
+    description: "Moved from A1 to A2 during the fall term"
   },
   {
     id: "milestone-2",
+    milestone_type: "level_up",
+    previous_value: 52,
+    current_value: 69,
+    improvement_percentage: 33,
+    achievement_date: "2026-02-06T10:00:00Z",
+    description: "Reached B1 — independent user threshold"
+  },
+  {
+    id: "milestone-3",
     milestone_type: "consistent_improvement",
     previous_value: 26,
     current_value: 78,
     improvement_percentage: 200,
-    achievement_date: "2024-11-02T14:00:00Z",
-    description: "Overall improvement of 52 points across 4 exams"
-  },
-  {
-    id: "milestone-3",
-    milestone_type: "score_milestone",
-    previous_value: 69,
-    current_value: 78,
-    improvement_percentage: 13,
-    achievement_date: "2024-11-02T14:00:00Z",
-    description: "Recovered from setback and reached B2 again"
+    achievement_date: "2026-05-15T10:00:00Z",
+    description: "Overall improvement of 52 points across four assessments, finishing at B2"
   }
 ];
+
 
 const StudentAnalysisView = () => {
   const [activeTab, setActiveTab] = useState("results");
