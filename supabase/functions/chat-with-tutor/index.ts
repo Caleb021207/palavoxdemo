@@ -2,7 +2,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import OpenAI from "https://esm.sh/openai@4.20.1";
-import { corsHeaders, filterProhibitedContent } from "./config.ts";
+import { corsHeadersFor, filterProhibitedContent } from "./config.ts";
 import { generateHints } from "./hints.ts";
 import { getLanguageDisplayName, determineLanguagePair, getUserNativeLanguage } from "./languageUtils.ts";
 
@@ -42,6 +42,7 @@ function validateLanguage(lang: string | undefined): string {
 }
 
 serve(async (req) => {
+  const corsHeaders = corsHeadersFor(req);
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });

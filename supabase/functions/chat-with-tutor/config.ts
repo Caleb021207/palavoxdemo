@@ -1,8 +1,5 @@
 
-export const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+export { corsHeadersFor } from "../_shared/allowedOrigins.ts";
 
 export async function filterProhibitedContent(input: string): Promise<{ filtered: boolean; reason: string }> {
   // Simple prohibited content check
