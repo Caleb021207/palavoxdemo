@@ -480,11 +480,36 @@ export type Database = {
         }
         Relationships: []
       }
+      usage_counters: {
+        Row: {
+          count: number
+          counter_key: string
+          updated_at: string
+          window_end: string
+        }
+        Insert: {
+          count?: number
+          counter_key: string
+          updated_at?: string
+          window_end: string
+        }
+        Update: {
+          count?: number
+          counter_key?: string
+          updated_at?: string
+          window_end?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      consume_ai_quota: {
+        Args: { _ip: string; _is_realtime?: boolean }
+        Returns: Json
+      }
       generate_access_code: { Args: { class_id: string }; Returns: string }
       process_access_code: {
         Args: { code_input: string; user_id_input: string }
