@@ -1,3 +1,4 @@
+import { enforceAiRateLimit } from "../_shared/rateLimit.ts";
 import { corsHeadersFor } from "../_shared/allowedOrigins.ts";
 
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
@@ -42,6 +43,9 @@ serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
+
+  const limited = await enforceAiRateLimit(req, corsHeaders);
+  if (limited) return limited;
 
   try {
     if (!openAIApiKey) {

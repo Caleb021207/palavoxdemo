@@ -1,3 +1,4 @@
+import { enforceAiRateLimit } from "../_shared/rateLimit.ts";
 import { corsHeadersFor } from "../_shared/allowedOrigins.ts";
 
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
@@ -33,6 +34,9 @@ serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
+
+  const limited = await enforceAiRateLimit(req, corsHeaders);
+  if (limited) return limited;
 
   try {
     const { text, voice = 'alloy', language, speechRate = 1.0, userId } = await req.json();
