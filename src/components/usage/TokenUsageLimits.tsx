@@ -36,9 +36,7 @@ export const TokenUsageLimits = () => {
                 We kindly ask that you use the AI models responsibly and only to learn about the platform's capabilities. 
                 This helps us provide the best experience for all demo users.
               </p>
-              <p className="text-xs text-muted-foreground mt-3 pt-2 border-t border-border/50">
-                Access code for this demo: <span className="font-mono font-semibold text-primary">PVX-2025</span>
-              </p>
+
             </div>
           </div>
         </div>
